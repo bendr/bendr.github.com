@@ -8,8 +8,8 @@ h1, h2, h3, h4, h5, h6 { font-weight: normal; color: #126; }
 code, pre, .elem, .code, .attr, ul.elem-list li {
   font-family: Monaco, monospace; font-size: smaller; }
 
-pre.code, .include-src { margin-left: 1em; background-color: #eee;
-  margin-left: 1em; padding: .2em 1em; width: 44em; position: relative; }
+pre.code, .include-src { margin-left: 18px; background-color: #eee;
+  padding: 6px; max-width: 912px; position: relative; }
 .include-src { margin-top: 1em; border: solid thin #102040; }
 .include-src pre { border-top: solid thin #102040; padding-top: 1em; }
 .include-src p { font-size: smaller; font-style: italic; position: absolute;
@@ -25,3 +25,5 @@ nav.inline ul li, ul.elem-list li, ul.attr-list li { display: inline;
 .TODO { background-color: yellow; font-style: italic; }
 .error { color: red; }
 .check { background-color: #ff4040; }
+
+#copyright { font-size: 12px; margin-top: 32px; }
