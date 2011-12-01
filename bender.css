@@ -1,5 +1,5 @@
 body { font-family: "Helvetica Neue", Helvetica, sans-serif; margin: 2em auto;
-  max-width: 48em; }
+  max-width: 960px; font-size: 18px }
 a, .expand { color: #ff7f40; text-decoration: none; }
 .expand { cursor: pointer; }
 
