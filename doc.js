@@ -62,9 +62,7 @@ function get_examples(debug)
       var component = typeof p.dataset.component === "string" &&
         p.dataset.component;
       if (!component) {
-        var src = p.dataset.src.replace(/^\.\.\//, "").replace(/\.xml$/, "");
-        var suffix = p.dataset.suffix || "html";
-        var href = "../core/bender.{0}?app={1}".fmt(suffix, src);
+        var href = "/run.html?app={0}".fmt(p.dataset.src);
         if (debug) href += "&debug={0}".fmt(debug);
         p.insertBefore(flexo.html("a", { href: href }, "⚐ "), p.firstChild);
       }

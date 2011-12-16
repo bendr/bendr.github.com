@@ -1,145 +1,177 @@
 <app xmlns="http://bender.igel.co.jp" xmlns:html="http://www.w3.org/1999/xhtml"
-  xmlns:e="http://bender.igel.co.jp/e" e:op=""
+  xmlns:e="http://bender.igel.co.jp/e" e:op="" e:input="0"
   xmlns:b="http://bender.igel.co.jp/b" b:clear="false"
-  xmlns:f="http://bender.igel.co.jp/f" f:n="0" f:rotate="0">
+  xmlns:f="http://bender.igel.co.jp/f" f:rotate="0">
   <title>Simple Calculator</title>
 
+  <import href="/lib/push-button.xml"/>
+
   <stylesheet>
-    body { background-color: #888; }
-    @font-face { font-family: Digital7; src: url("../apps/demos/digital-7.ttf");
+    body { background-color: #888; font-family: sans-serif; }
+    @font-face { font-family: Digital7; src: url("/apps/demos/digital-7.ttf");
       font-weight: normal; font-style: normal; }
-    #calculator { width: 408px; background-color: #fd0; padding: 24px;
+    .calculator { width: 412px; background-color: #fd0; padding: 24px;
       margin: 32px auto; -webkit-border-radius: 12px; -moz-border-radius: 12px;
       border-radius: 12px; box-shadow: 4px 4px 8px #444; }
-    #screen { position: relative; text-align: right; margin-bottom: 16px;
+    .screen { position: relative; text-align: right; margin-bottom: 32px;
       height: 96px; background-color: #b3cbb3; padding: 8px;
       box-shadow: inset 1px 1px 5px #444;
       text-shadow: 2px 2px 0px #9ebb9e;
       -webkit-border-radius: 8px; -moz-border-radius: 8px;
       overflow: hidden; text-overflow: ellipsis;
     }
-    #value { font-size: 72px; font-family: Digital7, monospace; }
-    #op { position: absolute; bottom: 8px; right: 8px; font-size: 36px; }
-    .row { height: 96px; margin-top: 8px; position: relative; }
-    .row .bender-button { padding: 18px 0 0 0; margin: 0; width: 96px;
-      height: 78px; text-align: center; font-size: 48px; position: absolute;
+    .value { font-size: 72px; font-family: Digital7, monospace; }
+    .op { position: absolute; bottom: 8px; right: 8px; font-size: 36px; }
+    .row { height: 88px; margin-top: 16px; position: relative; }
+    .row .bender-button { padding: 14px 0 0 0; margin: 0; width: 88px;
+      height: 70px; text-align: center; font-size: 48px; position: absolute;
       box-shadow: 1px 1px 5px #444; }
-    .row .bender-button:nth-child(2) { left: 104px; }
-    .row .bender-button:nth-child(3) { left: 208px; }
-    .row .bender-button:nth-child(4) { left: 312px; }
+    .row .bender-button:nth-child(2) { left: 108px; }
+    .row .bender-button:nth-child(3) { left: 216px; }
+    .row .bender-button:nth-child(4) { left: 324px; }
+    .bender-button.tall { padding-top: 118px; }
+    .bender-button.wide { padding-right: 108px; }
   </stylesheet>
 
   <view>
-    <html:div id="calculator">
-      <html:div id="screen">
-        <html:span id="value"/>
-        <html:span id="op"/>
+    <html:div class="calculator" id="calculator">
+      <html:div class="screen">
+        <html:span id="value" class="value"/>
+        <html:span id="op" class="op"/>
       </html:div>
       <html:div class="row">
-        <component href="../../lib/button.xml" id="7">7</component>
-        <component href="../../lib/button.xml" id="8">8</component>
-        <component href="../../lib/button.xml" id="9">9</component>
-        <component href="../../lib/button.xml" id="/">÷</component>
+        <component href="#button" id="c">C</component>
+        <component href="#button" id="eq1">=</component>
+        <component href="#button" id="div">÷</component>
+        <component href="#button" id="mult">×</component>
       </html:div>
       <html:div class="row">
-        <component href="../../lib/button.xml" id="4">4</component>
-        <component href="../../lib/button.xml" id="5">5</component>
-        <component href="../../lib/button.xml" id="6">6</component>
-        <component href="../../lib/button.xml" id="*">×</component>
+        <component href="#button" id="seven">7</component>
+        <component href="#button" id="eight">8</component>
+        <component href="#button" id="nine">9</component>
+        <component href="#button" id="sub">-</component>
       </html:div>
       <html:div class="row">
-        <component href="../../lib/button.xml" id="1">1</component>
-        <component href="../../lib/button.xml" id="2">2</component>
-        <component href="../../lib/button.xml" id="3">3</component>
-        <component href="../../lib/button.xml" id="-">-</component>
+        <component href="#button" id="four">4</component>
+        <component href="#button" id="five">5</component>
+        <component href="#button" id="six">6</component>
+        <component href="#button" id="add">+</component>
       </html:div>
       <html:div class="row">
-        <component href="../../lib/button.xml" id="0">0</component>
-        <component href="../../lib/button.xml" id="C">C</component>
-        <component href="../../lib/button.xml" id="=">=</component>
-        <component href="../../lib/button.xml" id="+">+</component>
+        <component href="#button" id="one">1</component>
+        <component href="#button" id="two">2</component>
+        <component href="#button" id="three">3</component>
+        <component href="#button" id="eq2" e:class="tall">=</component>
+      </html:div>
+      <html:div class="row">
+        <component href="#button" id="zero" e:class="wide">0</component>
+        <html:span/>
+        <component href="#button" id="period">.</component>
       </html:div>
     </html:div>
   </view>
 
-  <script>
-    var OPS = {
+  <local-script>
+    prototype.ops = {
       "+": function(m, n) { return m + n; },
       "-": function(m, n) { return m - n; },
-      "*": function(m, n) { return m * n; },
-      "/": function(m, n) { return m / n; },
-      "": function(m, n) { return n; }
+      "×": function(m, n) { return m * n; },
+      "÷": function(m, n) { return m / n; },
+      "": function(_, n) { return n; }
     };
-  </script>
+    prototype.digits = ["zero", "one", "two", "three", "four", "five", "six",
+      "seven", "eight", "nine"];
+  </local-script>
+
+  <watch>
+    <get property="input"/>
+    <set property="n">
+      return parseFloat(value);
+    </set>
+  </watch>
 
   <watch>
     <get property="n"/>
-    <set view="value"/>
+    <set view="value">
+      return value.toString() +
+        (this.$input[this.$input.length - 1] === "." ?  "." : "");
+    </set>
   </watch>
 
   <watch>
     <get property="op"/>
-    <set view="op">
-      return value === "/" ? "÷" : value === "*" ? "×" : value;
-    </set>
+    <set view="op"/>
   </watch>
 
   <watch>
-    <get view="0" event="@pushed"/>
-    <get view="1" event="@pushed"/>
-    <get view="2" event="@pushed"/>
-    <get view="3" event="@pushed"/>
-    <get view="4" event="@pushed"/>
-    <get view="5" event="@pushed"/>
-    <get view="6" event="@pushed"/>
-    <get view="7" event="@pushed"/>
-    <get view="8" event="@pushed"/>
-    <get view="9" event="@pushed"/>
-    <set property="n">
-      var d = value.source.parent_id;
-        if (this.clear) {
-          this.clear = false;
-          this.m = this.n;
-          return parseInt(d, 10);
-        } else {
-          return parseInt(this.n.toString() + d, 10);
-        }
-    </set>
-  </watch>
-
-  <watch>
-    <get view="+" event="@pushed"/>
-    <get view="-" event="@pushed"/>
-    <get view="/" event="@pushed"/>
-    <get view="*" event="@pushed"/>
-    <set>
-      if (!isNaN(this.m)) {
-        var m = this.n;
-        this.n = OPS[this.op](this.m, this.n);
-        this.m = m;
+    <get view="period" event="@pushed"/>
+    <set property="input"><![CDATA[
+      if (this.$clear) {
+        this.$clear = false;
+        this.$m = this.$n;
+        return "0.";
+      } else if (this.$input.indexOf(".") < 0) {
+        return this.$input + ".";
       }
-      this.op = value.source.parent_id;
-      this.clear = true;
+    ]]></set>
+  </watch>
+
+  <watch>
+    <get view="zero" event="@pushed" e:d="0"/>
+    <get view="one" event="@pushed" e:d="1"/>
+    <get view="two" event="@pushed" e:d="2"/>
+    <get view="three" event="@pushed" e:d="3"/>
+    <get view="four" event="@pushed" e:d="4"/>
+    <get view="five" event="@pushed" e:d="5"/>
+    <get view="six" event="@pushed" e:d="6"/>
+    <get view="seven" event="@pushed" e:d="7"/>
+    <get view="eight" event="@pushed" e:d="8"/>
+    <get view="nine" event="@pushed" e:d="9"/>
+    <set property="input">
+      if (this.$clear) {
+        this.$clear = false;
+        this.$m = this.$n;
+        return get.$d;
+      } else {
+        return this.$input + get.$d;
+      }
     </set>
   </watch>
 
   <watch>
-    <get view="=" event="@pushed"/>
+    <get view="c" event="@pushed"/>
     <set>
-      if (!isNaN(this.m)) this.n = OPS[this.op](this.m, this.n);
-      this.op = "";
-      delete this.m;
-      this.clear = true;
+      this.$clear = false;
+      this.$op = "";
+      this.$input = "0";
+      delete this.$m;
     </set>
   </watch>
 
   <watch>
-    <get view="C" event="@pushed"/>
+    <get view="add" event="@pushed" e:op="+"/>
+    <get view="sub" event="@pushed" e:op="-"/>
+    <get view="div" event="@pushed" e:op="÷"/>
+    <get view="mult" event="@pushed" e:op="×"/>
     <set>
-      this.clear = false;
-      this.op = "";
-      this.n = 0;
-      delete this.m;
+      if (!isNaN(this.$m)) {
+        var m = this.$n;
+        this.$n = this.ops[this.$op](this.$m, this.$n);
+        this.$m = m;
+      }
+      this.$op = get.$op;
+      this.$clear = true;
+    </set>
+  </watch>
+
+  <watch>
+    <get view="eq1" event="@pushed"/>
+    <get view="eq2" event="@pushed"/>
+    <set>
+      if (!isNaN(this.$m)) this.$n = this.ops[this.$op](this.$m, this.$n);
+      this.$op = "";
+      delete this.$m;
+      this.$clear = true;
     </set>
   </watch>
 
@@ -147,19 +179,21 @@
     <get dom-event="keydown"/>
     <set><![CDATA[
       if (value.keyCode >= 48 && value.keyCode <= 57) {
-        this.views[value.keyCode - 48].controllers[""].push();
-      } else if (value.keyCode === 67) {
-        this.views.C.controllers[""].push();
-      } else if (value.keyCode === 68) {  // D for Divide
-        this.views["/"].controllers[""].push();
-      } else if (value.keyCode === 77) {  // M for Minus
-        this.views["-"].controllers[""].push();
-      } else if (value.keyCode === 80) {  // P for Plus
-        this.views["+"].controllers[""].push();
-      } else if (value.keyCode === 84) {  // T for Times
-        this.views["*"].controllers[""].push();
+        this.views[this.digits[value.keyCode - 48]].push();
+      } else if (value.keyCode === 67 || value.keyCode === 27) {
+        this.views.c.push();
       } else if (value.keyCode === 13) {
-        this.views["="].controllers[""].push();
+        this.views.eq2.push();
+      } else if (value.keyCode === 186) {
+        this.views.mult.push();
+      } else if (value.keyCode === 187) {
+        this.views.add.push();
+      } else if (value.keyCode === 189) {
+        this.views.sub.push();
+      } else if (value.keyCode === 190) {
+        this.views.period.push();
+      } else if (value.keyCode === 191) {
+        this.views.div.push();
       }
     ]]></set>
   </watch>

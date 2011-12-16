@@ -131,6 +131,13 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
     };
   })();
 
+  // Get a true or false value from a string; true if the string matches "true"
+  // in case-insensitive, whitespace-tolerating way
+  flexo.is_true = function(string)
+  {
+    return flexo.normalize(string).toLowerCase() === "true";
+  };
+
   // Normalize whitespace in a string
   flexo.normalize = function(string)
   {
@@ -143,6 +150,15 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
     if (typeof padding !== "string") padding = "0";
     var l = length + 1 - string.length;
     return l > 0 ? (Array(l).join(padding)) + string : string;
+  };
+
+  // Remove an item from an array
+  flexo.remove_from_array = function(array, item)
+  {
+    if (array) {
+      var index = array.indexOf(item);
+      if (index >= 0) return array.splice(item, 1);
+    }
   };
 
   // Simple wrapper for XMLHttpRequest GET request with no data; call back with
@@ -410,7 +426,9 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
     var p = svg.createSVGPoint();
     p.x = e.targetTouches ? e.targetTouches[0].clientX : e.clientX;
     p.y = e.targetTouches ? e.targetTouches[0].clientY : e.clientY;
-    return p.matrixTransform(svg.getScreenCTM().inverse());
+    try {
+      return p.matrixTransform(svg.getScreenCTM().inverse());
+    } catch(e) {}
   };
 
   // Find the closest <svg> ancestor for a given element
