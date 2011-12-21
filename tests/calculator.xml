@@ -86,14 +86,17 @@
   </local-script>
 
   <watch>
-    <get event="@rendered"/>
+    <get event="@ready"/>
     <set>
+      var calculator = this.node.view.querySelector(".calculator");
+      var row = this.node.ownerDocument.createElementNS(flexo.XHTML_NS, "div");
+      row.className = "row";
+      calculator.appendChild(row);
       var button = this.node.ownerDocument.createElement("component");
-      this.node.views.calculator.appendChild(button);
-      //button.setAttribute("href", "#button");
-      //button.setAttribute("id", "c");
+      row.appendChild(button);
+      button.setAttribute("href", "#button");
+      button.setAttribute("id", "c");
       button.set_text_content("C");
-      flexo.log(this.node.ownerDocument);
     </set>
   </watch>
 
