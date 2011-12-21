@@ -52,7 +52,7 @@ function link_elements(template)
 // TODO add parameters
 // TODO highlight with data-hl
 // TODO make links for href attributes; syntax highlighting?
-function get_examples(debug)
+function get_examples(runtime, debug)
 {
   debug = debug || 0;
   [].forEach.call(document.querySelectorAll(".include-src"), function(p) {
@@ -62,7 +62,9 @@ function get_examples(debug)
       var component = typeof p.dataset.component === "string" &&
         p.dataset.component;
       if (!component) {
-        var href = "/run.html?app={0}".fmt(p.dataset.src);
+        var path = flexo.uri_path(flexo.absolute_uri(document.baseURI,
+            p.dataset.src));
+        var href = "{0}?app={1}".fmt(runtime, path);
         if (debug) href += "&debug={0}".fmt(debug);
         p.insertBefore(flexo.html("a", { href: href }, "⚐ "), p.firstChild);
       }
@@ -82,15 +84,16 @@ function expand_example(e)
   var expanded = typeof p.dataset.expanded === "string" && p.dataset.expanded;
   if (expanded) {
     var req = new XMLHttpRequest();
-    req.open("GET", p.dataset.src);
+    var uri = flexo.absolute_uri(document.baseURI, p.dataset.src);
+    req.open("GET", uri);
     req.onreadystatechange = function() {
       if (req.readyState === 4) {
         if (req.status === 200 || req.status === 0) {
           p.appendChild(flexo.html("pre", {}, req.responseText));
         } else {
           flexo.add_class(p, "error");
-          p.textContent = "Could not get {0} application file {1} ({2})"
-            .fmt(suffix, p.dataset.src, req.status);
+          p.textContent = "Could not get application file {0} ({1})"
+            .fmt(uri, req.status);
         }
       }
     };
