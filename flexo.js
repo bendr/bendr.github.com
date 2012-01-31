@@ -12,6 +12,22 @@ String.prototype.fmt = function()
     });
 };
 
+// Wrap a string to fit with the given width
+String.prototype.wrap = function(width)
+{
+  var w = width + 1;
+  return this.trim().split(/\s+/).map(function(word, i) {
+      w -= (word.length + 1);
+      if (w < 0) {
+        w = width - word.length;
+        return (i === 0 ? "" : "\n") + word;
+      } else {
+        return (i === 0 ? "" : " ") + word;
+      }
+    }).join("");
+  return out;
+};
+
 
 // Bind the function f to the object x. Additional arguments can be provided to
 // specialize the bound function.
@@ -66,28 +82,62 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
   flexo.XML_NS = "http://www.w3.org/1999/xml";
   flexo.XMLNS_NS = "http://www.w3.org/2000/xmlns/";
 
-  // Solve a relative URI and return an absolute URI
-  flexo.absolute_uri = function(base_uri, uri)
+
+  // Return an absolute URI for the reference URI for a given base URI
+  flexo.absolute_uri = function(base, ref)
   {
-    if (!base_uri) base_uri = "";
-    // Start with a scheme: return as is
-    if (/^[a-zA-Z][a-zA-Z0-9+.-]*:\/+/.test(uri)) return uri;
-    base_uri = base_uri.split(/[#?]/)[0];
-    // Absolute path: resolve with current host
-    if (/^\//.test(uri)) {
-      return base_uri.match(/^[a-zA-Z][a-zA-Z0-9+.-]*:\/+[^\/]*/) + uri;
+    var r = flexo.split_uri(ref);
+    if (r.scheme) {
+      r.path = remove_dot_segments(r.path);
+    } else {
+      var b = flexo.split_uri(base);
+      r.scheme = b.scheme;
+      if (r.authority) {
+        r.path = remove_dot_segments(r.path);
+      } else {
+        r.authority = b.authority;
+        if (!r.path) {
+          r.path = b.path
+          if (!r.query) r.query = b.query;
+        } else {
+          if (r.path.substr(0, 1) === "/") {
+            r.path = remove_dot_segments(r.path);
+          } else {
+            r.path = b.authority && !b.path ? "/" + r.path :
+              remove_dot_segments(b.path.replace(/\/[^\/]*$/, "/") + r.path);
+          }
+        }
+      }
     }
-    // Relative path; split into path/fragment identifier
-    var abs = base_uri.replace(/#.*$/, "");
-    var p = uri.split("#");
-    if (p[0]) abs = abs.replace(/(\/?)[^\/]*$/, "$1" + p[0]);
-    var m;
-    while (m = /[^\/]+\/\.\.\//.exec(abs)) {
-      abs = abs.substr(0, m.index) + abs.substr(m.index + m[0].length);
+    return (r.scheme ? r.scheme + ":" : "") +
+      (r.authority ? "//" + r.authority : "") +
+      r.path +
+      (r.query ? "?" + r.query : "") +
+      (r.fragment ? "#" + r.fragment : "");
+  }
+
+  // Utility function for absolute_uri above
+  function remove_dot_segments(path)
+  {
+    for (var input = path, output = "", m; input;) {
+      if (m = input.match(/^\.\.?\//)) {
+        input = input.substr(m[0].length);
+      } else if (m = input.match(/^\/\.\/|\/\.$/)) {
+        input = "/" + input.substr(m[0].length);
+      } else if (m = input.match(/^\/\.\.\/|\/\.\.$/)) {
+        input = "/" + input.substr(m[0].length);
+        output = output.replace(/\/?[^\/]*$/, "");
+      } else if (input === "." || input === "..") {
+        input = "";
+      } else {
+        m = input.match(/^\/?[^\/]*/);
+        input = input.substr(m[0].length);
+        output += m[0];
+      }
     }
-    if (p[1]) abs += "#" + p[1];
-    return abs;
-  };
+    return output;
+  }
+
 
   // Identity function
   flexo.id = function(x) { return x; };
@@ -127,7 +177,7 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
   flexo.get_args = function(defaults, argstr)
   {
     if (!argstr) {
-      argstr =  typeof window === "object" &&
+      argstr = typeof window === "object" &&
         typeof window.location === "object" &&
         typeof window.location.search === "string" ?
         window.location.search.substring(1) : "";
@@ -135,7 +185,7 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
     var args = defaults || {};
     argstr.split("&").forEach(function(q) {
         var sep = q.indexOf("=");
-        args[q.substr(0, sep)] = unescape(q.substr(sep + 1));
+        args[q.substr(0, sep)] = decodeURIComponent(q.substr(sep + 1));
       });
     return args;
   };
@@ -178,6 +228,13 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
     return flexo.normalize(string).toLowerCase() === "true";
   };
 
+  // Listen to a Bender event
+  flexo.listen = function(target, type, listener)
+  {
+    if (!(target.hasOwnProperty(type))) target[type] = [];
+    target[type].push(listener);
+  };
+
   // Normalize whitespace in a string
   flexo.normalize = function(string)
   {
@@ -185,10 +242,34 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
       string.replace(/\s+/, " ").replace(/^ /, "").replace(/ $/, "") : "";
   };
 
+  // Can be called as notify(e), notify(source, type) or notify(source, type, e)
+  flexo.notify = function(source, type, e)
+  {
+    if (e) {
+      e.source = source;
+      e.type = type;
+    } else if (type) {
+      e = { source: source, type: type };
+    } else {
+      e = source;
+    }
+    if (e.type in e.source) {
+      e.source[e.type].forEach(function(listener) {
+          if (typeof listener.handleEvent === "function") {
+            listener.handleEvent.call(listener, e);
+          } else {
+            listener(e);
+          }
+        });
+    }
+  };
+
+
   // Pad a string to the given length
   flexo.pad = function(string, length, padding)
   {
     if (typeof padding !== "string") padding = "0";
+    if (typeof string !== "string") string = string.toString();
     var l = length + 1 - string.length;
     return l > 0 ? (Array(l).join(padding)) + string : string;
   };
@@ -200,6 +281,17 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
       var index = array.indexOf(item);
       if (index >= 0) return array.splice(item, 1);
     }
+  };
+
+  // Request an URI as an arraybuffer through XMLHttpRequest. The f callback is
+  // called with the response directly. TODO error handling
+  flexo.request_arraybuffer = function(uri, f)
+  {
+    var req = new XMLHttpRequest();
+    req.open("GET", uri, true);
+    req.responseType = "arraybuffer";
+    req.onload = function() { f(req.response); };
+    req.send("");
   };
 
   // Simple wrapper for XMLHttpRequest GET request with no data; call back with
@@ -221,11 +313,42 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
     req.send("");
   };
 
+  // Split an URI into an object with the five parts scheme, authority, path,
+  // query, and fragment (without the extra punctuation; i.e. query does not
+  // have a leading "?")
+  flexo.split_uri = function(uri)
+  {
+    var m = uri.match(/^(?:([a-zA-Z](?:[a-zA-Z0-9+.-]*)):(?:\/\/([^\/]*))?)?([^#?]*)(?:\?([^#]*))?(?:#(.*))?$/);
+    var u = {};
+    ["scheme", "authority", "path", "query", "fragment"].forEach(function(k, i) {
+        if (m && m[i + 1]) u[k] = m[i + 1];
+      });
+    return u;
+  }
+
+  flexo.sys_uuid = function(f)
+  {
+    var p = require("child_process").spawn("uuidgen");
+    var uuid = "";
+    p.stdout.on("data", function(chunk) { uuid += chunk.toString(); });
+    p.on("exit", function(code) {
+        uuid = uuid.toLowerCase().replace(/[^0-9a-f]/g, "");
+        f(uuid);
+      });
+  };
+
   // Convert a string with dashes (as used in XML attributes) to camel case (as
   // used for property names)
   flexo.undash = function(string)
   {
     return string.replace(/-(\w)/, function(_, w) { return w.toUpperCase(); });
+  };
+
+  // Stop listening
+  flexo.unlisten = function(target, type, listener)
+  {
+    var i = target[type].indexOf(listener);
+    if (i >= 0) target[type].splice(i, 1);
   };
 
   // Get the path from a URI
@@ -294,6 +417,14 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
   {
     return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
   };
+
+  flexo.times = function(n, f)
+  {
+    var array = new Array(n);
+    for (var i = 0; i < n; ++i) array[i] = f(i);
+    return array;
+  };
+
 
   // Convert a number to roman numerals (integer part only; n must be positive
   // or zero.) Now that's an important function to have in any framework.
@@ -394,6 +525,26 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
       y: p.y + document.body.scrollTop };
   };
 
+  // Shortcut for flexo.html: no namespace; text content is interpreted as
+  // innerHTML instead of textContent. Attributes are optional as well.
+  flexo.ez_html = function(name)
+  {
+    var elem = document.createElement(name);
+    var args = 1;
+    if (arguments.length > 1 && typeof arguments[1] === "object") {
+      for (a in arguments[1]) elem.setAttribute(a, arguments[1][a]);
+      args = 2;
+    }
+    [].slice.call(arguments, args).forEach(function(ch) {
+        if (typeof ch === "string") {
+          elem.innerHTML += ch;
+        } else {
+          elem.appendChild(ch);
+        }
+      });
+    return elem;
+  };
+
   // Test whether an element has the given class
   flexo.has_class = function(elem, c)
   {
@@ -407,15 +558,13 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
     return flexo.elem(null, name, attrs, contents);
   };
 
+  // Linear interpolation
+  flexo.lerp = function(from, to, ratio) { return from + (to - from) * ratio; };
+
   // Remove all children of an element
   flexo.remove_children = function(elem)
   {
-    var child = elem.firstElementChild;
-    while (child) {
-      var next = child.nextElementSibling;
-      elem.removeChild(child);
-      child = next;
-    }
+    while (elem.firstChild) elem.removeChild(elem.firstChild);
   };
 
   // requestAnimationFrame
@@ -444,6 +593,12 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
       elem.removeAttribute("class");
     }
     return removed;
+  };
+  // Safe removal of a node; do nothing if the node did not exist or had no
+  // parent
+  flexo.safe_remove = function(node)
+  {
+    if (node && node.parentNode) node.parentNode.removeChild(node);
   };
 
   // Add or remove the class c on elem according to the value of predicate p
@@ -484,6 +639,13 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
   {
     return elem.namespaceURI === flexo.SVG_NS &&
       elem.localName === "svg" ? elem : flexo.find_svg(elem.parentNode);
+  };
+
+  // True if rects ra and rb intersect
+  flexo.intersect_rects = function(ra, rb)
+  {
+    return ((ra.x + ra.width) >= rb.x) && (ra.x <= (rb.x + rb.width)) &&
+      ((ra.y + ra.height) >= rb.y) && (ra.y <= (rb.y + rb.height));
   };
 
   // Make an SVG element in the current document
@@ -532,11 +694,20 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
     return flexo.rgb_to_hex.apply(this, flexo.hsv_to_rgb(h, s, v));
   };
 
-  // Convert an RGB color (3 values) to a hex value
+  // Convert an RGB color (3 values in the 0..255 range) to a hex value
   flexo.rgb_to_hex = function(r, g, b)
   {
     return "#" + [].map.call(arguments,
       function(x) { return flexo.pad(x.toString(16), 2, "0"); }).join("");
+  };
+
+  // Convert an sRGB color (3 values in the 0..1 range) to a hex value
+  flexo.srgb_to_hex = function(r, g, b)
+  {
+    return "#" + [].map.call(arguments,
+      function(x) {
+        return flexo.pad(Math.floor(x * 255).toString(16), 2, "0");
+      }).join("");
   };
 
 
@@ -655,124 +826,6 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
           context.closePath();
         }
       });
-  };
-
-
-  // Basic handler for pointing, with a mouse or touch
-  flexo.point_handler =
-  {
-    watch: function(elem, p)
-    {
-      if (!p) {
-        p = elem;
-        elem.addEventListener("mouseout", this, false);
-      }
-      elem.addEventListener("mousedown", this, false);
-      p.addEventListener("mousemove", this, false);
-      p.addEventListener("mouseup", this, false);
-      elem.addEventListener("touchstart", this, false);
-      elem.addEventListener("touchmove", this, false);
-      elem.addEventListener("touchend", this, false);
-    },
-
-    unwatch: function(elem, p)
-    {
-      if (!p) {
-        p = elem;
-        elem.removeEventListener("mouseout", this, false);
-      }
-      elem.removeEventListener("mousedown", this, false);
-      p.removeEventListener("mousemove", this, false);
-      p.removeEventListener("mouseup", this, false);
-      elem.removeEventListener("touchstart", this, false);
-      elem.removeEventListener("touchmove", this, false);
-      elem.removeEventListener("touchend", this, false);
-    },
-
-    // Convenience method to create a new handler watching an element
-    new_handler_for: function(elem)
-    {
-      var h = flexo.create_object(this);
-      h.watch(elem);
-      return h;
-    },
-
-    handleEvent: function(e)
-    {
-      e.preventDefault();
-      if (e.type === "mousedown" || e.type === "touchstart") {
-        this.is_down = true;
-        this.down(e);
-      } else if (e.type === "mousemove" || e.type === "touchmove") {
-        this.move(e);
-      } else if (e.type === "mouseup" || e.type === "touchend") {
-        this.up(e);
-        this.is_down = false;
-      } else if (e.type === "mouseout" || e.type === "touchcancel") {
-        this.is_down = false;
-        this.out(e);
-      }
-    },
-
-    down: function(e) {},
-    up: function(e) {},
-    move: function(e) {},
-    out: function(e) {}
-
-  };
-
-  // Basic drag and drop handler
-  flexo.dnd_handler =
-  {
-    // Attach this handler to an element
-    watch: function(elem)
-    {
-      elem.addEventListener("dragenter", this, false);
-      elem.addEventListener("dragover", this, false);
-      elem.addEventListener("dragleave", this, false);
-      elem.addEventListener("drop", this, false);
-    },
-
-    // Detach this handler from an element
-    unwatch: function(elem)
-    {
-      elem.removeEventListener("dragenter", this, false);
-      elem.removeEventListener("dragover", this, false);
-      elem.removeEventListener("dragleave", this, false);
-      elem.removeEventListener("drop", this, false);
-    },
-
-    // Convenience method to create a new handler watching an element
-    new_handler_for: function(elem)
-    {
-      var h = flexo.create_object(this);
-      h.watch(elem);
-      return h;
-    },
-
-    // Handle the drag and drop events
-    handleEvent: function(e)
-    {
-      e.preventDefault();
-      if (e.type === "dragover") {
-        this.dragover(e);
-      } else if (e.type === "dragenter") {
-        flexo.add_class(e.target, "drag");
-        this.dragenter(e);
-      } else if (e.type === "dragleave") {
-        flexo.remove_class(e.target, "drag");
-        this.dragleave(e);
-      } else if (e.type === "drop") {
-        flexo.remove_class(e.target, "drag");
-        this.drop(e);
-      }
-    },
-
-    // Customize the behavior of the handler
-    dragover: function(e) {},
-    dragenter: function(e) {},
-    dragleave: function(e) {},
-    drop: function(e) {}
   };
 
 })(typeof exports === "object" ? exports : this.flexo = {});
