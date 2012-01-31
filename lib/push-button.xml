@@ -30,7 +30,7 @@
       flexo.add_class(self.views.b, "__down");
       setTimeout(function() {
           flexo.remove_class(self.views.b, "__down");
-          setTimeout(function() { bender.notify(self, "@pushed"); }, 0);
+          setTimeout(function() { flexo.notify(self, "@pushed"); }, 0);
         }, 100);
     };
   </script>
@@ -45,6 +45,7 @@
         this.tabindex = this.__tabindex;
         delete this.__tabindex;
       }
+      return value;
     </get>
   </watch>
 
@@ -64,7 +65,7 @@
       <get view="b" dom-event="mouseup" once="true">
         if (flexo.remove_class(this.views.b, "__down")) {
           setTimeout((function() {
-              bender.notify(this, "@pushed");
+              flexo.notify(this, "@pushed");
             }).bind(this), 0);
         }
       </get>
@@ -82,6 +83,7 @@
         if (value.keyCode === 13) {
           value.preventDefault();
           this.push();
+          return value;
         } else if (value.keyCode === 27) {
           value.preventDefault();
           this.views.b.blur();
@@ -91,7 +93,10 @@
   </watch>
 
   <watch>
-    <get property="class"/>
+    <get property="class">
+      flexo.log("Class ->", value);
+      return value;
+    </get>
     <set view="b" attr="class">
       return "bender-button {0}".fmt(value);
     </set>
