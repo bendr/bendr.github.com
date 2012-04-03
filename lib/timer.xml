@@ -1,5 +1,5 @@
 <component xmlns="http://bender.igel.co.jp" xmlns:f="http://bender.igel.co.jp/f"
-  xmlns:html="http://www.w3.org/1999/xhtml" id="timer" f:rate-ms="1000">
+  xmlns:b="http://bender.igel.co.jp/b" b:on="false" f:rate-ms="1000">
 
   <title>Timer</title>
 
@@ -8,26 +8,26 @@
     var timeout = null;
 
     // The timer has a running read-only property
-    prototype.init = function()
+    this._prototype.instantiated = function()
     {
       flexo.getter_setter(this, "running", function() { return !!timeout; });
     };
 
     // Start the timer; it will emit a @tick event at the interval given by
     // rate-ms (in ms.) Restart if it was running.
-    prototype.start = function()
+    this._prototype.start = function()
     {
       if (timeout) clearTimeout(timeout);
       var self = this;
       var tick = function() {
         flexo.notify(self, "@tick");
-        timeout = setTimeout(tick, self.$rateMs);
+        timeout = setTimeout(tick, self.properties["rate-ms"]);
       };
-      timeout = setTimeout(tick, self.$rateMs);
+      tick();
     };
 
     // Stop the timer. Noop if it was not running.
-    prototype.stop = function()
+    this._prototype.stop = function()
     {
       if (timeout) {
         clearTimeout(timeout);
@@ -40,7 +40,18 @@
   <watch>
     <get property="rate-ms">
       var v = parseFloat(value);
-      if (v > 0) return v;
+      if (v > 0) {
+        this.stop();
+        this.start();
+      } else {
+        this.properties["rate-ms"] = previous_value;
+      }
+    </get>
+  </watch>
+
+  <watch>
+    <get property="on">
+      if (!!value) this.start(); else this.stop();
     </get>
   </watch>
 

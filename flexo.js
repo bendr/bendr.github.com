@@ -12,6 +12,13 @@ String.prototype.fmt = function()
     });
 };
 
+String.prototype.format = function(params)
+{
+  return this.replace(/{([^\}]+)}/g, function(str, p) {
+      return params[p] === undefined ? "" : params[p];
+    });
+};
+
 // Wrap a string to fit with the given width
 String.prototype.wrap = function(width)
 {
@@ -81,6 +88,7 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
   flexo.XLINK_NS = "http://www.w3.org/1999/xlink";
   flexo.XML_NS = "http://www.w3.org/1999/xml";
   flexo.XMLNS_NS = "http://www.w3.org/2000/xmlns/";
+  flexo.HTML_NS = flexo.XHTML_NS;
 
 
   // Return an absolute URI for the reference URI for a given base URI
@@ -109,12 +117,8 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
         }
       }
     }
-    return (r.scheme ? r.scheme + ":" : "") +
-      (r.authority ? "//" + r.authority : "") +
-      r.path +
-      (r.query ? "?" + r.query : "") +
-      (r.fragment ? "#" + r.fragment : "");
-  }
+    return flexo.unsplit_uri(r);
+  };
 
   // Utility function for absolute_uri above
   function remove_dot_segments(path)
@@ -137,7 +141,6 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
     }
     return output;
   }
-
 
   // Identity function
   flexo.id = function(x) { return x; };
@@ -171,6 +174,40 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
       for (var a in arguments[i]) f_[a] = arguments[i][a];
     }
     return f_;
+  };
+
+  // Dump any value to a string with an optional maximum depth parameter
+  flexo.dump = function(value, max_depth)
+  {
+    var seen = [];
+    if (max_depth === undefined) max_depth = Infinity;
+    var dump = function(value, d)
+    {
+      if (d > max_depth) return "...";
+      if (typeof value === undefined) return "undefined";
+      if (typeof value === "number" || typeof value === "boolean") return value;
+      if (typeof value === "string") return "\"{0}\"".fmt(value);
+      if (typeof value === "function") return value.toString();
+      if (typeof value === "object") {
+        if (value === null) {
+          return "null";
+        } else if (seen.indexOf(value) >= 0) {
+          return "(circular reference)";
+        } else if (Array.isArray(value)) {
+          seen.push(value);
+          return "[{0}]"
+            .fmt(value.map(function(v) { return dump(v, d + 1); }).join(", "));
+        } else {
+          seen.push(value);
+          var pairs = [];
+          for (var i in value) {
+            pairs.push("{0}: {1}".fmt(i, dump(value[i], d + 1)));
+          }
+          return "{ {0} }".fmt(pairs.join(", "));
+        }
+      }
+    };
+    return dump(value, 0);
   };
 
   // Get args from an URL (can be overridden with a given string)
@@ -225,21 +262,23 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
   // in case-insensitive, whitespace-tolerating way
   flexo.is_true = function(string)
   {
-    return flexo.normalize(string).toLowerCase() === "true";
+    return string.trim().toLowerCase() === "true";
   };
 
-  // Listen to a Bender event
+  // Listen to a custom event
   flexo.listen = function(target, type, listener)
   {
     if (!(target.hasOwnProperty(type))) target[type] = [];
     target[type].push(listener);
   };
 
+  // Linear interpolation
+  flexo.lerp = function(from, to, ratio) { return from + (to - from) * ratio; };
+
   // Normalize whitespace in a string
   flexo.normalize = function(string)
   {
-    return string ?
-      string.replace(/\s+/, " ").replace(/^ /, "").replace(/ $/, "") : "";
+    return string ? string.replace(/\s+/, " ").trim() : "";
   };
 
   // Can be called as notify(e), notify(source, type) or notify(source, type, e)
@@ -254,7 +293,8 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
       e = source;
     }
     if (e.type in e.source) {
-      e.source[e.type].forEach(function(listener) {
+      var listeners = e.source[e.type].slice();
+      listeners.forEach(function(listener) {
           if (typeof listener.handleEvent === "function") {
             listener.handleEvent.call(listener, e);
           } else {
@@ -279,19 +319,24 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
   {
     if (array) {
       var index = array.indexOf(item);
-      if (index >= 0) return array.splice(item, 1);
+      if (index >= 0) return array.splice(index, 1)[0];
     }
   };
 
-  // Request an URI as an arraybuffer through XMLHttpRequest. The f callback is
-  // called with the response directly. TODO error handling
-  flexo.request_arraybuffer = function(uri, f)
+  // Make an XMLHttpRequest with params and a callback when done
+  flexo.ez_xhr = function(uri, params, f)
   {
+    if (f === undefined) {
+      f = params;
+      params = {};
+    }
+    if (!params.hasOwnProperty("method")) params.method = "GET";
+    if (!params.hasOwnProperty("data")) params.data = "";
     var req = new XMLHttpRequest();
-    req.open("GET", uri, true);
-    req.responseType = "arraybuffer";
-    req.onload = function() { f(req.response); };
-    req.send("");
+    req.open(params.method, uri);
+    if (params.responseType) req.responseType = params.responseType;
+    req.onload = function() { f(req); };
+    req.send(params.data);
   };
 
   // Simple wrapper for XMLHttpRequest GET request with no data; call back with
@@ -324,7 +369,17 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
         if (m && m[i + 1]) u[k] = m[i + 1];
       });
     return u;
-  }
+  };
+
+  // Rebuild an URI string from an object as split above
+  flexo.unsplit_uri = function(r)
+  {
+    return (r.scheme ? r.scheme + ":" : "") +
+      "//" + (r.authority ? r.authority : "") +
+      r.path +
+      (r.query ? "?" + r.query : "") +
+      (r.fragment ? "#" + r.fragment : "");
+  };
 
   flexo.sys_uuid = function(f)
   {
@@ -402,8 +457,47 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
     return min + Math.random() * (max - min);
   };
 
+  // times(n, f) = [0, ..., n].apply(f)
+  flexo.times = function(n, f)
+  {
+    var array = new Array(n);
+    for (var i = 0; i < n; ++i) array[i] = f(i);
+    return array;
+  };
+
 
   // Transforming values
+
+  // Asynchronous foldl
+  flexo.async_foldl = function(f, z, a, k)
+  {
+    var n = a.length;
+    return (function iter(i) {
+      return i < n ? f.get_thunk(function(v) {
+          z = v;
+          return iter.get_thunk(i + 1);
+        }, z, a[i], i, a) : k.get_thunk(z);
+    }).get_thunk(0);
+  };
+
+  // Asynchronous foreach
+  flexo.async_foreach = function(f, a, k)
+  {
+    var n = a.length;
+    var i = 0;
+    return (function iter() {
+      return i < n ? f.get_thunk(iter, a[i], i++, a) : k.get_thunk();
+    }).get_thunk();
+  };
+
+  // Asynchronous map
+  flexo.async_map = function(f, a, k)
+  {
+    return flexo.async_foldl.get_thunk(function(k_, m, x, i, a_) {
+        return f.get_thunk(function(v) { m[i] = v; return k_.get_thunk(m); },
+          x, i, a_);
+      }, [], a, k);
+  };
 
   // Return the value constrained between min and max.
   flexo.clamp = function(value, min, max)
@@ -412,17 +506,49 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
     return Math.max(Math.min(value, max), min);
   };
 
+  // Left linear fold
+  flexo.foldl = function(f, z, a)
+  {
+    for (var i = 0, n = a.length; i < n; ++i) z = f(z, a[i]);
+    return z;
+  };
+
+  // Right linear fold
+  flexo.foldr = function(f, z, a)
+  {
+    for (var i = a.length - 1; i >= 0; --i) z = f(a[i], z);
+    return z;
+  };
+
+  flexo.range = function(from, to, step)
+  {
+    if (step === undefined) step = 1;
+    if (to === undefined) {
+      to = from;
+      from = 0;
+    }
+    var r = [];
+    for (var i = from; i <= to; i += step) r.push(i);
+    return r;
+  };
+
   // Remap a value from a given range to another range (from Processing)
   flexo.remap = function(value, istart, istop, ostart, ostop)
   {
     return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
   };
 
-  flexo.times = function(n, f)
+  // Shuffle an array and return a new array
+  flexo.shuffle = function(a)
   {
-    var array = new Array(n);
-    for (var i = 0; i < n; ++i) array[i] = f(i);
-    return array;
+    var shuffled = typeof a === "string" ? a : a.slice(0);
+    for (var i = shuffled.length - 1; i > 0; --i) {
+      var j = flexo.random_int(0, i);
+      var x = shuffled[i];
+      shuffled[i] = shuffled[j];
+      shuffled[j] = x;
+    }
+    return shuffled;
   };
 
 
@@ -457,6 +583,12 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
     }
   };
 
+  flexo.yyyymmdd = function(date)
+  {
+    if (!date) date = new Date;
+    return "{0}{1}{2}".fmt(1900 + date.getYear(),
+        flexo.pad(1 + date.getMonth(), 2), flexo.pad(date.getDate(), 2));
+  };
 
   // DOM related functions
 
@@ -465,7 +597,7 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
   {
     var k = elem.getAttribute("class") || "";
     if (!flexo.has_class(elem, c)) {
-      elem.setAttribute("class", "{0}{1}{2}".fmt(k, k ? " " : "", c));
+      elem.className = "{0}{1}{2}".fmt(k, k ? " " : "", c);
     }
   };
 
@@ -495,7 +627,11 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
   {
     var elem = ns ? document.createElementNS(ns, name) :
       document.createElement(name);
-    for (attr in attrs) elem.setAttribute(attr, attrs[attr]);
+    for (attr in attrs) {
+      if (attrs.hasOwnProperty(attr) && attrs[attr] !== undefined) {
+        elem.setAttribute(attr, attrs[attr]);
+      }
+    }
     if (typeof contents === "string") {
       elem.textContent = contents;
     } else if (contents && contents.forEach) {
@@ -521,9 +657,54 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
   flexo.event_page_pos = function(e)
   {
     var p = flexo.event_client_pos(e);
-    return { x: p.x + document.body.scrollLeft,
-      y: p.y + document.body.scrollTop };
+    return { x: p.x + window.pageXOffset, y: p.y + window.pageYOffset };
   };
+
+  // Simpler way to create elements, giving ns id and class directly within the
+  // name of the element (e.g. svg:rect#background.test)
+  flexo.ez_elem = function(name)
+  {
+    var argc = 1;
+    var attrs = {};
+    if (typeof arguments[1] === "object" && !(arguments[1] instanceof Node)) {
+      attrs = arguments[1];
+      argc = 2;
+    }
+    var classes = name.split(".");
+    name = classes.shift();
+    if (classes.length > 0) {
+      attrs["class"] =
+        (attrs.hasOwnProperty("class") ? attrs["class"] + " " : "")
+        + classes.join(" ");
+    }
+    var m = name.match(/^(?:(\w+):)?([\w\-]+)(?:#(.+))?$/);
+    if (m) {
+      var ns = m[1] && flexo["{0}_NS".fmt(m[1].toUpperCase())];
+      var elem = ns ?
+        document.createElementNS(ns, m[2]) : document.createElement(m[2]);
+      if (m[3]) attrs.id = m[3];
+      for (a in attrs) {
+        if (attrs.hasOwnProperty(a) &&
+            attrs[a] !== undefined && attrs[a] !== null) {
+          var split = a.split(":");
+          ns = split[1] && flexo["{0}_NS".fmt(split[0].toUpperCase())];
+          if (ns) {
+            elem.setAttributeNS(ns, split[1], attrs[a]);
+          } else {
+            elem.setAttribute(a, attrs[a]);
+          }
+        }
+      }
+      [].slice.call(arguments, argc).forEach(function(ch) {
+          if (typeof ch === "string") {
+            elem.appendChild(document.createTextNode(ch));
+          } else if (ch instanceof Node) {
+            elem.appendChild(ch);
+          }
+        });
+      return elem;
+    }
+  }
 
   // Shortcut for flexo.html: no namespace; text content is interpreted as
   // innerHTML instead of textContent. Attributes are optional as well.
@@ -531,7 +712,8 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
   {
     var elem = document.createElement(name);
     var args = 1;
-    if (arguments.length > 1 && typeof arguments[1] === "object") {
+    if (arguments.length > 1 && typeof arguments[1] === "object" &&
+        !(arguments[1] instanceof Node)) {
       for (a in arguments[1]) elem.setAttribute(a, arguments[1][a]);
       args = 2;
     }
@@ -558,13 +740,23 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
     return flexo.elem(null, name, attrs, contents);
   };
 
-  // Linear interpolation
-  flexo.lerp = function(from, to, ratio) { return from + (to - from) * ratio; };
+  // Check whether a node is in a document
+  flexo.in_document = function(node)
+  {
+    return !!node &&
+      (node instanceof Document || flexo.in_document(node.parentNode));
+  };
 
   // Remove all children of an element
   flexo.remove_children = function(elem)
   {
     while (elem.firstChild) elem.removeChild(elem.firstChild);
+  };
+
+  // Root of a node: the furthest node up the tree.
+  flexo.root = function(node)
+  {
+    return node && node.parentNode ? flexo.root(node.parentNode) : node;
   };
 
   // requestAnimationFrame
@@ -588,12 +780,13 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
       .replace(new RegExp("\\s*{0}\\b".fmt(c)),
           function(str) { removed = str; return ""; });
     if (/\S/.test(k)) {
-      elem.setAttribute("class", k);
+      elem.className = k;
     } else {
-      elem.removeAttribute("class");
+      elem.className = "";
     }
     return removed;
   };
+
   // Safe removal of a node; do nothing if the node did not exist or had no
   // parent
   flexo.safe_remove = function(node)
@@ -625,7 +818,7 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
   // closest svg element by default)
   flexo.event_svg_point = function(e, svg)
   {
-    if (!svg) svg = flexo.find_svg(e);
+    if (!svg) svg = flexo.find_svg(e.target);
     var p = svg.createSVGPoint();
     p.x = e.targetTouches ? e.targetTouches[0].clientX : e.clientX;
     p.y = e.targetTouches ? e.targetTouches[0].clientY : e.clientY;
@@ -639,6 +832,22 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
   {
     return elem.namespaceURI === flexo.SVG_NS &&
       elem.localName === "svg" ? elem : flexo.find_svg(elem.parentNode);
+  };
+
+  // Get an attribute as a trait with a default value if not present
+  // The default default value is the empty string
+  flexo.get_trait = function(elem, attr, default_)
+  {
+    var a = elem.getAttribute(attr);
+    return a === null ? default_ || "" : a;
+  };
+
+  // Get an attribute as a float with a default value if not present
+  // The default default value is 0
+  flexo.get_float_trait = function(elem, attr, default_)
+  {
+    var a = parseFloat(elem.getAttribute(attr));
+    return isNaN(a) ? default_ || 0 : a;
   };
 
   // True if rects ra and rb intersect
@@ -662,8 +871,70 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
     return elem;
   };
 
+  flexo.svg_polygon_points = function(sides, radius, phase)
+  {
+    if (!phase) phase = 0;
+    var points = [];
+    for (var i = 0; i < sides; ++i) {
+      points.push(radius * Math.cos(phase));
+      points.push(-radius * Math.sin(phase));
+      phase += 2 * Math.PI / sides;
+    }
+    return points.join(" ");
+  };
+
+  // Create a regular polygon with the number of sides inscribed in a circle of
+  // the given radius, with an optional starting phase (use Math.PI / 2 to have
+  // it pointing up at all times)
+  flexo.svg_polygon = function(sides, radius, phase)
+  {
+    return flexo.svg("polygon",
+        { points: flexo.svg_polygon_points(sides, radius, phase) });
+  };
+
+  flexo.svg_star_points = function(sides, ro, ri, phase)
+  {
+    if (!phase) phase = 0;
+    sides *= 2;
+    var points = [];
+    for (var i = 0; i < sides; ++i) {
+      var r = i % 2 === 0 ? ro : ri;
+      points.push(r * Math.cos(phase));
+      points.push(-r * Math.sin(phase));
+      phase += 2 * Math.PI / sides;
+    }
+    return points.join(" ");
+  }
+
+  // Same as above but create a star with the given inner radius
+  flexo.svg_star = function(sides, ro, ri, phase)
+  {
+    return flexo.svg("polygon",
+        { points: flexo.svg_star_points(sides, ro, ri, phase) });
+  };
+
 
   // Color functions
+
+  // Yes, these are the colors from d3.js in case anybody asks
+  // https://github.com/mbostock/d3/wiki/Ordinal-Scales#wiki-category10
+  flexo.get_color_10 = function(n)
+  {
+    var colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
+      "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"];
+    if (!n) n = flexo.random_int(0, colors.length);
+    return colors[Math.abs(n % colors.length)];
+  };
+
+  flexo.get_color_20 = function(n)
+  {
+    var colors = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c",
+      "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b",
+      "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22",
+      "#dbdb8d", "#17becf", "#9edae5"];
+    if (!n) n = flexo.random_int(0, colors.length);
+    return colors[Math.abs(n % colors.length)];
+  };
 
   // Convert a color from hsv space (hue in radians, saturation and brightness
   // in the [0, 1] range) to RGB, returned as an array in the [0, 256[ range.
