@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>⚐ Dumber runtime w/ params</title>
+    <title>⚐ Bender runtime w/ params</title>
     <meta charset="UTF-8">
     <meta http-equiv="cache-control" content="no-cache">
     <style>
@@ -24,9 +24,10 @@
         watches = [];
         var component = context.querySelector("component");
         [].forEach.call(this.uses.app.component.attributes, function(attr) {
-            var type = attr.namespaceURI === bender.NS_E ? "e" :
+            var type = attr.namespaceURI === bender.NS_B ? "b" :
+              attr.namespaceURI === bender.NS_E ? "e" :
               attr.namespaceURI === bender.NS_F ? "f" :
-              attr.namespaceURI === bender.NS_B ? "b" : "";
+              attr.namespaceURI === bender.NS_J ? "j" : "";
             if (type) {
               var name = attr.localName;
               this.uses.params.add_param(type, name,
@@ -51,6 +52,10 @@
               context.$("use", { href: "params-bar.xml", id: "params" }),
               context.$("html:div.app",
               context.$("use", args))),
+            context.$("watch",
+              context.$get({ use: "params", event: "@refresh" }, function() {
+                  this.uses.app.component._refresh();
+                })),
             context.$("watch",
               context.$get({ use: "$self", event: "@rendered" }, load))));
         context.appendChild(context.$("use", { q: "component" }));

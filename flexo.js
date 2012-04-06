@@ -14,7 +14,7 @@ String.prototype.fmt = function()
 
 String.prototype.format = function(params)
 {
-  return this.replace(/{([^\}]+)}/g, function(str, p) {
+  return this.replace(/{(\w+)}/g, function(str, p) {
       return params[p] === undefined ? "" : params[p];
     });
 };
@@ -830,6 +830,7 @@ Function.prototype.get_thunk = function() { return [this, arguments]; };
   // Find the closest <svg> ancestor for a given element
   flexo.find_svg = function(elem)
   {
+    if (elem.correspondingElement) elem = elem.correspondingElement;
     return elem.namespaceURI === flexo.SVG_NS &&
       elem.localName === "svg" ? elem : flexo.find_svg(elem.parentNode);
   };
