@@ -6,6 +6,8 @@
   bender.NS_F = "http://bender.igel.co.jp/f";  // Float properties namespace
   bender.NS_J = "http://bender.igel.co.jp/j";  // JSON properties namespace
 
+  bender.VERSION = "0.5.1";
+
   //bender.die = true;
   bender.warn = function()
   {
@@ -203,6 +205,7 @@
     {
       this.component.ownerDocument._refreshed_instance(this);
       this.unrender();
+      this.component.__instance = this;
       if (flexo.root(this.use) !== this.use.ownerDocument) return;
       if (this.use.__placeholder) {
         this.target = this.use.__placeholder.parentNode;
@@ -217,20 +220,29 @@
           this.render_children(this.component._view, this.target,
               this.use.__placeholder);
         }
-        flexo.safe_remove(this.__placeholder);
+        flexo.safe_remove(this.use.__placeholder);
+        delete this.use.__placeholder;
         this.update_title();
         if (this.pending === 0) this.render_watches();
       }
     },
 
-    render_children: function(node, dest, ref)
+    // Render the child nodes of `node` (in the Bender tree) as children of
+    // `dest` (in the target tree) using `ref` as the reference child before
+    // which to add the nodes (`ref` points to a placeholder node that will be
+    // removed afterwards; this is so that loading and rendering can be done
+    // asynchronously.) `content`, if defined, is an object containing
+    // information about the closest <content> element ancestor in the Bender
+    // tree so that its attributes may be copied to destination nodes.
+    render_children: function(node, dest, ref, content)
     {
       for (var ch = node.firstChild; ch; ch = ch.nextSibling) {
         if (ch.nodeType === 1) {
           if (ch.namespaceURI === bender.NS) {
             if (ch.localName === "use") {
-              this.render_use(ch, dest, ref);
+              this.render_use(ch, dest, ref, content);
             } else if (ch.localName === "target") {
+              // `target` ignores ref/content
               if (ch._once) {
                 if (!ch._rendered) {
                   this.render_children(ch, ch._find_target(dest));
@@ -240,11 +252,23 @@
                 this.render_children(ch, ch._find_target(dest));
               }
             } else if (ch.localName === "content") {
-              this.render_children(this.use.childNodes.length > 0 ?
-                this.use : ch, dest, ref);
+              // Render content: record the top-level target for this content,
+              // the <content> node itself to fetch its attributes, the target
+              // instance (since we may switch instances to record ids inside
+              // this node) and the parent content (TODO we don't use this at
+              // the moment, but we should?)
+              content = { target: dest, node: ch, instance: this,
+                parent: content };
+              if (this.use.childNodes.length > 0) {
+                var component = component_of(this.use);
+                component.__instance.render_children(this.use, dest, ref,
+                    content);
+              } else {
+                this.render_children(ch, dest, ref, content);
+              }
             }
           } else {
-            this.render_foreign(ch, dest, ref);
+            this.render_foreign(ch, dest, ref, content);
           }
         } else if (ch.nodeType === 3 || ch.nodeType === 4) {
           var d = dest.ownerDocument.createTextNode(ch.textContent);
@@ -254,7 +278,9 @@
       }
     },
 
-    render_foreign: function(node, dest, ref)
+    // Render foreign nodes within a view; arguments are the same as
+    // render_children() above.
+    render_foreign: function(node, dest, ref, content)
     {
       var d = dest.ownerDocument.createElementNS(node.namespaceURI,
           node.localName);
@@ -269,6 +295,16 @@
             d.setAttribute(attr.localName, attr.value);
           }
         }, this);
+      if (content && dest === content.target) {
+        [].forEach.call(content.node.attributes, function(attr) {
+            if (attr.name === "id") return;
+            if (attr.name === "content-id") {
+              content.instance.views[attr.value.trim()] = d;
+            } else {
+              d.setAttribute(attr.name, attr.value);
+            }
+          });
+      }
       dest.insertBefore(d, ref);
       if (dest === this.target) {
         [].forEach.call(this.use.attributes, function(attr) {
@@ -285,6 +321,7 @@
       this.render_children(node, d);
     },
 
+    // Render a use node (TODO can we safely ignore `content`?)
     render_use: function(use, dest, ref)
     {
       use.__placeholder = placeholder(dest, ref, use);
@@ -347,6 +384,7 @@
       if (this.uses.$parent && this.uses.$parent.__pending_watches) {
         this.uses.$parent.render_watches();
       }
+      delete this.component.__instance;
     },
 
     unrender: function()
@@ -439,6 +477,43 @@
         }, this);
     },
 
+    // Utility function to create listener functions for get elements
+    make_listener: function(get, target)
+    {
+      var active = false;
+      var that = this;
+      return function(value, prev)
+      {
+        if (that.enabled && !active) {
+          active = true;
+          var watch = that.component_instance.watch;
+          that.component_instance.watch = that;
+          var prev_get = that.get;
+          that.get = get;
+          var prev_target = that.target;
+          that.target = target;
+          that.got((get._action || flexo.id).call(that.component_instance,
+              value, prev));
+          if (watch) {
+            that.component_instance.watch = watch;
+          } else {
+            delete that.component_instance.watch;
+          }
+          if (prev_get) {
+            that.get = prev_get;
+          } else {
+            delete that.get;
+          }
+          if (prev_target) {
+            that.target = prev_target;
+          } else {
+            delete that.target;
+          }
+          active = false;
+        }
+      };
+    },
+
     render_watch_instance: function()
     {
       this.gets = [];
@@ -446,14 +521,6 @@
           var active = false;
           var that = this;
           if (get._event) {
-            var listener = function(e) {
-              if (that.enabled && !active) {
-                active = true;
-                that.got((get._action || flexo.id).call(that.component_instance,
-                    e));
-                active = false;
-              }
-            };
             if (get._view) {
               // DOM event
               var target = this.component_instance.views[get._view];
@@ -461,6 +528,7 @@
                 bender.warn("render_watch_instance: No view for \"{0}\" in"
                   .fmt(get._view), get);
               } else {
+                var listener = this.make_listener(get, target);
                 target.addEventListener(get._event, listener, false);
                 this.ungets.push(function() {
                     target.removeEventListener(get._event, listener, false);
@@ -473,6 +541,7 @@
                 bender.warn("(render get/use) No use for \"{0}\" in"
                   .fmt(get._use), get);
               } else {
+                var listener = this.make_listener(get, target);
                 flexo.listen(target, get._event, listener);
                 this.ungets.push(function() {
                     flexo.unlisten(target, get._event, listener);
@@ -488,15 +557,7 @@
               bender.warn("(render get/property) No use for \"{0}\""
                   .fmt(get._property));
             } else {
-              var h = function(p, prev)
-              {
-                if (that.enabled && !active) {
-                  active = true;
-                  that.got((get._action || flexo.id)
-                      .call(that.component_instance, p, prev));
-                  active = false;
-                }
-              };
+              var h = this.make_listener(get, target);
               h._watch = this;
               target.watch_property(get._property, h);
               this.gets.push(function() { h(target.property(get._property)); });
@@ -751,6 +812,35 @@
           this._components[component._id] = component;
           this.ownerDocument._add_component(component);
         }
+      },
+    },
+
+    // The content element is a placeholder for contents to be added at
+    // instantiation time. When a component is instantiated with a <use>
+    // element, the contents of the <use> element are inserted in place of the
+    // <content> element. When the <use> element has no content, then the
+    // contents of the <content> element are used by default.
+    // Attributes of the <content> element are copied to its top-level element
+    // children (in most case, there would be only one element child, such as a
+    // <div> or <g> to avoid ambiguity), with the exception of `id` and
+    // `content-id`. `content-id` will be used as the id of the instantiated
+    // content.
+    // TODO use `id` to provide different named content slots for instantiation:
+    // <component>                    <use>
+    //   <view>                         <content ref="a">A</content>
+    //     <content id="a"/>   -->      <content ref="b">B</content>
+    //     <content id="b"/>          </use>
+    //   </view>
+    // </component>
+    content:
+    {
+      setAttribute: function(name, value)
+      {
+        Object.getPrototypeOf(this).setAttribute.call(this, name, value);
+        if (name === "content-id" || name === "id") {
+          this["_" + name.replace(/-i/, "I")] = value.trim();
+        }
+        this._refresh();
       },
     },
 
