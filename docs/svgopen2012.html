@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title> Bender: A Declarative, Dynamic Framework for Web Application User
+      Interfaces </title>
+    <meta charset="UTF-8">
+    <meta http-equiv="cache-control" content="no-cache">
+    <style>
+
+      body {
+        font-family: Univers, "Helvetica Neue", Helvetica, sans-serif;
+        background-color: #2d2d2d;
+        margin: 0;
+      }
+
+      ul {
+        list-style-type: none;
+        line-height: 150%;
+      }
+
+      li {
+        margin-bottom: 0.5em;
+      }
+
+      section {
+        -webkit-box-sizing: border-box;
+        background-color: white;
+        border-radius: 16px;
+        width: 1024px;
+        height: 768px;
+        overflow: auto;
+        font-size: 250%;
+        padding: 0 32px;
+        margin: 2em auto;
+      }
+
+      .sliding {
+        -webkit-transition: -webkit-transform 0.7s;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: normal;
+        color: #102040;
+      }
+
+      a {
+        color: #ff7f40;
+        text-decoration: none;
+      }
+
+      pre, code {
+        font-family: Menlo, monospace;
+      }
+
+      code {
+        font-size: 90%;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        font-size: 70%;
+      }
+
+      pre a {
+        color: inherit;
+      }
+
+     .faded { color: #aaa; }
+     .hl { background-color: #ff0; color: #102040; }
+     .small { font-size: 50%; }
+     .figure { text-align: center; }
+
+     footer {
+       width: 100%;
+       position: absolute;
+       text-align: center;
+       color: #888;
+       bottom: 16px;
+       -webkit-transition: opacity 0.25s;
+     }
+
+     .structure {
+       background-color: #7fff7f;
+     }
+
+     .layout {
+       background-color: #7fbfff;
+     }
+
+     .connection {
+       background-color: #ffbf7f;
+     }
+
+     .notes {
+       margin-top: -2em;
+       padding: 0 4em 0 2em;
+       font-size: 150%;
+       color: #fff;
+     }
+     
+    </style>
+  </head>
+  <body>
+
+    <div id="slides">
+
+      <section>
+        <h1>Bender</h1>
+        <h2>A Declarative, Dynamic Framework for Web Application User
+          Interfaces</h2>
+        <p>Julien Quint and Takanari Hayama</p>
+        <p><a href="http://www.igel.co.jp/">IGEL Co., Ltd.</a>, Tokyo</p>
+        <p><a href="http://svgopen.org/2012/">The Graphical Web 2012</a>,
+          Zürich, September 2012</p>
+      </section>
+
+      <div class="notes">
+        <ul>
+          <li>Note: Bender is a work in progress, and the examples linked
+          throughout this presentation work in recent versions of Firefox,
+          Chrome and Safari, but may not work in other browsers.</li>
+        </ul>
+      </div>
+
+      <section>
+        <h2>What is Bender?</h2>
+        <ul>
+          <li>An experimental, <strong>declarative</strong> Web application
+          authoring framework based on XML, Javascript and Web technologies
+          with a focus on GUIs</li>
+          <li>Shown at SVG Open 2011 in an earlier version</li>
+          <li>Open source (Apache License v2.0)</li>
+          <li>Repository: <a href="http://github.com/bendr/bender/">http://github.com/bendr/bender</a></li>
+          <li>Live examples: <a href="http://bender.igel.co.jp/index.html">http://bender.igel.co.jp/</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Why declarative?</h2>
+        <ul>
+          <li>Build on the idea of declarative languages like HTML, SVG and CSS
+          to describe not only the <strong>layout</strong> of an application,
+          but also its <strong>structure</strong> and its
+          <strong>logic</strong></li>
+          <li>Use XML for serialization of application
+          <strong>descriptions</strong></li>
+          <li>Easy to parse, transform, generate, combine</li>
+          <li>Human-readable and writable</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Building an application with Bender</h2>
+        <ul>
+          <li>Structure an application with <strong>components</strong></li>
+          <li>Layout components with existing languages such as HTML, SVG,
+          CSS</li>
+          <li>Connect events and properties of components with XML</li>
+          <li>Add behavior with Javascript</li>
+          <li>Modify the application <strong>dynamically</strong></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>A Bender application</h2>
+<pre>&lt;component xmlns=&quot;http://bender.igel.co.jp&quot;
+  xmlns:html=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+  &lt;title&gt;Welcome to Bender!&lt;/title&gt;
+  &lt;view&gt;
+    &lt;html:p&gt;Welcome to Bender!&lt;/html:p&gt;
+    &lt;html:p&gt;
+      &lt;use id=&quot;thanks-button&quot; href=&quot;../lib/button.xml&quot;&gt;
+        Thanks
+      &lt;/use&gt;
+    &lt;/html:p&gt;
+  &lt;/view&gt;
+  &lt;watch&gt;
+    &lt;get use=&quot;thanks-button&quot; event=&quot;@pushed&quot;&gt;
+      alert(&quot;You're welcome!&quot;);
+    &lt;/get&gt;
+  &lt;/watch&gt;
+&lt;/component&gt;</pre>
+      </section>
+
+      <section>
+        <h2>Structure</h2>
+<pre><span class="structure">&lt;component xmlns=&quot;http://bender.igel.co.jp&quot;
+  xmlns:html=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+  &lt;title&gt;Welcome to Bender!&lt;/title&gt;</span>
+  &lt;view&gt;
+    &lt;html:p&gt;Welcome to Bender!&lt;/html:p&gt;
+    &lt;html:p&gt;
+      &lt;use id=&quot;thanks-button&quot; href=&quot;../lib/button.xml&quot;&gt;
+        Thanks
+      &lt;/use&gt;
+    &lt;/html:p&gt;
+  &lt;/view&gt;
+  &lt;watch&gt;
+    &lt;get use=&quot;thanks-button&quot; event=&quot;@pushed&quot;&gt;
+      alert(&quot;You're welcome!&quot;);
+    &lt;/get&gt;
+  &lt;/watch&gt;
+<span class="structure">&lt;/component&gt;</span></pre>
+      </section>
+
+      <div class="notes">
+        <ul>
+          <li><code>component</code> is the element that contains a component
+          description.</li>
+          <li><code>title</code> is a metadata element.<li>
+        </ul>
+      </div>
+
+      <section>
+        <h2>Layout</h2>
+<pre><span class="structure">&lt;component xmlns=&quot;http://bender.igel.co.jp&quot;
+  xmlns:html=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+  &lt;title&gt;Welcome to Bender!&lt;/title&gt;</span>
+<span class="layout">  &lt;view&gt;
+    &lt;html:p&gt;Welcome to Bender!&lt;/html:p&gt;
+    &lt;html:p&gt;
+      &lt;use id=&quot;thanks-button&quot; href=&quot;../lib/button.xml&quot;&gt;
+        Thanks
+      &lt;/use&gt;
+    &lt;/html:p&gt;
+  &lt;/view&gt;</span>
+  &lt;watch&gt;
+    &lt;get use=&quot;thanks-button&quot; event=&quot;@pushed&quot;&gt;
+      alert(&quot;You're welcome!&quot;);
+    &lt;/get&gt;
+  &lt;/watch&gt;
+<span class="structure">&lt;/component&gt;</span></pre>
+      </section>
+
+      <div class="notes">
+        <ul>
+          <li><code>view</code> is the description of the graphical view for the
+          component. Its contents can be HTML, SVG, or any XML language that the
+          rendering application (<em>e.g.,</em> a Web browser) can render.</li>
+          <li><code>use</code> is a reference to a Bender component. Here, the
+          view for the <code>button.xml</code> component should be rendered
+          inside the parent <code>p</code> element.</li>
+        </ul>
+      </div>
+
+      <section>
+        <h2>Connections</h2>
+<pre><span class="structure">&lt;component xmlns=&quot;http://bender.igel.co.jp&quot;
+  xmlns:html=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+  &lt;title&gt;Welcome to Bender!&lt;/title&gt;</span>
+<span class="layout">  &lt;view&gt;
+    &lt;html:p&gt;Welcome to Bender!&lt;/html:p&gt;
+    &lt;html:p&gt;
+      &lt;use id=&quot;thanks-button&quot; href=&quot;../lib/button.xml&quot;&gt;
+        Thanks
+      &lt;/use&gt;
+    &lt;/html:p&gt;
+  &lt;/view&gt;</span>
+<span class="connection">  &lt;watch&gt;
+    &lt;get use=&quot;thanks-button&quot; event=&quot;@pushed&quot;&gt;
+      alert(&quot;You're welcome!&quot;);
+    &lt;/get&gt;
+  &lt;/watch&gt;</span>
+<span class="structure">&lt;/component&gt;</span></pre>
+      </section>
+
+      <div class="notes">
+        <ul>
+          <li><code>watch</code> and its content are explained below.</li>
+        </ul>
+      </div>
+
+      <section>
+        <h2>Components all the way down</h2>
+        <ul>
+          <li>This simple application used a <a href="https://github.com/bendr/bender/blob/master/lib/button.xml">button</a>, which is itself a Bender component</li>
+          <li>From a button, we can build a toolbar, a dialog...</li>
+          <li>Components may be just a view (similar to XBL or Web
+          Components)</li>
+          <li>Components may have no view (<em>e.g.</em>, <a href="https://github.com/bendr/bender/blob/master/lib/timer.xml">a timer</a>)</li>
+          <li>A Bender application itself is just a component, so applications
+          can be nested (see example later)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Connecting components</h2>
+        <ul>
+          <li>Components are backed by Javascript objects</li>
+          <li>Components can send and receive <strong>events</strong> similar
+          to DOM events (<em>e.g.</em> <code>pushed</code>,
+          <code>tick</code>)</li>
+          <li>Components can be parametrized by <strong>properties</strong>
+          which are Javascript values (<em>e.g.</em>, position, size, color,
+          &amp;c.)</li>
+          <li>Components set up <strong>watches</strong> to monitor events and
+          changes in properties</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Watches</h2>
+        <ul>
+          <li>Generalize the concept of event listeners</li>
+          <li>A <strong>watch</strong> element has <strong>get</strong> and
+          <strong>set</strong> child elements</li>
+          <li>A watch is <strong>activated</strong> when an event or a property
+          is matched by a child <strong>get</strong> element</li>
+          <li>Once activated, changes are performed by <strong>set</strong>
+          elements: properties get new values, Javascript code is executed,
+          &amp;c.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>An example watch</h2>
+        <pre><a href="http://bender.igel.co.jp/lib/run.html?href=../apps/arrows.xml"><span class="structure">&lt;component id="arrow"&gt;</span>
+<span class="layout">  &lt;view&gt;
+    &lt;svg:use id="u" xlink:href="#arrow"/&gt;
+  &lt;/view&gt;</span>
+<span class="connection">  &lt;<strong>watch</strong>&gt;
+    &lt;<strong>get</strong> property="color"/&gt;
+    &lt;<strong>set</strong> view="u" attr="fill"/&gt;
+    &lt;<strong>set</strong> view="u" attr="stroke"/&gt;
+  &lt;/watch&gt;</span>
+  ...
+<span class="structure">&lt;/component&gt;</span></a></pre>
+      </section>
+
+      <div class="notes">
+        <ul>
+          <li>Watch <a href="http://bender.igel.co.jp/lib/run.html?href=../apps/arrows.xml">the example</a> (move the mouse around)</li>
+          <li>Every arrow is an instance of the <code>arrow</code> component.
+          This <code>watch</code> element reacts to changes in the
+          <code>color</code> property and updates the <code>fill</code> and
+          <code>stroke</code> attributes of the SVG <code>use</code> element
+          used to render the arrow.</li>
+        </ul>
+      </div>
+
+      <section>
+        <h2>Dynamic tree modification</h2>
+        <ul>
+          <li>Since we have a DOM tree describing the running application, we can
+            add and remove elements in our tree to modify the application at
+            runtime just like HTML or SVG</li>
+          <li>For example, <a href="http://bender.igel.co.jp/lib/params.html?href=../apps/arrows.xml">arrows are
+            added and removed</a> when <strong>width</strong> and
+          <strong>height</strong> properties of the application change</li>
+        </ul>
+      </section>
+
+      <div class="notes">
+        <ul>
+          <li>Change the value in the boxes in the top bar to see changes.</li>
+        </ul>
+      </div>
+
+      <section>
+        <h2>More dynamic tree modification</h2>
+        <ul>
+          <li><a href="http://bender.igel.co.jp/lib/params.html?href=../apps/arrows.xml">Going back
+            to the previous example</a>, the parameters bar on top is
+          automatically generated from the properties of the application</li>
+          <li>Add number boxes for numerical properties, &amp;c.</li>
+        </ul>
+        <pre><span class="structure">&lt;app xmlns="http://bender.igel.co.jp"
+  xmlns:svg="http://www.w3.org/2000/svg"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:e="http://bender.igel.co.jp/e"
+  xmlns:f="http://bender.igel.co.jp/f"
+  <strong>f:width</strong>="16" <strong>f:height</strong>="12" <strong>f:size</strong>="20" <strong>e:color</strong>=""&gt;</span></pre>
+      </section>
+
+      <div class="notes">
+        <ul>
+          <li><code>app</code> is a synonym of <code>component</code>, and is
+          used for components that can stand on their own (but can still be used
+          inside other components), <em>i.e.</em>, applications.</li>
+          <li>The <code>http://bender.igel.co.jp/e</code> and
+          <code>http://bender.igel.co.jp/f</code> XML namespaces are used to
+          define property arguments with a type (here, strings and floats).</li>
+          <li>The <code>width</code>, <code>height</code>, <code>size</code> and
+          <code>color</code> properties were thus extracted from the XML
+          description of the component and the applicable inputs were
+          created.</li>
+        </ul>
+      </div>
+
+      <section>
+        <h2>Developing and debugging with dynamic tree modifications</h2>
+        <ul>
+          <li>We use an XML serialization but entire applications can be built
+            by scripting</li>
+          <li>Adding controls automatically for rapid development: <a href="http://bender.igel.co.jp/lib/params.html?href=../apps/ttfd.xml">setting clamp-y and duration properties</a></li>
+          <li>Exposing the <a
+            href="http://bender.igel.co.jp/lib/params.html?href=../apps/calculator.xml">inner workings</a> of an application</li>
+          <li>Work in progress: DOM inspector and editor</li>
+        </ul>
+      </section>
+
+      <div class="notes">
+        <ul>
+          <li>The DOM inspector and editor can be used to build and debug an
+          application from start to finish by adding and removing nodes to the
+          application tree, testing the tree while building it, and then
+          exporting the tree to XML.</li>
+        </ul>
+      </div>
+
+      <section>
+        <h2>Future Work</h2>
+        <ul>
+          <li>Specification still in flux</li>
+          <li>Improve implementation (especially with dynamic tree
+          modifications)</li>
+          <li>Improve the expressivity of the language</li>
+          <li>Build editing tools</li>
+        </ul>
+      </section>
+
+    </div>
+
+  </body>
+</html>
+
