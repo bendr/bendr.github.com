@@ -23,6 +23,7 @@
       }
 
       section {
+        position: relative;
         -webkit-box-sizing: border-box;
         background-color: white;
         border-radius: 16px;
@@ -98,6 +99,14 @@
        display: -webkit-box;
      }
 
+     .logo {
+       width: 144px;
+       height: 144px;
+       position: absolute;
+       top: 16px;
+       right: 16px;
+     }
+
     </style>
   </head>
   <body>
@@ -105,6 +114,40 @@
     <div id="slides">
 
       <section>
+      <!-- Dynamic SVG Logo -->
+      <svg viewBox="0 0 128 128" class="logo">
+        <defs>
+          <clipPath id="r">
+            <rect x="-64" y="-64" width="128" height="128" rx="8" ry="8"/>
+          </clipPath>
+        </defs>
+        <g transform="translate(64, 64)" stroke-width="16" stroke-linejoin="round" clip-path="url(#r)" fill="#f80" stroke="#f80">
+          <polygon>
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="90" to="0" dur="0.3s" additive="sum"/>
+          </polygon>
+          <g stroke="#fff" stroke-linecap="round" fill="none">
+            <line x1="-20" y1="-50" x2="-20" y2="0"/>
+            <circle r="20"/>
+            <animateTransform attributeName="transform" attributeType="XML" type="scale" from="0" to="1" dur="0.4s" fill="freeze"/>
+          </g>
+        </g>
+      <script><![CDATA[
+"use strict";
+
+function polygon_points (sides, radius, phase) {
+  var points = [];
+  for (var i = 0, th = 2 * Math.PI / sides; i < sides; ++i) {
+    points.push(radius * Math.cos(phase + i * th));
+    points.push(-radius * Math.sin(phase + i * th));
+  }
+  return points.join(" ");
+}
+
+var p = document.querySelector("polygon");
+p.setAttribute("points", polygon_points(7, 42, Math.random()));
+
+  ]]></script>
+      </svg>
         <h1>Bender</h1>
         <h2>A Declarative, Dynamic Framework for Web Application User
           Interfaces</h2>
@@ -117,7 +160,8 @@
         <ul>
           <li>Note: Bender is a work in progress, and the examples linked
           throughout this presentation work in recent versions of Firefox,
-          Chrome and Safari, but may not work in other browsers.</li>
+          Chrome and Safari, but may not work in other browsers. (Opera, Chrome
+          on Android, and Safari on iOS6 <em>should</em> be ok too.)</li>
         </ul>
       </div>
 
@@ -400,9 +444,10 @@
           <li><code>app</code> is a synonym of <code>component</code>, and is
           used for components that can stand on their own (but can still be used
           inside other components), <em>i.e.</em>, applications.</li>
-          <li>The <code>http://bender.igel.co.jp/e</code> and
+          <li><s>The <code>http://bender.igel.co.jp/e</code> and
           <code>http://bender.igel.co.jp/f</code> XML namespaces are used to
-          define property arguments with a type (here, strings and floats).</li>
+          define property arguments with a type (here, strings and floats).</s>
+          Property definition has changed; see below.</li>
           <li>The <code>width</code>, <code>height</code>, <code>size</code> and
           <code>color</code> properties were thus extracted from the XML
           description of the component and the applicable inputs were
@@ -536,6 +581,7 @@
       <section>
         <h2>Ideas for the future</h2>
         <ul>
+          <li>Replication of elements (similar to SMIL animation)</li>
           <li>Macros: create new elements for Bender</li>
           <li>Watch graph manipulation</li>
           <li>Inheritance: an instance can become a component</li>
