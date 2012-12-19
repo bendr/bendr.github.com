@@ -1,0 +1,13 @@
+<component xmlns="http://bender.igel.co.jp">
+  <view xmlns:html="http://www.w3.org/1999/xhtml">
+    <html:p>Welcome to Bender!</html:p>
+    <html:p>
+      <component id="thanks-button" href="button.xml">Thanks</component>
+    </html:p>
+  </view>
+  <watch>
+    <get instance="thanks-button" event="@pushed">
+      alert("You're welcome!");
+    </get>
+  </watch>
+</component>
