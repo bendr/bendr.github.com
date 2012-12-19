@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bender</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bender.css">
+    <link rel="stylesheet" href="reference.css">
+  </head>
+  <body>
+<div class="content">
+    <div class="tiles quater">
+      <div class="pink-bg" id="logo">
+        <a href="../../index.html"></a>
+      </div>
+      <div class="text green-bg">
+        <div>
+          <h2>Bender API Reference</h2>
+        </div>
+      </div>
+      <div class="text blue-bg">
+        <div >
+          <h2>Element</h2>
+          <ul class="inline-list">
+            <li><a href="">component</a></li>
+            <li><a href="">content</a></li>
+            <li><a href="">get</a></li>
+            <li><a href="">property</a></li>
+            <li><a href="">set</a></li>
+            <li><a href="">view</a></li>
+            <li><a href="">watch</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="text purple-bg">
+        <div>
+          <h2>Attribute</h2>
+          <ul class="inline-list">
+            <li>as</li>
+            <li>dom-event</li>
+            <li>event</li>
+            <li>href</li>
+            <li>id</li>
+            <li>instance</li>
+            <li>name</li>
+            <li>property</li>
+            <li>prototype</li>
+            <li>value</li>
+            <li>view</li>
+          </ul>
+        </div>
+      </div>
+      <div class="text gray-bg">
+        <div>
+          <p>Copyright © 2011, 2012, <a href="http://www.igel.co.jp">IGEL Co., Ltd.</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="description threefourth">
+      <div>
+        {{ content }}
+      </div>
+    </div>
+</div>
+
+    <script src="../../flexo.js"></script>
+    <script src="../../bender.js"></script>
+    <script>
+"use strict";
+
+var context = bender.create_context();
+context.$("component", { href: "../../demo/logo.xml", sides: "7", fgcolor: "#db7093",
+  bgcolor: "white" }).create_instance(document.querySelector("#logo a"));
+
+    </script>
+
+  </body>
+</html>
+
