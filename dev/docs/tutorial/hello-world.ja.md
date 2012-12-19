@@ -8,15 +8,21 @@ title: Bender チュートリアル
 
 表示にHTMLを使用した場合、"Hello world!"は以下の様に記述します:
 
-	<component xmlns="http://bender.igel.co.jp">
-	  <view xmlns:html="http://www.w3.org/1999/xhtml">
-	    <html:p>Hello, world!</html:p>
-	  </view>
-	</component>
+<blockquote class="code">
+</blockquote>
+<script src="../../flexo.js">
+</script>
+<script>
+flexo.ez_xhr("hello-world.xml", { responseType: "text" }, function (req) {
+  document.querySelector("blockquote").appendChild(flexo.$pre(req.response));
+});
+</script>
 
 上記のコードを記述し、ファイル名をhello.xmlとして保存します。
-
-
+  
+  
+  
+  
 チュートリアルの基本編では、作成したBenderアプリケーション
 を実行する際に、run.htmlを使用します。
 run.htmlはBenderが提供する基本的なBender runtimeです。

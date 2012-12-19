@@ -201,8 +201,16 @@ a {
   background-image:         linear-gradient(to bottom, #444, #000);
 }
 
-code {
+code, pre {
   font-family: Inconsolota, Consolas, Menlo, monospace;
+}
+
+pre {
+  margin: 0;
+}
+
+blockquote.code {
+  border: 0;
 }
 
 blockquote {
