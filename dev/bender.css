@@ -201,6 +201,10 @@ a {
   background-image:         linear-gradient(to bottom, #444, #000);
 }
 
+.mikan-bg {
+  background-color: #f8c226;
+}
+
 code, pre {
   font-family: Inconsolota, Consolas, Menlo, monospace;
 }

@@ -37,11 +37,8 @@
 "use strict";
 
 var context = bender.create_context();
-var logo_component = context.create_component({ href: "../../demo/logo.xml",
-  sides: "7", fgcolor: "#f8c226", bgcolor: "white" });
-var logo_instance = bender.create_instance({ reference: logo_component });
-context.add_instance(logo_instance, document.querySelector("#logo a"));
-
+context.$("component", { href: "../../demo/logo.xml", sides: "7", fgcolor: "#f8c226",
+  bgcolor: "white" }).create_instance(document.querySelector("#logo a"));
 
     </script>
 
