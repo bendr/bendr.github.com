@@ -1,8 +1,8 @@
 ---
-layout: tutorial.ja
+layout: tutorial
 title: Bender チュートリアル
 ---
-#Buttonを配置する。
+# Use external components
 
 -----
 
