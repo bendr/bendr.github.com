@@ -1,12 +1,114 @@
 ---
 layout: tutorial.ja
-title: Bender チュートリアル
+title: DOM eventとproperty
 ---
-#Canvasを配置する
+#DOM eventとpropertyを使う
 
 -----
+今回はCANVASを例に使用して、DOM eventとpropertyの使い方について説明します。
+
+CANVASはブラウザ上で図を描くために、HTML5で策定された仕様です。
+JavaScriptベースで図形の描画が可能になりました。
+
+HTML5におけるCANVASの使い方の詳細は別途調べてください。
+ここでは、CANVASの配置とマウスイベントによるフリーハンド描画の実装方法についてのみ触れたいと思います。
 
 
+componentのソースコードは以下の通りです。
 
+<blockquote class="code">
+</blockquote>
+<script src="../../flexo.js">
+</script>
+<script>
+flexo.ez_xhr("canvas_and_property/draw.xml", { responseType: "text"}, function (req) {
+  document.querySelector("blockquote").appendChild(flexo.$pre(req.response));
+});
+</script>
 
+順番にコードの説明をします。
+
+		<link rel="stylesheet" href="draw.css" />
+スタイルシートの読み込みを行います。
+記述方法は通常のlink要素と同じになります。
+複数のスタイルシートを読み込みたい場合は、下から順に読み込まれることに注意してください。(変わるかもしれない。)
+<br>
+<br>
+<br>
+
+		<property name="context" as="dynamic"
+		    value="this.views.$root.getContext('2d')" />
+		<property name="down" as="boolean" value="false" />
+
+この<code>property</code>要素は、componentが保持するプロパティを定義するための要素です。
+
+1つめの<code>property</code>は、<code>context</code>プロパティを定義しています。CANVASのDOMメソッド<code>getContext('2d')</code>によって取得した2Dコンテキストオブジェクトを、初期値として<code>value</code>に設定します。  
+2つめの<code>property</code>は、<code>down</code>プロパティを定義しています。
+このプロパティは、フリーハンド描画において、描画するか否かを判定するために使用します。画面読み込み時は描画しないため、初期値を<code>false</code>として<code>value</code>に設定します。
+<br>
+<br>
+<br>
+
+view要素には、HTMLの要素としてcanvasを定義します。widthとheightは表示するCANVASのサイズを指定します。
+<br>
+<br>
+<br>
+
+		<get view="$root" dom-event="mousedown" />
+		<set instance="$self" property="down">
+		  value.preventDefault();
+		  this.properties.context.beginPath();
+		  var p = flexo.event_offset_pos(value, this.views.$root);
+		  this.properties.context.moveTo(p.x, p.y);
+		  return true;
+		</set>
+
+マウスイベントに関する処理については、<code>mousedown</code>を例に説明します。
+
+get要素のviewで指定している$rootはview要素内に定義された一番最初の要素を指します。今回の場合はcanvasです。  
+dom-eventには、対象となる要素において処理したいDOMイベントを指定します。今回はmousedownを指定します。  
+これらによって、canvas上でマウスの左クリックが押された場合のイベントを取得することが出来ます。
+
+set要素は、returnで復帰した値を、指定したオブジェクト($self)のプロパティ(down)に、値を設定します。  
+mousedownイベントが発生した時点で行いたい処理をここで行うことも可能です。  
+処理をget要素内で行うか、set要素内で行うかの判断は、設定処理の有無を基準に考えることが出来ます。
+<br>
+<br>
+<br>
+
+今回のサンプルコードで使用しているDOM eventは、mousedown/mouseup/mousemoveの3つです。
+
+mousedownは、マウスダウンがあった場合に発生するイベントです。  
+mouseupは、マウスアップがあった場合に発生するイベントです。  
+mousemoveは、マウス移動があった場合に発生するイベントです。  
+
+それぞれのDOM eventに対して、watch要素による監視を行う必要があります。
+フリーハンド描画を行うにあたり、それぞれのイベント内の処理の概要は以下の通りです。
+
+mousedown時  
+・イベントのデフォルトの動作の停止(preventDefault())  
+・現在のパスのリセット(beginPath())  
+・マウスカーソル位置の調整(flexo.event_offset_pos())  
+・指定の地点で新規のサブパスを生成(moveTo())  
+・描画可否フラグON  
+
+mousemove時  
+・描画可否フラグONの場合  
+・マウスカーソル位置の調整(flexo.event_offset_pos())  
+・現在のパスに指定の地点を加え、直前の地点を直線で接続する(lineTo())  
+・現在のストローク・スタイルを使って、サブパスに線を引く(stroke())  
+・フラグをそのまま復帰する  
+・描画可否フラグOFFの場合  
+・フラグをそのまま復帰する  
+
+mouseup時  
+・描画可否フラグをOFFにする  
+
+また、draw.css内のコードは以下の通りです。  
+CANVASの位置とサイズが分かりやすいように、枠線を表示するようにしています。
+
+		CANVAS {
+		  border: solid 3px #473815;
+		  margin: 5px;
+		}
 
