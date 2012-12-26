@@ -58,3 +58,10 @@ a {
   color: #53b26b;
 }
 
+ul.item {
+  list-style-type: disc;
+  margin-left: 1em;
+}
+
+ul.item > li {
+}

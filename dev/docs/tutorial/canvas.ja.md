@@ -13,6 +13,7 @@ JavaScriptベースで図形の描画が可能になりました。
 HTML5におけるCANVASの使い方の詳細は別途調べてください。
 ここでは、CANVASの配置とマウスイベントによるフリーハンド描画の実装方法についてのみ触れたいと思います。
 
+## サンプルコード
 
 componentのソースコードは以下の通りです。
 
@@ -26,6 +27,18 @@ flexo.ez_xhr("canvas_and_property/draw.xml", { responseType: "text"}, function (
 });
 </script>
 
+## スタイルシート
+draw.css内のコードは以下の通りです。  
+CANVASの位置とサイズが分かりやすいように、枠線を表示するようにしています。
+
+		CANVAS {
+		  border: solid 3px black;
+		  margin: 5px;
+		}
+<br>
+<br>
+
+##ソースコードの説明
 順番にコードの説明をします。
 
 		<link rel="stylesheet" href="draw.css" />
@@ -76,7 +89,9 @@ mousedownイベントが発生した時点で行いたい処理をここで行�
 <br>
 <br>
 
-今回のサンプルコードで使用しているDOM eventは、mousedown/mouseup/mousemoveの3つです。
+##DOM evenについて
+
+今回のサンプルコードで使用しているDOM eventは、mousedown / mouseup / mousemoveの3つです。
 
 mousedownは、マウスダウンがあった場合に発生するイベントです。  
 mouseupは、マウスアップがあった場合に発生するイベントです。  
@@ -85,30 +100,40 @@ mousemoveは、マウス移動があった場合に発生するイベントで�
 それぞれのDOM eventに対して、watch要素による監視を行う必要があります。
 フリーハンド描画を行うにあたり、それぞれのイベント内の処理の概要は以下の通りです。
 
-mousedown時  
-・イベントのデフォルトの動作の停止(preventDefault())  
-・現在のパスのリセット(beginPath())  
-・マウスカーソル位置の調整(flexo.event_offset_pos())  
-・指定の地点で新規のサブパスを生成(moveTo())  
-・描画可否フラグON  
+<strong>mousedown</strong>
+<ul class="item">
+<li>イベントのデフォルトの動作の停止(preventDefault())</li>
+<li>現在のパスのリセット(beginPath())</li>
+<li>マウスカーソル位置の調整(flexo.event_offset_pos())</li>
+<li>指定の地点で新規のサブパスを生成(moveTo())</li>
+<li>描画可否フラグON</li>
+</ul>
 
-mousemove時  
-・描画可否フラグONの場合  
-・マウスカーソル位置の調整(flexo.event_offset_pos())  
-・現在のパスに指定の地点を加え、直前の地点を直線で接続する(lineTo())  
-・現在のストローク・スタイルを使って、サブパスに線を引く(stroke())  
-・フラグをそのまま復帰する  
-・描画可否フラグOFFの場合  
-・フラグをそのまま復帰する  
 
-mouseup時  
-・描画可否フラグをOFFにする  
+<strong>mousemove</strong>
+<ul class="item">
+<li>描画可否フラグONの場合</li>
+<li>マウスカーソル位置の調整(flexo.event_offset_pos())</li>
+<li>現在のパスに指定の地点を加え、直前の地点を直線で接続する(lineTo())</li>
+<li>現在のストローク・スタイルを使って、サブパスに線を引く(stroke())</li>
+<li>フラグをそのまま復帰する</li>
+<li>描画可否フラグOFFの場合</li>
+<li>フラグをそのまま復帰する</li>
+</ul>
 
-また、draw.css内のコードは以下の通りです。  
-CANVASの位置とサイズが分かりやすいように、枠線を表示するようにしています。
 
-		CANVAS {
-		  border: solid 3px #473815;
-		  margin: 5px;
-		}
+<strong>mouseup</strong>
+<ul class="item">
+<li>描画可否フラグをOFFにする</li>
+</ul>
+<br>
+<br>
+
+##実行
+サンプルのソースコードをdraw.xml、スタイルシートをdraw.cssとして保存します。  
+これまでと同様に、run.htmlを使用して、ブラウザ経由で実行します。  
+枠線で囲われた描画エリアが表示され、マウスを使って描画することが可能です。
+
+
+
 
