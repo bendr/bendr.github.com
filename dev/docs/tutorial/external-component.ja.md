@@ -28,6 +28,7 @@ flexo.ez_xhr("welcome.xml", { responseType: "text" }, function (req) {
 上記のソースコードをwelcome.xmlとして保存し、run.htmlを使って実行してみて下さい。
 ラベルとグレーのボタンが表示されたかと思います。
 ボタンをクリックしてみると、アラートが表示されるので、試してみて下さい。
+[実行例](../../run.html?href=docs/tutorial/welcome.xml)
 <br>
 <br>
 
