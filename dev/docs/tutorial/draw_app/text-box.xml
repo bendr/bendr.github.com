@@ -1,0 +1,17 @@
+<component xmlns="http://bender.igel.co.jp">
+
+  <property name="value" as="string" />
+
+  <view xmlns:html="http://www.w3.org/1999/xhtml">
+    <html:input aria-role="textbox" value="{value}" />
+  </view>
+
+  <watch>
+    <get view="$root" dom-event="change">
+      get.view.blur();
+      return get.view.value;
+    </get>
+    <set use="$self" property="value" />
+  </watch>
+</component>
+
