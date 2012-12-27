@@ -15,7 +15,7 @@ HTML5におけるCANVASの使い方の詳細は別途調べてください。
 
 ## サンプルコード
 
-componentのソースコードは以下の通りです。
+ソースコードは以下の通りです。
 
 <blockquote class="code">
 </blockquote>
@@ -53,7 +53,7 @@ CANVASの位置とサイズが分かりやすいように、枠線を表示す�
 		    value="this.views.$root.getContext('2d')" />
 		<property name="down" as="boolean" value="false" />
 
-この<code>property</code>要素は、componentが保持するプロパティを定義するための要素です。
+この<code>property</code>要素は、コンポーネントが保持するプロパティを定義するための要素です。
 
 1つめの<code>property</code>は、<code>context</code>プロパティを定義しています。CANVASのDOMメソッド<code>getContext('2d')</code>によって取得した2Dコンテキストオブジェクトを、初期値として<code>value</code>に設定します。  
 2つめの<code>property</code>は、<code>down</code>プロパティを定義しています。
