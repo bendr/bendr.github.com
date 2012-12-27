@@ -135,6 +135,6 @@ mousemoveは、マウス移動があった場合に発生するイベントで�
 枠線で囲われた描画エリアが表示され、マウスを使って描画することが可能です。  
 以下のリンクをクリックすることで、サンプルコードを実際に動かした場合の挙動が確認出来ます。
 
-[実行例](../../run.html?href=work/canvas_and_property/draw.xml)
+[実行例](../../run.html?href=docs/tutorial/canvas_and_property/draw.xml)
 
 
