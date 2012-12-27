@@ -18,18 +18,15 @@ flexo.ez_xhr("hello-world.xml", { responseType: "text" }, function (req) {
 });
 </script>
 
-上記のコードを記述し、ファイル名をhello.xmlとして保存します。
-  
-  
-  
-  
+上記のコードを記述し、ファイル名をhello-world.xmlとして保存します。
+
 チュートリアルの基本編では、作成したBenderアプリケーション
 を実行する際に、run.htmlを使用します。
 run.htmlはBenderが提供する基本的なBender runtimeです。
 
-	  http://[server_address]/bender/run.html?href=work/hello.xml
+	  http://[server_address]/bender/run.html?href=[work_directory]/hello.xml
 
-を、ブラウザから実行します。
+を、ブラウザから[実行](../../run.html?href=docs/tutorial/hello-world.xml)します。
 
 *href*にはrun.htmlからの相対パスでBenderアプリケーションを指定します。
 
@@ -40,6 +37,6 @@ run.htmlはBenderが提供する基本的なBender runtimeです。
 > チュートリアル内の説明時のpathはダウンロードしたBender
 > のルートからの相対pathで表記します。
 >
-> また、作成したBenderアプリケーションは、Benderのルート直下に
-> 任意に作成したworkディレクトリ配下に保存します。
+> また、作成するBenderアプリケーションは、任意のディレクトリ配下に作成する
+> ことが可能です。
 
