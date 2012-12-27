@@ -17,13 +17,13 @@ HTML5におけるCANVASの使い方の詳細は別途調べてください。
 
 ソースコードは以下の通りです。
 
-<blockquote class="code">
+<blockquote class="code" id="draw-xml">
 </blockquote>
 <script src="../../flexo.js">
 </script>
 <script>
 flexo.ez_xhr("canvas_and_property/draw.xml", { responseType: "text"}, function (req) {
-  document.querySelector("blockquote").appendChild(flexo.$pre(req.response));
+  document.querySelector("#draw-xml").appendChild(flexo.$pre(req.response));
 });
 </script>
 
@@ -31,12 +31,15 @@ flexo.ez_xhr("canvas_and_property/draw.xml", { responseType: "text"}, function (
 draw.css内のコードは以下の通りです。  
 CANVASの位置とサイズが分かりやすいように、枠線を表示するようにしています。
 
-		CANVAS {
-		  border: solid 3px black;
-		  margin: 5px;
-		}
-<br>
-<br>
+<blockquote class="code" id="draw-css">
+</blockquote>
+<script src="../../flexo.js">
+</script>
+<script>
+flexo.ez_xhr("canvas_and_property/draw.css", { responseType: "text"}, function (req) {
+  document.querySelector("#draw-css").appendChild(flexo.$pre(req.response));
+});
+</script>
 
 ##ソースコードの説明
 順番にコードの説明をします。

@@ -54,6 +54,10 @@ pre > code {
   font-weight: bold;
 }
 
+pre {
+  margin: 1em;
+}
+
 a {
   color: #2495b5;
 }
