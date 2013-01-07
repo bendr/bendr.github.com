@@ -54,12 +54,11 @@ flexo.ez_xhr("draw_app/text-box.xml", { responseType: "text"}, function (req) {
 });
 </script>
 
-
-
+入力ボックスを配置し、入力ボックス内に変更が発生した場合、valueプロパティに設定します。  
+このコンポーネントはdraw-view内で使用されます。
 
 
 <h2 id="draw-title">draw</h2>
-
 
 <blockquote class="code" id="draw">
 </blockquote>
@@ -71,12 +70,41 @@ flexo.ez_xhr("draw_app/draw.xml", { responseType: "text"}, function (req) {
 });
 </script>
 
-width / height / size / color / linestyleをpropertyとして追加しました。
-widthとheightは、canvasのサイズを上位コンポーネントから指定出来るようにするために追加しています。
-sizeは描画時の線の太さ、colorは描画時の線の色を指定するためのプロパティです。
-linstyleは変更になる可能性があるので、保留。
-width / height / sizeは数値を設定するため、型を指定するために、asに"number"を設定しています。
+<property name="context" as="dynamic"
+  value="this.views.$root.getContext('2d')" />
+<property name="width" as="number" />
+<property name="height" as="number" />
+<property name="down" as="boolean" value="false" />
+<property name="size" as="number" />
+<property name="color" />
+<property name="linestyle" value="round"/>
 
+width / height / size / color / linestyleをpropertyとして追加しました。  
+widthとheightは、canvasのサイズを上位コンポーネントから指定出来るようにするために追加しています。  
+sizeは描画時の線の太さ、colorは描画時の線の色を指定するためのプロパティです。  
+linstyleは変更になる可能性があるので、保留。  
+width / height / sizeは数値を設定するため、型を指定するために、asに"number"を設定しています。  
+
+追加したプロパティに対しても、watch要素を使って、監視処理を記載します。  
+
+		<watch>
+		  <get instance="$self" property="color">
+		    this.properties.context.strokeStyle = value;
+		  </get>
+		</watch>
+colorプロパティに変更があった場合、canvasのコンテキストが持つstrokeStyleにvalueを設定します。  
+valueは色コードを指定されます。
+
+		<watch>
+		 <get instance="$self" property="size">
+		  this.properties.context.lineWidth = value;
+		 </get>
+		</watch>
+sizeプロパティに変更があった場合、lineWidth(線幅)にvalueを設定します。  
+valueは数値が指定されます。
+
+
+mouseイベントに関する処理は特に変更ありませんが、モバイル端末向けにtouchイベントも取得出きるように、get要素(touchstart / touchmove / touchend)を追加しています。
 
 
 <h2 id="draw-view-title">draw-view</h2>
@@ -91,6 +119,25 @@ flexo.ez_xhr("draw_app/draw-view.xml", { responseType: "text"}, function (req) {
   document.querySelector("#draw-view").appendChild(flexo.$pre(req.response));
 });
 </script>
+
+プロパティはdraw-vewコンポーネント内で使用するcolorとsizeのみ定義します。
+
+viewでは、用意した外部コンポーネントを使用して、アプリケーションとしてのレイアウトを決定します。  
+タイトル、ラベル+入力ボックス(線色、線サイズ)、描画エリアを配置しています。
+それぞれhtml要素を使用しているため、基本的な記述方法はHTMLのソースコードを書く場合と同じになります。  
+
+このコンポーネントでは、入力ボックスに入力された値を描画コンポーネントに引き渡すための処理をしています。
+
+		<watch>
+		  <get instance="color" property="value" />
+		  <set instance="draw" property="color" />
+		</watch>
+instanceには、view内で読み込んだcomponentのidを指定します。つまり、get要素ではidがcolorであるコンポーネントのvalueプロパティを取得します。  
+そして、set要素ではget要素で取得した値をidがdrawのコンポートネントのcolorプロパティに受け渡します。  
+sizeに関しても同様に処理を追加しています。
+
+上記の通り、3つのコンポーネントを組み合わせることにより、描画アプリケーションを組み上げることが出来ます。  
+これ以外にも、コントロールパネル用のコンポーネントなどを別途作成し、自由自在にカスタマイズすることが可能になります。
 
 
 ##実行
