@@ -39,7 +39,7 @@ BenderはButton以外にも、いくつかのコントロールをコンポー�
 
 		<component id="thanks-button" href="button.xml">Thanks</component>
 
-このコードは、<code>button.xml</code>がButtonコンポーネントが定義されているXMLファイルです。
+<code>button.xml</code>はButtonコンポーネントが定義されているXMLファイルです。  
 <code>component</code>要素の<code>href</code>に外部コンポーネントのファイルを指定することで、ターゲットドキュメントに対して、コンポーネントを組み込みます。
 <br>
 <br>
@@ -57,7 +57,7 @@ BenderはButton以外にも、いくつかのコントロールをコンポー�
 サンプルコードでも使用している<code>get</code>要素は、<code>instance</code>で指定したインスタンスに対して、<code>event</code>で指定したイベントが発生した場合に行う処理を定義する事が出来ます。
 上記の例では、<code>thanks-button</code>（Button）で<code>@pushed</code>イベントが発生した場合、アラートを表示する様に指定しています。
 
-各要素およびイベント種別の詳細に関しては、<a href="../reference/reference.ja.html">APIリファレンス</a>を参照してくだださい。
+各要素およびイベント種別の詳細に関しては、<a href="../reference/reference.ja.html">APIリファレンス</a>を参照してください。
 
 
 
