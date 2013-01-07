@@ -6,11 +6,11 @@ title: Bender チュートリアル
 
 -----
 
-Hello World.のページで作成したコードも1つのコンポートネントです。
-Benderは小さいコンポートネントを組み合わせて、大きなアプリケーションを作成することが出来ます。
+Hello World.のページで作成したコードも1つのコンポーネントです。
+Benderは小さいコンポーネントを組み合わせて、大きなアプリケーションを作成することが出来ます。
 
-このページでは、別ファイルで作成したコンポートネントを使ってみるということをしたいと思います。
-今回は、Benderが用意しているButtonコンポートネントを使ってみることにします。
+このページでは、別ファイルで作成したコンポーネントを使ってみるということをしたいと思います。
+今回は、Benderが用意しているButtonコンポーネントを使ってみることにします。
 
 
 <blockquote class="code">
@@ -32,7 +32,7 @@ flexo.ez_xhr("welcome.xml", { responseType: "text" }, function (req) {
 <br>
 <br>
 
-BenderはButton以外にも、いくつかのコントロールをコンポートネントとして用意しています。
+BenderはButton以外にも、いくつかのコントロールをコンポーネントとして用意しています。
 ※ 将来的には、ライブラリとして、もっと快適に利用出来ることを目指しています。
 <br>
 <br>
@@ -40,7 +40,7 @@ BenderはButton以外にも、いくつかのコントロールをコンポー�
 		<component id="thanks-button" href="button.xml">Thanks</component>
 
 このコードは、<code>button.xml</code>がButtonコンポーネントが定義されているXMLファイルです。
-<code>component</code>要素の<code>href</code>に外部コンポートネントのファイルを指定することで、ターゲットドキュメントに対して、コンポートネントを組み込みます。
+<code>component</code>要素の<code>href</code>に外部コンポーネントのファイルを指定することで、ターゲットドキュメントに対して、コンポーネントを組み込みます。
 <br>
 <br>
 
