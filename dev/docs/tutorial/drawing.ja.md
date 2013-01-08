@@ -87,19 +87,19 @@ width / height / sizeは数値を設定するため、型を指定するため�
 
 追加したプロパティに対しても、watch要素を使って、監視処理を記載します。  
 
-		<watch>
-		  <get instance="$self" property="color">
-		    this.properties.context.strokeStyle = value;
-		  </get>
-		</watch>
+	<watch>
+	  <get instance="$self" property="color">
+	    this.properties.context.strokeStyle = value;
+	  </get>
+	</watch>
 colorプロパティに変更があった場合、canvasのコンテキストが持つstrokeStyleにvalueを設定します。  
 valueは色コードを指定されます。
 
-		<watch>
-		 <get instance="$self" property="size">
-		  this.properties.context.lineWidth = value;
-		 </get>
-		</watch>
+	<watch>
+	 <get instance="$self" property="size">
+	  this.properties.context.lineWidth = value;
+	 </get>
+	</watch>
 sizeプロパティに変更があった場合、lineWidth(線幅)にvalueを設定します。  
 valueは数値が指定されます。
 
@@ -128,10 +128,10 @@ viewでは、用意した外部コンポーネントを使用して、アプリ�
 
 このコンポーネントでは、入力ボックスに入力された値を描画コンポーネントに引き渡すための処理をしています。
 
-		<watch>
-		  <get instance="color" property="value" />
-		  <set instance="draw" property="color" />
-		</watch>
+	<watch>
+	  <get instance="color" property="value" />
+	  <set instance="draw" property="color" />
+	</watch>
 instanceには、view内で読み込んだcomponentのidを指定します。つまり、get要素ではidがcolorであるコンポーネントのvalueプロパティを取得します。  
 そして、set要素ではget要素で取得した値をidがdrawのコンポートネントのcolorプロパティに受け渡します。  
 sizeに関しても同様に処理を追加しています。

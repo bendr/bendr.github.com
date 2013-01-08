@@ -44,7 +44,7 @@ flexo.ez_xhr("canvas_and_property/draw.css", { responseType: "text"}, function (
 ##ソースコードの説明
 順番にコードの説明をします。
 
-		<link rel="stylesheet" href="draw.css" />
+	<link rel="stylesheet" href="draw.css" />
 スタイルシートの読み込みを行います。
 記述方法は通常のlink要素と同じになります。
 複数のスタイルシートを読み込みたい場合は、下から順に読み込まれることに注意してください。(変わるかもしれない。)
@@ -52,9 +52,9 @@ flexo.ez_xhr("canvas_and_property/draw.css", { responseType: "text"}, function (
 <br>
 <br>
 
-		<property name="context" as="dynamic"
-		    value="this.views.$root.getContext('2d')" />
-		<property name="down" as="boolean" value="false" />
+	<property name="context" as="dynamic"
+	    value="this.views.$root.getContext('2d')" />
+	<property name="down" as="boolean" value="false" />
 
 この<code>property</code>要素は、コンポーネントが保持するプロパティを定義するための要素です。
 
@@ -70,14 +70,14 @@ view要素には、HTMLの要素としてcanvasを定義します。widthとheig
 <br>
 <br>
 
-		<get view="$root" dom-event="mousedown" />
-		<set instance="$self" property="down">
-		  value.preventDefault();
-		  this.properties.context.beginPath();
-		  var p = flexo.event_offset_pos(value, this.views.$root);
-		  this.properties.context.moveTo(p.x, p.y);
-		  return true;
-		</set>
+	<get view="$root" dom-event="mousedown" />
+	<set instance="$self" property="down">
+	  value.preventDefault();
+	  this.properties.context.beginPath();
+	  var p = flexo.event_offset_pos(value, this.views.$root);
+	  this.properties.context.moveTo(p.x, p.y);
+	  return true;
+	</set>
 
 マウスイベントに関する処理については、<code>mousedown</code>を例に説明します。
 

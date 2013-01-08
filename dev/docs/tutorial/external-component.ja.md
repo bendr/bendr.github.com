@@ -37,7 +37,7 @@ BenderはButton以外にも、いくつかのコントロールをコンポー�
 <br>
 <br>
 
-		<component id="thanks-button" href="button.xml">Thanks</component>
+	<component id="thanks-button" href="button.xml">Thanks</component>
 
 button.xmlはButtonコンポーネントが定義されているXMLファイルです。
 component要素のhrefに外部コンポーネントのファイルを指定することで、ターゲットドキュメントに対して、コンポーネントを組み込みます。
@@ -52,7 +52,7 @@ watch要素は、get要素とset要素の子要素があります。
 <br>
 <br>
 
-		<get instance="thanks-button" event="@pushed">
+	<get instance="thanks-button" event="@pushed">
 
 サンプルコードでも使用しているget要素は、instanceで指定したインスタンスに対して、eventで指定したイベントが発生した場合に行う処理を定義する事が出来ます。
 上記の例では、thanks-button（Button）で@pushedイベントが発生した場合、アラートを表示する様に指定しています。
