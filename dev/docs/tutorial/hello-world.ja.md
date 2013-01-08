@@ -6,7 +6,7 @@ title: Bender チュートリアル
 
 -----
 
-表示にHTMLを使用した場合、"Hello world!"は以下の様に記述します:
+"Hello world!"を表示するには、以下の様にコードを記述します:
 
 <blockquote class="code">
 </blockquote>
@@ -18,19 +18,23 @@ flexo.ez_xhr("hello-world.xml", { responseType: "text" }, function (req) {
 });
 </script>
 
+HTMLを使用して表示するため、HTMLの要素には"html:"のようにネームスペースを明記する必要があります。  
+ネームスペースが明記されていないcomponentやviewはBender独自の要素です。  
+HTMLの他にSVGなども利用することが可能です。その場合はXMLNSでネームスペースを宣言することを忘れないでください。  
+
+※ Bender要素の詳細に関しては[API リファレンス](../reference/reference.ja.html)を参照してください。
+
 上記のコードを記述し、ファイル名をhello-world.xmlとして保存します。
 
 チュートリアルの基本編では、作成したBenderアプリケーション
 を実行する際に、run.htmlを使用します。
 run.htmlはBenderが提供する基本的なBender runtimeです。
 
-	  http://[server_address]/bender/run.html?href=[work_directory]/hello.xml
+	  http://[server_address]/bender/run.html?href=[work_directory]/hello-world.xml
 
 を、ブラウザから[実行](../../run.html?href=docs/tutorial/hello-world.xml)します。
 
 *href*にはrun.htmlからの相対パスでBenderアプリケーションを指定します。
-
-
 
 > __補足__
 >
