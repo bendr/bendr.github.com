@@ -60,7 +60,7 @@ flexo.ez_xhr("canvas_and_property/draw.css", { responseType: "text"}, function (
 
 1つめの<code>property</code>は、<code>context</code>プロパティを定義しています。CANVASのDOMメソッド<code>getContext('2d')</code>によって取得した2Dコンテキストオブジェクトを、初期値として<code>value</code>に設定します。  
 2つめの<code>property</code>は、<code>down</code>プロパティを定義しています。
-このプロパティは、フリーハンド描画において、描画するか否かを判定するために使用します。画面読み込み時は描画しないため、初期値を<code>false</code>として<code>value</code>に設定します。
+このプロパティは、フリーハンド描画において、描画するか否かを判定するために使用します。ユーザ操作がない間は描画しないため、初期値を<code>false</code>として<code>value</code>に設定します。
 <br>
 <br>
 <br>
@@ -85,7 +85,7 @@ get要素のviewで指定している$rootはview要素内に定義された一�
 dom-eventには、対象となる要素において処理したいDOMイベントを指定します。今回はmousedownを指定します。  
 これらによって、canvas上でマウスの左クリックが押された場合のイベントを取得することが出来ます。
 
-set要素は、returnで復帰した値を、指定したオブジェクト($self)のプロパティ(down)に、値を設定します。  
+set要素は、returnで値を復帰した場合、指定したオブジェクト($self)のプロパティ(down)に、その値を設定します。  
 mousedownイベントが発生した時点で行いたい処理をここで行うことも可能です。  
 処理をget要素内で行うか、set要素内で行うかの判断は、設定処理の有無を基準に考えることが出来ます。
 <br>
