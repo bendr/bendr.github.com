@@ -92,7 +92,7 @@ mousedownイベントが発生した時点で行いたい処理をここで行�
 <br>
 <br>
 
-##DOM evenについて
+##DOM eventについて
 
 今回のサンプルコードで使用しているDOM eventは、mousedown / mouseup / mousemoveの3つです。
 
