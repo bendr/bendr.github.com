@@ -11,7 +11,7 @@
       get.view.blur();
       return get.view.value;
     </get>
-    <set use="$self" property="value" />
+    <set instance="$self" property="value" />
   </watch>
 </component>
 
