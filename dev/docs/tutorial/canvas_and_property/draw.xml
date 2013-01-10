@@ -1,17 +1,17 @@
 <component xmlns="http://bender.igel.co.jp">
 
-  <link rel="stylesheet" href="draw.css" />
+  <link rel="stylesheet" href="draw.css"/>
 
   <property name="context" as="dynamic"
-    value="this.views.$root.getContext('2d')" />
-  <property name="down" as="boolean" value="false" />
+    value="this.views.$root.getContext('2d')"/>
+  <property name="down" as="boolean" value="false"/>
 
   <view xmlns:html="http://www.w3.org/1999/xhtml">
-    <html:canvas width="500" height="500" />
+    <html:canvas width="500" height="500"/>
   </view>
 
   <watch>
-    <get view="$root" dom-event="mousedown" />
+    <get view="$root" dom-event="mousedown"/>
     <set instance="$self" property="down">
       value.preventDefault();
       this.properties.context.beginPath();
@@ -22,22 +22,19 @@
   </watch>
 
   <watch>
-    <get view="$document" dom-event="mousemove"
-      when="this.properties.down" />
+    <get view="$document" dom-event="mousemove"/>
     <set instance="$self" property="down">
-      if (this.properties.down == true) {
+      if (this.properties.down === true) {
         var p = flexo.event_offset_pos(value, this.views.$root);
         this.properties.context.lineTo(p.x, p.y);
         this.properties.context.stroke();
       }
-      return this.properties.down;
     </set>
   </watch>
 
   <watch>
-    <get view="$document" dom-event="mouseup"
-      when="this._properties.down" />
-    <set instance="$self" property="down" value="false" />
+    <get view="$document" dom-event="mouseup"/>
+    <set instance="$self" property="down" value="false"/>
   </watch>
 
 </component>
