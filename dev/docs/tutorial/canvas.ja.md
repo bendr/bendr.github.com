@@ -56,11 +56,11 @@ flexo.ez_xhr("canvas_and_property/draw.css", { responseType: "text"}, function (
 	    value="this.views.$root.getContext('2d')" />
 	<property name="down" as="boolean" value="false" />
 
-この<code>property</code>要素は、コンポーネントが保持するプロパティを定義するための要素です。
+このproperty要素は、コンポーネントが保持するプロパティを定義するための要素です。
 
-1つめの<code>property</code>は、<code>context</code>プロパティを定義しています。CANVASのDOMメソッド<code>getContext('2d')</code>によって取得した2Dコンテキストオブジェクトを、初期値として<code>value</code>に設定します。  
-2つめの<code>property</code>は、<code>down</code>プロパティを定義しています。
-このプロパティは、フリーハンド描画において、描画するか否かを判定するために使用します。ユーザ操作がない間は描画しないため、初期値を<code>false</code>として<code>value</code>に設定します。
+1つめのpropertyは、contextプロパティを定義しています。CANVASのDOMメソッドgetContext('2d')によって取得した2Dコンテキストオブジェクトを、初期値としてvalueに設定します。  
+2つめのpropertyは、downプロパティを定義しています。
+このプロパティは、フリーハンド描画において、描画するか否かを判定するために使用します。ユーザ操作がない間は描画しないため、初期値をfalseとしてvalueに設定します。
 <br>
 <br>
 <br>
@@ -79,7 +79,7 @@ view要素には、HTMLの要素としてcanvasを定義します。widthとheig
 	  return true;
 	</set>
 
-マウスイベントに関する処理については、<code>mousedown</code>を例に説明します。
+マウスイベントに関する処理については、mousedownを例に説明します。
 
 get要素のviewで指定している$rootはview要素内に定義された一番最初の要素を指します。今回の場合はcanvasです。  
 dom-eventには、対象となる要素において処理したいDOMイベントを指定します。今回はmousedownを指定します。  
