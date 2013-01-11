@@ -5,6 +5,8 @@ title: DOM eventとproperty
 #DOM eventとpropertyを使う
 
 -----
+このチュートリアルで出来るアプリケーション : [フリーハンド描画（マウスイベントのみ）](../../run.html?href=docs/tutorial/canvas_and_property/draw.xml)
+
 今回はCANVASを例に使用して、DOM eventとpropertyの使い方について説明します。
 
 CANVASはブラウザ上で図を描くために、HTML5で策定された仕様です。
@@ -139,6 +141,5 @@ mousemoveは、マウス移動があった場合に発生するイベントで�
 枠線で囲われた描画エリアが表示され、マウスを使って描画することが可能です。  
 以下のリンクをクリックすることで、サンプルコードを実際に動かした場合の挙動が確認出来ます。
 
-[実行例](../../run.html?href=docs/tutorial/canvas_and_property/draw.xml)
 
 
