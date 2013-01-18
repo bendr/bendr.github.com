@@ -1,0 +1,110 @@
+<component xmlns="http://bender.igel.co.jp">
+
+  <property name="context" as="dynamic"
+    value="this.views.$root.getContext('2d')"/>
+  <property name="width" as="number"/>
+  <property name="height" as="number"/>
+  <property name="down" as="boolean" value="false"/>
+  <property name="size" as="number"/>
+  <property name="color"/>
+  <property name="linejoin" value="round"/>
+  <property name="linecap" value="round"/>
+  <property name="title"/>
+
+  <view xmlns:html="http://www.w3.org/1999/xhtml">
+    <html:canvas width="{width}" height="{height}"/>
+  </view>
+
+  <watch>
+    <get instance="$self" property="color">
+      this.properties.context.strokeStyle = value;
+    </get>
+  </watch>
+
+  <watch>
+    <get instance="$self" property="size">
+      this.properties.context.lineWidth = value;
+    </get>
+  </watch>
+
+  <watch>
+    <get instance="$self" property="linejoin">
+      this.properties.context.lineJoin = value;
+    </get>
+  </watch>
+
+  <watch>
+    <get instance="$self" property="linecap">
+      this.properties.context.lineCap = value;
+    </get>
+  </watch>
+
+  <watch>
+    <get instance="$self" event="@running"/>
+    <set>
+      this._clear = function () {
+        this.properties.context.clearRect(0, 0,
+          this.properties.context.canvas.width,
+          this.properties.context.canvas.height
+        );
+      };
+
+      this._save = function () {
+        var data = this.views.$root.toDataURL();
+        window.localStorage.setItem(this.properties.title, data);
+        alert("saved");
+      };
+
+      this._delete = function () {
+        this._clear();
+        window.localStorage.removeItem(this.properties.title);
+      };
+
+      this._load = function () {
+        var image = new Image();
+        image.src = window.localStorage.getItem(this.properties.title);
+        image.onload = function () {
+          this.properties.context.drawImage(image, 0, 0);
+        }.bind(this);
+      };
+
+      this.properties.context.lineJoin = "round";
+      this.properties.context.lineCap = "round";
+
+      this._load();
+    </set>
+  </watch>
+
+
+  <watch>
+    <get view="$root" dom-event="mousedown"/>
+    <get view="$root" dom-event="touchstart"/>
+    <set instance="$self" property="down">
+      value.preventDefault();
+      this.properties.context.beginPath();
+      var p = flexo.event_offset_pos(value, this.views.$root);
+      this.properties.context.moveTo(p.x, p.y);
+      return true;
+    </set>
+  </watch>
+
+  <watch>
+    <get view="$document" dom-event="mousemove"/>
+    <get view="$document" dom-event="touchmove"/>
+    <set>
+      if (this.properties.down === true) {
+        var p = flexo.event_offset_pos(value, this.views.$root);
+        this.properties.context.lineTo(p.x, p.y);
+        this.properties.context.stroke();
+      }
+    </set>
+  </watch>
+
+  <watch>
+    <get view="$document" dom-event="mouseup"/>
+    <get view="$document" dom-event="touchend"/>
+    <set instance="$self" property="down" value="false"/>
+  </watch>
+
+</component>
+
