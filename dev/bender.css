@@ -227,3 +227,22 @@ blockquote > p {
   margin: 0;
 }
 
+#to_top {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  min-width: 0;
+}
+
+.to_top_icon {
+  cursor: pointer;
+  font-size: 2em;
+  opacity: .2;
+}
+
+#to_top:hover, .to_top_icon:hover {
+  opacity: .8;
+}
+
+
