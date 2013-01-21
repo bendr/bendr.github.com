@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bender Manual</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bender.css">
+    <link rel="stylesheet" href="manual.css">
+  </head>
+  <body>
+    <div class="content">
+      <div class="tiles quater">
+        <div class="bluegreen-bg" id="logo">
+          <a href="../../index.html"></a>
+        </div>
+        <div class="text low-bg">
+          <div>
+            <h2>Index</h2>
+          </div>
+        </div>
+
+        <div class="text gray-bg">
+          <div>
+            <p>Copyright © 2011, 2012, <a href="http://www.igel.co.jp">IGEL Co., Ltd.</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="description threefourth">
+        <div>
+          {{ content }}
+        </div>
+      </div>
+    </div>
+
+    <script src="../../flexo.js"></script>
+    <script src="../../bender.js"></script>
+    <script>
+"use strict";
+
+var context = bender.create_context();
+context.$("component", { href: "../../demo/logo.xml", sides: "7", fgcolor: "#3d9995",
+  bgcolor: "white" }).create_instance(document.querySelector("#logo a"));
+
+    </script>
+
+  </body>
+</html>
+
