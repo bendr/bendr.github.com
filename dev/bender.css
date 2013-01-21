@@ -205,6 +205,15 @@ a {
   background-color: #f8c226;
 }
 
+.bluegreen-bg {
+  background-color: #3d9995;
+}
+
+.low-bg {
+  background-color: #793a57;
+  color: #fff;
+}
+
 code, pre {
   font-family: Inconsolota, Consolas, Menlo, monospace;
 }
