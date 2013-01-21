@@ -24,9 +24,11 @@
     <get view="$root" dom-event="mouseup"/>
     <get view="$root" dom-event="touchend"/>
     <set instance="$self" property="down">
-      setTimeout(function () {
-        flexo.notify(this, "@pushed");
-      }.bind(this), 0);
+      if (this.properties.down === true) {
+        setTimeout(function () {
+          flexo.notify(this, "@pushed");
+        }.bind(this), 0);
+      }
       return false;
     </set>
   </watch>
