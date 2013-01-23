@@ -1,0 +1,37 @@
+<component xmlns="http://bender.igel.co.jp">
+
+  <view xmlns:html="http://www.w3.org/1999/xhtml">
+    <html:div class="ui-button-bar">
+      <component id="file-button" icon="file" label="new" href="icon-button.xml"/>
+      <component id="save-button" icon="save" label="save" href="icon-button.xml"/>
+      <component id="trash-button" icon="trash" label="delete" href="icon-button.xml"/>
+      <component id="undo-button" icon="undo" label="load" href="icon-button.xml"/>
+    </html:div>
+</view>
+
+  <watch>
+    <get instance="file-button" event="@pushed">
+      this.parent.instances.draw._clear();
+    </get>
+  </watch>
+
+  <watch>
+    <get instance="save-button" event="@pushed">
+      this.parent.instances.draw._save();
+    </get>
+  </watch>
+
+  <watch>
+    <get instance="trash-button" event="@pushed">
+      this.parent.instances.draw._delete();
+    </get>
+  </watch>
+
+  <watch>
+    <get instance="undo-button" event="@pushed">
+      this.parent.instances.draw._load();
+    </get>
+  </watch>
+
+</component>
+

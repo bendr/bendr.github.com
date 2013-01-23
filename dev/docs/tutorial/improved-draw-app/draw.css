@@ -1,0 +1,102 @@
+* {
+  margin: 5px;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: Univers, "Helvetica Neue", Helvetica, sans-serif;
+  background-color: #e5ffe5;
+  background-image: -webkit-linear-gradient(top, #fff, #e5ffe5);
+  margin: 0;
+  padding: 0;
+}
+
+canvas {
+  border: solid 3px #473815;
+  margin: 5px;
+}
+
+.input_parameter {
+  margin: 20px;
+  padding: 0;
+  float: left;
+}
+
+.content {
+  clear: both;
+}
+
+/* ---- tile design ---- */
+div.mini-tiles {
+  font-size: 16px;
+  width: 40px;
+  height: 20px;
+  margin: 5px;
+  padding: 0;
+
+  border-radius: 5px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  vertical-align: bottom;
+  box-shadow: 0 0 10px #444;
+}
+div.tiles {
+  font-size: 16px;
+  width: 70px;
+  height: 70px;
+  margin: 15px 25px 10px 25px;
+  padding: 0;
+
+  border-radius: 5px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  vertical-align: bottom;
+  box-shadow: 0 0 10px #444;
+}
+
+/* ---- UI button ---- */
+.ui-button-bar {
+  display: -webkit-box;
+  display: -moz-box;
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+}
+
+.ui-icon-button {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  text-align: center;
+  padding: 0;
+  cursor: default;
+  -moz-box-flex: 1;
+  background: -webkit-linear-gradient(top, #fff 0%, #e5ffe5 100%);
+  background: -moz-linear-gradient(top, #fff 0%, #e5ffe5 100%);
+}
+
+.ui-icon-button [class^="icon-"] {
+  font-size: 200%;
+}
+
+.ui-icon-button .label {
+  font-size: 80%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ui-icon-button.ui--disabled {
+  color: #888;
+}
+
+.ui-icon-button.ui--down {
+  background: -webkit-linear-gradient(top, #fff 0%, #8eb28e 100%);
+  background: -moz-linear-gradient(top, #fff 0%, #8eb28e 100%);
+  color: black;
+}

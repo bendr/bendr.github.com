@@ -1,0 +1,23 @@
+<component xmlns="http://bender.igel.co.jp">
+
+  <property name="value" as="number" value="0"/>
+  <property name="min" as="number" value="0"/>
+  <property name="max" as="number" value="100"/>
+  <property name="step" as="number" value="1"/>
+
+  <view xmlns:html="http://www.w3.org/1999/xhtml">
+    <html:input type="range" class="ui-slider" id="slider"
+      min="{min}" max="{max}" step="{step}" value="{value}"/>
+      {value}
+  </view>
+
+  <watch>
+    <get view="$root" dom-event="change">
+      get.view.blur();
+      return get.view.value;
+    </get>
+    <set use="$self" property="value"/>
+  </watch>
+
+</component>
+

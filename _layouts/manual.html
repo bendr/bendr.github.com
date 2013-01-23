@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Bender 環境構築</title>
+    <title>Bender Manual</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../../bender.css">
-    <link rel="stylesheet" href="setup.css">
+    <link rel="stylesheet" href="manual.css">
     <link rel="stylesheet" href="docs/font-awesome.css">
   </head>
   <body>
@@ -12,12 +12,12 @@
 
     <div class="content">
       <div class="tiles quater">
-        <div class="mikan-bg" id="logo">
-          <a href="../../index.ja.html"></a>
+        <div class="bluegreen-bg" id="logo">
+          <a href="../../index.html"></a>
         </div>
-        <div class="text brown-bg">
+        <div class="text low-bg">
           <div>
-            <h2><a href="../tutorial/tutorial.ja.html">チュートリアル</a></h2>
+            <h2>Index</h2>
           </div>
         </div>
 
@@ -40,7 +40,7 @@
 "use strict";
 
 var context = bender.create_context();
-context.$("component", { href: "../../demo/logo.xml", sides: "7", fgcolor: "#f8c226",
+context.$("component", { href: "../../demo/logo.xml", sides: "7", fgcolor: "#3d9995",
   bgcolor: "white" }).create_instance(document.querySelector("#logo a"));
 
     </script>

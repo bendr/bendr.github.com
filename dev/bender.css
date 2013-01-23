@@ -205,6 +205,15 @@ a {
   background-color: #f8c226;
 }
 
+.bluegreen-bg {
+  background-color: #3d9995;
+}
+
+.low-bg {
+  background-color: #793a57;
+  color: #fff;
+}
+
 code, pre {
   font-family: Inconsolota, Consolas, Menlo, monospace;
 }
@@ -227,3 +236,43 @@ blockquote > p {
   margin: 0;
 }
 
+#to_top {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  min-width: 0;
+}
+
+.to_top_icon {
+  cursor: pointer;
+  font-size: 2em;
+  opacity: .2;
+}
+
+#to_top:hover, .to_top_icon:hover {
+  opacity: .8;
+}
+
+.under-dev {
+  border: solid 1px #404040;
+  border-radius: 0.2em;
+  background-color: #696969;
+  color: white;
+  width: 140px;
+  opacity: .8;
+
+  padding: 1px 5px 1px 5px;
+  margin: 3px;
+
+  font-size: 13px;
+  text-shadow: 2px 2px 2px black;
+  text-align: -webkit-center;
+  text-align:    -moz-center;
+  text-align:      -o-center;
+  text-align:         center;
+
+  position: absolute;
+  right: 0;
+  top: 0;
+}

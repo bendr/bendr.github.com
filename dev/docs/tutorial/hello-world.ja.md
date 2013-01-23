@@ -5,6 +5,8 @@ title: Bender チュートリアル
 #Hello World!を表示する
 
 -----
+このチュートリアルで出来るアプリケーション : [Hello Worldの表示](../../run.html?href=docs/tutorial/hello-world.xml)
+
 
 "Hello world!"を表示するには、以下の様にコードを記述します:
 
@@ -32,7 +34,7 @@ run.htmlはBenderが提供する基本的なBender runtimeです。
 
 	  http://[server_address]/bender/run.html?href=[work_directory]/hello-world.xml
 
-を、ブラウザから[実行](../../run.html?href=docs/tutorial/hello-world.xml)します。
+を、ブラウザから実行します。
 
 *href*にはrun.htmlからの相対パスでBenderアプリケーションを指定します。
 
