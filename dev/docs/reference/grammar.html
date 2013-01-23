@@ -22,8 +22,19 @@ h3 {
         </style>
 </head>
 <body>
-<header><h1>The Bender XML grammar and specification</h1></header><section><header><h2>Elements</h2></header><section><header><h3>The <code>component</code> element</h3></header><p class="desc">Define a Bender component.</p></section><section><header><h3>The <code>content</code> element</h3></header><p class="desc">Provide a location for custom rendering for derived
-        components.</p></section><section><header><h3>Foreign content</h3></header><p class="desc">Foreign content appearing in the view of a component.</p></section><section><header><h3>The <code>get</code> element</h3></header><p class="desc">Custom getter for a property.</p></section><section><header><h3>The <code>get</code> element</h3></header><p class="desc">Event or property being watched.</p></section>
+<header><h1>The Bender XML grammar and specification</h1></header><section><header><h2>Elements</h2></header><section id="component"><header><h3>The <code>component</code> element</h3></header><p class="desc">Define a Bender component.</p>
+<p>Attributes: <ul>
+<li>
+<a href="#delegate">delegate</a> (optional)</li>
+<li>
+<a href="#href-component">href</a> (optional)</li>
+<li>
+<a href="#id">id</a> (optional)</li>
+</ul></p></section><section id="content"><header><h3>The <code>content</code> element</h3></header><p class="desc">Provide a location for custom rendering for derived
+        components.</p>
+<p>Attributes: <ul></ul></p></section><section id="foreign-content"><header><h3>Foreign content</h3></header><p class="desc">Foreign content appearing in the view of a component.</p></section><section id="property-get"><header><h3>The <code>get</code> element</h3></header><p class="desc">Custom getter for a property.</p>
+<p>Attributes: <ul></ul></p></section><section id="watch-get"><header><h3>The <code>get</code> element</h3></header><p class="desc">Event or property being watched.</p>
+<p>Attributes: <ul></ul></p></section>
       
         
           
@@ -45,11 +56,46 @@ h3 {
       
         
       
-    <section><header><h3>The <code>link</code> element</h3></header><p class="desc">Associate external resources with the component.</p></section><section><header><h3>The <code>property</code> element</h3></header><p class="desc">Define a property of the component.</p></section><section><header><h3>The <code>set</code> element</h3></header><p class="desc">Custom setter for a property.</p></section><section><header><h3>The <code>set</code> element</h3></header><p class="desc">Action associated with a watch.</p></section>
+    <section id="link"><header><h3>The <code>link</code> element</h3></header><p class="desc">Associate external resources with the component.</p>
+<p>Attributes: <ul>
+<li><a href="#rel">rel</a></li>
+<li><a href="#href-link">href</a></li>
+</ul></p></section><section id="property"><header><h3>The <code>property</code> element</h3></header><p class="desc">Define a property of the component.</p>
+<p>Attributes: <ul>
+<li><a href="#name">name</a></li>
+<li>
+<a href="#as">as</a> (optional)</li>
+<li>
+<a href="#value">value</a> (optional)</li>
+</ul></p></section><section id="property-set"><header><h3>The <code>set</code> element</h3></header><p class="desc">Custom setter for a property.</p>
+<p>Attributes: <ul></ul></p></section><section id="watch-set"><header><h3>The <code>set</code> element</h3></header><p class="desc">Action associated with a watch.</p>
+<p>Attributes: <ul></ul></p></section>
       
       
         
       
-    <section><header><h3>The <code>view</code> element</h3></header><p class="desc">Describe the rendering of a component.</p></section><section><header><h3>The <code>watch</code> element</h3></header><p class="desc">Define a watch for the component.</p></section></section><section><header><h2>Attributes</h2></header><section><header><h3>The <code>as</code> attribute</h3></header><p class="desc">How to parse a property value.</p></section><section><header><h3>The <code>attr</code> attribute</h3></header><p class="desc">Attribute of a view element to be set.</p></section><section><header><h3>The <code>component</code> attribute</h3></header><p class="desc">Reference to a component.</p></section><section><header><h3>The <code>delegate</code> attribute</h3></header><p class="desc">Delegate object for a component.</p></section><section><header><h3>The <code>dom-event</code> attribute</h3></header><p class="desc">DOM event to watch.</p></section><section><header><h3>The <code>event</code> attribute</h3></header><p class="desc">Bender event to watch or to notify.</p></section><section><header><h3>The <code>href</code> attribute</h3></header><p class="desc">URI of the prototype component.</p></section><section><header><h3>The <code>href</code> attribute</h3></header><p class="desc">URI of a linked resource.</p></section><section><header><h3>The <code>id</code> attribute</h3></header><p class="desc">Unique identifier for an element.</p></section><section><header><h3>The <code>name</code> attribute</h3></header><p class="desc">Name of a property.</p></section><section><header><h3>The <code>property</code> attribute</h3></header><p class="desc">Reference a component’s property.</p></section><section><header><h3>The <code>rel</code> attribute</h3></header><p class="desc">Relationship of the linked resource with the component.</p></section><section><header><h3>The <code>view</code> attribute</h3></header><p class="desc">Reference an element in the view of the component.</p></section><section><header><h3>The <code>value</code> attribute</h3></header><p class="desc">Set a value.</p></section></section>
+    <section id="view"><header><h3>The <code>view</code> element</h3></header><p class="desc">Describe the rendering of a component.</p>
+<p>Attributes: <ul></ul></p></section><section id="watch"><header><h3>The <code>watch</code> element</h3></header><p class="desc">Define a watch for the component.</p>
+<p>Attributes: <ul></ul></p></section></section><section><header><h2>Attributes</h2></header><section id="as"><header><h3>The <code>as</code> attribute</h3></header><p class="desc">How to parse a property value.</p>
+<p>Attribute of: <ul><li><a href="#property">property</a></li></ul></p></section><section id="attr"><header><h3>The <code>attr</code> attribute</h3></header><p class="desc">Attribute of a view element to be set.</p>
+<p>Attribute of: <ul><li><a href="#watch-set-attr">watch-set-attr</a></li></ul></p></section><section id="component-ref"><header><h3>The <code>component</code> attribute</h3></header><p class="desc">Reference to a component.</p>
+<p>Attribute of: <ul><li><a href="#watch-get-set-bender-event">watch-get-set-bender-event</a></li></ul></p></section><section id="delegate"><header><h3>The <code>delegate</code> attribute</h3></header><p class="desc">Delegate object for a component.</p>
+<p>Attribute of: <ul><li><a href="#component">component</a></li></ul></p></section><section id="dom-event"><header><h3>The <code>dom-event</code> attribute</h3></header><p class="desc">DOM event to watch.</p>
+<p>Attribute of: <ul><li><a href="#watch-get-dom-event">watch-get-dom-event</a></li></ul></p></section><section id="event"><header><h3>The <code>event</code> attribute</h3></header><p class="desc">Bender event to watch or to notify.</p>
+<p>Attribute of: <ul><li><a href="#watch-get-set-bender-event">watch-get-set-bender-event</a></li></ul></p></section><section id="href-component"><header><h3>The <code>href</code> attribute</h3></header><p class="desc">URI of the prototype component.</p>
+<p>Attribute of: <ul><li><a href="#component">component</a></li></ul></p></section><section id="href-link"><header><h3>The <code>href</code> attribute</h3></header><p class="desc">URI of a linked resource.</p>
+<p>Attribute of: <ul><li><a href="#link">link</a></li></ul></p></section><section id="id"><header><h3>The <code>id</code> attribute</h3></header><p class="desc">Unique identifier for an element.</p>
+<p>Attribute of: <ul><li><a href="#component">component</a></li></ul></p></section><section id="name"><header><h3>The <code>name</code> attribute</h3></header><p class="desc">Name of a property.</p>
+<p>Attribute of: <ul><li><a href="#property">property</a></li></ul></p></section><section id="property-ref"><header><h3>The <code>property</code> attribute</h3></header><p class="desc">Reference a component’s property.</p>
+<p>Attribute of: <ul><li><a href="#watch-get-set-property">watch-get-set-property</a></li></ul></p></section><section id="rel"><header><h3>The <code>rel</code> attribute</h3></header><p class="desc">Relationship of the linked resource with the component.</p>
+<p>Attribute of: <ul><li><a href="#link">link</a></li></ul></p></section><section id="view-ref"><header><h3>The <code>view</code> attribute</h3></header><p class="desc">Reference an element in the view of the component.</p>
+<p>Attribute of: <ul>
+<li><a href="#watch-get-dom-event">watch-get-dom-event</a></li>
+<li><a href="#watch-set-attr">watch-set-attr</a></li>
+</ul></p></section><section id="value"><header><h3>The <code>value</code> attribute</h3></header><p class="desc">Set a value.</p>
+<p>Attribute of: <ul>
+<li><a href="#get-set-value">get-set-value</a></li>
+<li><a href="#property">property</a></li>
+</ul></p></section></section>
 </body>
 </html>
