@@ -1,0 +1,38 @@
+body {
+  font-family: Univers, "Helvetica Neue", Helvetica, sans-serif;
+  margin: 2em 4em;
+}
+
+code, pre, .keyword, .attr {
+  font-family: Inconsolata, Consolas, monospace;
+}
+
+a {
+  text-decoration: none;
+  color: #ff6a4d;
+}
+
+h1, h2, h3 {
+  font-weight: normal;
+  color: #0b486b;
+}
+
+.desc {
+  font-style: italic;
+}
+
+.spec {
+  margin: 0 2em;
+  padding: 0.5em 1em;
+  background-color: #f8f9f0;
+}
+
+.spec p {
+  margin: 0;
+}
+
+.spec ul {
+  list-style-type: none;
+  margin: 0.2em 0;
+  padding-left: 1em;
+}
