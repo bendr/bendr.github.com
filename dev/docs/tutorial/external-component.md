@@ -25,38 +25,38 @@ flexo.ez_xhr("welcome.xml", { responseType: "text" }, function (req) {
 </script>
 
 
-Execution manner is the same as the sample in previous section (Hello World).
+Execution manner is the same as the sample in the previous section (Hello World).
 Save the above code as "welcome.xml", and run with "run.html".
 A label "Welcome to Bender!" and grey button with string "Thanks" should be displayed.
 When click the button, alert dialog sould be diplayed.
 <br>
 <br>
 
-In addition to Button component, Bender provides some controls as components.
-We are planning to provide more library to use with Bender in the future.
+In addition to the Button component, Bender provides some controls as components.
+We are planning to provide more libraries to use with Bender in the future.
 <br>
 <br>
 
      <component id="thanks-button" href="button.xml">Thanks</component>
 
 In the above code, "button.xml" is an XML file which Button component is defined.
-By setting external component file to href of the component element, the component is set to the target document.
+By setting external component file to href of the component element, the component is set in the target document.
 <br>
 <br>
 
 In the sample code, "view" and "watch" elements are defined in the "component" element.  
-The "view" element, which was also used in the last tutorial, defines contents to display. It includes layout and content information of the document described in HTML or SVG.
+The "view" element, which was also used in the previous section, defines contents to display. It includes layout and content information of the document described in HTML or SVG.
 
 The "watch" element watches instances or objects which were defined in the "view" element.  
 The "watch" element has "get" and "set" element as child elements.  
-In this section, we describe about "get" element. For use of "set" element will be described in the following section.  
+In this section, we describe about "get" element. About the use of "set" element will be described in the following section.  
 <br>
 <br>
 
      <get instace="thanks-button" event="@pushed">
 
-The "get" element, which is used in our sample code, can define event handling process of instance specified by "instance" when event specified by "event" had occured.
-In the above sample, it is defined to display alert if @pushed event had occured in thanks-button(Button).
+The "get" element, which is used in our sample code, can define event handling process of instance specified by the "instance" when event specified by the "event" had occured.
+In the above sample, it is defined to display an alert dialog if @pushed event had occured in thanks-button(Button).
 
 For further information about each element and event type, please refer <a href="../reference/reference.html">API Reference</a>. 
 
