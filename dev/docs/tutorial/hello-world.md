@@ -5,9 +5,9 @@ title: Bender Tutorial
 #Display "Hello World!" with Bender Framwork.
 
 -----
-Application to be created be this tutorial : [Display "Hello World"](../../run.html?href=docs/tutorial/hello-world.xml)
+Application to be created by this tutorial : [Display "Hello World"](../../run.html?href=docs/tutorial/hello-world.xml)
 
-To display string  "Hello world!", code is written as follows:
+To show string, "Hello world!", actual code is as follows:
 
 
 <blockquote class="code">
@@ -20,17 +20,17 @@ flexo.ez_xhr("hello-world.xml", { responsType: "text" }, function (req) {
 });
 </script>
 
-Since it is rendered as HTML, namespace should be specified as "html:" in HTML element.
-Both component and view elements (namespace not specified) are Bender specific elements.
+Since it is rendered as HTML, namespace should be specified as "html:" for HTML elements.
+Both "component" and "view" elements (namespace not specified) are Bender specific elements.
 In addition to HTML, such as SVG can be used for rendering Bender component. In those cases, please do not forget to specify appropreate namespace with XMLNS.
 
 For more information about Bender element, please refer [API reference](../reference/reference.html).
 
-Write above code, and save as "hello-world.xml".
+Write above code, and save it as "hello-world.xml".
 
-In Basics section of this Tutorial, we use "run.html" for
+In Basics section of this tutorial, the "run.html" is used for
 running sample Bender application.
-"run.html" is the basic Bender runtime which Bender provides.
+The "run.html" is the basic Bender runtime which Bender provides.
 
     http://[server_address]/bender/run.html?href=[work_directory]/hello-world.xml
 
