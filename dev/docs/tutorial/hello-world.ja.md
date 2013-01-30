@@ -24,7 +24,7 @@ HTMLを使用して表示するため、HTMLの要素には"html:"のように�
 ネームスペースが明記されていないcomponentやviewはBender独自の要素です。  
 HTMLの他にSVGなども利用することが可能です。その場合はXMLNSでネームスペースを宣言することを忘れないでください。  
 
-※ Bender要素の詳細に関しては[API リファレンス](../reference/reference.ja.html)を参照してください。
+※ Bender要素の詳細に関しては[API Reference](../reference/reference.html)を参照してください。
 
 上記のコードを記述し、ファイル名をhello-world.xmlとして保存します。
 

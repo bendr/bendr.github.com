@@ -58,7 +58,7 @@ watch要素は、get要素とset要素の子要素があります。
 サンプルコードでも使用しているget要素は、instanceで指定したインスタンスに対して、eventで指定したイベントが発生した場合に行う処理を定義する事が出来ます。
 上記の例では、thanks-button（Button）で@pushedイベントが発生した場合、アラートを表示する様に指定しています。
 
-各要素およびイベント種別の詳細に関しては、<a href="../reference/reference.ja.html">APIリファレンス</a>を参照してください。
+各要素およびイベント種別の詳細に関しては、<a href="../reference/reference.html">API Reference</a>を参照してください。
 
 
 
