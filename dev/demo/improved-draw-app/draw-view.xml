@@ -1,6 +1,6 @@
 <component xmlns="http://bender.igel.co.jp">
 
-  <link rel="stylesheet" href="../../font-awesome.css"/>
+  <link rel="stylesheet" href="../font-awesome.css"/>
   <link rel="stylesheet" href="draw.css"/>
 
   <property name="color" value="black"/>
