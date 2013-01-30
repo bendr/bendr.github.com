@@ -12,7 +12,7 @@ a {
   color: #ff6a4d;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
   font-weight: normal;
   color: #0b486b;
 }
@@ -31,8 +31,14 @@ h1, h2, h3 {
   margin: 0;
 }
 
-.spec ul {
+.spec ul, nav ul {
   list-style-type: none;
   margin: 0.2em 0;
+  padding-left: 1em;
+}
+
+.future {
+  font-size: smaller;
+  border-left: thick solid #888;
   padding-left: 1em;
 }
