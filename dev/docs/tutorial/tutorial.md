@@ -19,4 +19,4 @@ Though basic Bender runtime("run.html") is used in the Basics section, Advanced 
 explanation about how to create developer original runtime.
 
 After you go through this tutorial, you will be able to develop Bender application.
-For further information, please refer [API Reference](../reference/reference.html) or [Manual](#).
+For further information, please refer [API Reference](../reference/reference.html).
