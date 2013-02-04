@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Bender; or, a declarative, dynamic framework<br>
-    for Web application graphical user interfaces</title>
+<title>Bender; or, a declarative, dynamic framework for Web application
+    graphical user interfaces</title>
 <link rel="stylesheet" href="../../bender.css">
 <link rel="stylesheet" href="reference.css">
 <link rel="stylesheet" href="../font-awesome.css">
@@ -16,6 +16,7 @@
 <div class="text blue-bg"><div>
 <h2>Elements</h2>
 <ul class="inline-list">
+<li><a href="#attribute">attribute</a></li>
 <li><a href="#component">component</a></li>
 <li><a href="#content">content</a></li>
 <li><a href="#foreign-view-content"><em>foreign view content</em></a></li>
@@ -25,6 +26,7 @@
 <li><a href="#property">property</a></li>
 <li><a href="#set">set</a></li>
 <li><a href="#setter">setter</a></li>
+<li><a href="#text">text</a></li>
 <li><a href="#view">view</a></li>
 <li><a href="#watch">watch</a></li>
 </ul>
@@ -41,69 +43,75 @@
 <li><a href="#href-component">href</a></li>
 <li><a href="#href-link">href</a></li>
 <li><a href="#id">id</a></li>
-<li><a href="#name">name</a></li>
+<li><a href="#attribute-name">name</a></li>
+<li><a href="#property-name">name</a></li>
+<li><a href="#ns">ns</a></li>
 <li><a href="#property-ref">property</a></li>
 <li><a href="#rel">rel</a></li>
 <li><a href="#view-ref">view</a></li>
 <li><a href="#value">value</a></li>
 </ul>
 </div></div>
+<div class="text peach-bg"><div><h2><a href="bender.rng">Relax NG grammar</a></h2></div></div>
 <div class="text gray-bg"><div><p>Copyright © 2011-2013, <a href="http://www.igel.co.jp">IGEL
               Co., Ltd.</a></p></div></div>
 </div>
 <div class="description threefourth"><div>
-<header><hgroup><h1>Bender; or, a declarative, dynamic framework<br>
-    for Web application graphical user interfaces</h1>
+<header><hgroup><h1>Bender; or, a declarative, dynamic framework for Web application
+    graphical user interfaces</h1>
 <h2>XML grammar and Javascript API specification</h2></hgroup><p class="creator">Julien Quint, <a href="http://igel.co.jp/">IGEL Co.,
       Ltd.</a></p>
-<p class="date">Version 0.8, 30 January 2013</p></header><nav id="toc"><h2>Table of contents</h2>
+<p class="date">Version 0.8, 4 February 2013</p></header><nav id="toc"><h2>Table of contents</h2>
 <ul>
-<li><a href="#idp313280">1 Introduction</a></li>
+<li><a href="#idp216000">1 Introduction</a></li>
 <li>
-<a href="#idp320512">2 Bender runtimes</a><ul>
-<li><a href="#idp323776">2.1 Reference runtime usage</a></li>
-<li><a href="#idp324640">2.2 The reference runtime API</a></li>
-<li><a href="#idp325440">2.3 Custom runtimes</a></li>
+<a href="#idp223248">2 Bender runtimes</a><ul>
+<li><a href="#idp226512">2.1 Reference runtime usage</a></li>
+<li><a href="#idp227376">2.2 The reference runtime API</a></li>
+<li><a href="#idp228176">2.3 Custom runtimes</a></li>
 </ul>
 </li>
 <li>
-<a href="#idp326480">3 Document structure</a><ul>
-<li><a href="#idp328288">3.1 The Bender namespace URI</a></li>
-<li><a href="#idp331376">3.2 Document element</a></li>
-<li><a href="#idp333376">3.3 Terminology</a></li>
+<a href="#idp229216">3 Document structure</a><ul>
+<li><a href="#idp231024">3.1 The Bender namespace URI</a></li>
+<li><a href="#idp234352">3.2 Document element</a></li>
+<li><a href="#idp236352">3.3 Relax NG grammar and terminology</a></li>
+<li><a href="#idp250528">3.4 Javascript API</a></li>
 </ul>
 </li>
 <li>
-<a href="#idp343472">4 Elements</a><ul>
+<a href="#idp252720">4 Elements</a><ul>
+<li><a href="#attribute">4.1 The <code>attribute</code> element</a></li>
 <li>
-<a href="#component">4.1 The <code>component</code> element</a><ul>
-<li><a href="#idp359648">4.1.1 The component as a container</a></li>
-<li><a href="#idp365360">4.1.2 Component prototype and inheritance</a></li>
-<li><a href="#idp370112">4.1.3 Component view and rendering</a></li>
-<li><a href="#idp377600">4.1.4 Component properties, watches and bindings</a></li>
-<li><a href="#idp393984">4.1.5 Component delegates</a></li>
+<a href="#component">4.2 The <code>component</code> element</a><ul>
+<li><a href="#idp285072">4.2.1 The component as a container</a></li>
+<li><a href="#idp290608">4.2.2 Component prototype and inheritance</a></li>
+<li><a href="#idp295248">4.2.3 Component view and rendering</a></li>
+<li><a href="#idp302736">4.2.4 Component properties, watches and bindings</a></li>
+<li><a href="#idp319136">4.2.5 Component delegates</a></li>
 </ul>
 </li>
-<li><a href="#content">4.2 The <code>content</code> element</a></li>
-<li><a href="#foreign-view-content">4.3 Foreign view content</a></li>
+<li><a href="#content">4.3 The <code>content</code> element</a></li>
+<li><a href="#foreign-view-content">4.4 Foreign view content</a></li>
 <li>
-<a href="#get">4.4 The <code>get</code> element</a><ul>
-<li><a href="#idp426944">4.4.1 Bender events</a></li>
-<li><a href="#idp427728">4.4.2 DOM events</a></li>
-<li><a href="#idp428512">4.4.3 Properties</a></li>
+<a href="#get">4.5 The <code>get</code> element</a><ul>
+<li><a href="#idp364144">4.5.1 Bender events</a></li>
+<li><a href="#idp364928">4.5.2 DOM events</a></li>
+<li><a href="#idp365712">4.5.3 Properties</a></li>
 </ul>
 </li>
-<li><a href="#getter">4.5 The <code>getter</code> element</a></li>
-<li><a href="#link">4.6 The <code>link</code> element</a></li>
-<li><a href="#property">4.7 The <code>property</code> element</a></li>
-<li><a href="#set">4.8 The <code>set</code> element</a></li>
-<li><a href="#setter">4.9 The <code>setter</code> element</a></li>
-<li><a href="#view">4.10 The <code>view</code> element</a></li>
-<li><a href="#watch">4.11 The <code>watch</code> element</a></li>
+<li><a href="#getter">4.6 The <code>getter</code> element</a></li>
+<li><a href="#link">4.7 The <code>link</code> element</a></li>
+<li><a href="#property">4.8 The <code>property</code> element</a></li>
+<li><a href="#set">4.9 The <code>set</code> element</a></li>
+<li><a href="#setter">4.10 The <code>setter</code> element</a></li>
+<li><a href="#text">4.11 The <code>text</code> element</a></li>
+<li><a href="#view">4.12 The <code>view</code> element</a></li>
+<li><a href="#watch">4.13 The <code>watch</code> element</a></li>
 </ul>
 </li>
 <li>
-<a href="#idp470576">5 Attributes</a><ul>
+<a href="#idp420560">5 Attributes</a><ul>
 <li><a href="#as">5.1 The <code>as</code> attribute</a></li>
 <li><a href="#attr">5.2 The <code>attr</code> attribute</a></li>
 <li><a href="#component-ref">5.3 The <code>component</code> attribute</a></li>
@@ -113,14 +121,16 @@
 <li><a href="#href-component">5.7 The <code>href</code> attribute</a></li>
 <li><a href="#href-link">5.8 The <code>href</code> attribute</a></li>
 <li><a href="#id">5.9 The <code>id</code> attribute</a></li>
-<li><a href="#name">5.10 The <code>name</code> attribute</a></li>
-<li><a href="#property-ref">5.11 The <code>property</code> attribute</a></li>
-<li><a href="#rel">5.12 The <code>rel</code> attribute</a></li>
-<li><a href="#view-ref">5.13 The <code>view</code> attribute</a></li>
-<li><a href="#value">5.14 The <code>value</code> attribute</a></li>
+<li><a href="#attribute-name">5.10 The <code>name</code> attribute</a></li>
+<li><a href="#property-name">5.11 The <code>name</code> attribute</a></li>
+<li><a href="#ns">5.12 The <code>ns</code> attribute</a></li>
+<li><a href="#property-ref">5.13 The <code>property</code> attribute</a></li>
+<li><a href="#rel">5.14 The <code>rel</code> attribute</a></li>
+<li><a href="#view-ref">5.15 The <code>view</code> attribute</a></li>
+<li><a href="#value">5.16 The <code>value</code> attribute</a></li>
 </ul>
 </li>
-</ul></nav><section id="idp313280"><h2>1 Introduction</h2>
+</ul></nav><section id="idp216000"><h2>1 Introduction</h2>
 <section class="longdesc">
       <p>This specification defines the XML syntax, Javascript API, and
         informal semantics of the Bender framework. Bender is an experimental
@@ -136,7 +146,7 @@
         be read and interpreted by a <em>runtime</em> inside a host
         application such as a Web browser.</p>
       <p>This document also covers the reference Bender runtime.</p>
-    </section></section><section id="idp320512"><h2>2 Bender runtimes</h2>
+    </section></section><section id="idp223248"><h2>2 Bender runtimes</h2>
 <section class="longdesc">
       <p>Bender relies on a <em>runtime</em> application to render
         components from their description. The current specification assumes that
@@ -149,35 +159,34 @@
         XML files (as described in this specification) or created through the
         Javascript API. These components can then be rendered in the target
         document through their context.</p>
-      <section id="idp323776"><h3>2.1 Reference runtime usage</h3></section>
-      <section id="idp324640"><h3>2.2 The reference runtime API</h3></section>
-      <section id="idp325440"><h3>2.3 Custom runtimes</h3></section>
-    </section></section><section id="idp326480"><h2>3 Document structure</h2>
+      <section id="idp226512"><h3>2.1 Reference runtime usage</h3></section>
+      <section id="idp227376"><h3>2.2 The reference runtime API</h3></section>
+      <section id="idp228176"><h3>2.3 Custom runtimes</h3></section>
+    </section></section><section id="idp229216"><h2>3 Document structure</h2>
 <section class="longdesc">
-      <section id="idp328288"><h3>3.1 The Bender namespace URI</h3>
+      <section id="idp231024"><h3>3.1 The Bender namespace URI</h3>
 <p>
-          All Bender elements are in the following namespace URI:
+          All Bender elements are in the <span class="nsuri">http://bender.igel.co.jp</span> namespace URI.
         </p>
-<blockquote><pre>http://bender.igel.co.jp</pre></blockquote>
 <p>
           Some Bender elements can have <em>foreign content</em>, that is
           elements belonging to namespaces other than Bender.
           It is important to correctly specify the namespace of these foreign
           elements, for instance using namespace prefixes.
           The XHTML namespace URI
-          <span class="keyword">http://www.w3.org/1999/xhtml</span> is used to
+          <span class="nsuri">http://www.w3.org/1999/xhtml</span> is used to
           identify HTML content.
         </p></section>
-      <section id="idp331376"><h3>3.2 Document element</h3>
+      <section id="idp234352"><h3>3.2 Document element</h3>
 <p>A Bender XML document always describes a component; therefore, the
           document element is a <a class="elem" href="#component">component</a> element. Since almost
           everything in Bender is a component, a document may define a single
           reusable widget-like component, a complete application, or a library
           of components.</p></section>
-      <section id="idp333376"><h3>3.3 Terminology</h3>
+      <section id="idp236352"><h3>3.3 Relax NG grammar and terminology</h3>
 <p>
-          This specification includes the complete <a href="http://www.relaxng.org/">Relax NG</a> grammar for checking
-          the validity of Bender XML documents.
+          This specification includes the complete <a href="bender.rng">Relax
+            NG grammar</a> for checking the validity of Bender XML documents.
           The specification of every element and attribute includes information
           extracted from this grammar, describing in which context it may
           appear, and what contents it may have.
@@ -190,6 +199,9 @@
           <li>
             <strong>choice</strong>: only one of the possible contents may
             occur;
+          </li>
+          <li>
+            <strong>data</strong>: a data value that matches the given type.
           </li>
           <li>
             <strong>group</strong>: all of the contents must occur;
@@ -212,12 +224,81 @@
             of times, but at least once;
           </li>
           <li>
+            <strong>text</strong>: plain text.
+            This is not the same as the <a class="elem" href="#text">text</a> element;
+          </li>
+          <li>
+            <strong>value</strong>: a text string that matches the given
+            value exactly, with the possibily of leading and trailing
+            whitespace;
+          </li>
+          <li>
             <strong>zero or more</strong>: the element may occur any number
             of the times, including not at all.
           </li>
-        </ul></section>
-    </section></section><section id="idp343472"><h2>4 Elements</h2>
-<section id="component"><h3>4.1 The <code>component</code> element</h3>
+        </ul>
+<p>
+          Please refer to the <a href="http://relaxng.org/tutorial-20011203.html">Relax NG
+            tutorial</a> for an introduction to and more information about
+          Relax NG.
+        </p></section>
+      <section id="idp250528"><h3>3.4 Javascript API</h3>
+<p>
+          The Javascript API for Bender is described using a syntax similar to
+          <a href="http://www.w3.org/TR/WebIDL/">Web IDL</a>.
+        </p></section>
+    </section></section><section id="idp252720"><h2>4 Elements</h2>
+<section id="attribute"><h3>4.1 The <code>attribute</code> element</h3>
+<p class="desc">Output an attribute node on rendering.</p>
+<section class="spec"><p>Child of:<ul><li><a href="#foreign-view-content"><em>foreign view content</em></a></li></ul></p>
+<p>Content:<ul>
+<li>optional 
+          <a href="#id">id</a> attribute
+        </li>
+<li>
+<a href="#attribute-name">name</a> attribute</li>
+<li>
+<a href="#ns">ns</a> attribute</li>
+<li>choice of:<ul>
+<li>
+<a href="#value">value</a> attribute</li>
+<li><em>text</em></li>
+</ul>
+</li>
+</ul></p>
+<p>Javascript API:</p>
+<pre class="api">Interface <span class="idl-interface-def" id="interface-BenderAttributeElement">BenderAttributeElement</span> : <a href="#interface-BenderElement">BenderElement</a> {
+  attribute DOMString <span class="idl-attribute-def" id="idl-attribute-name">name</span>;
+  attribute DOMString <span class="idl-attribute-def" id="idl-attribute-value">value</span>;
+}</pre></section><section class="longdesc">
+        <p>
+          The purpose of the <a class="elem" href="#attribute">attribute</a> element, similarly to
+          the <a class="elem" href="#text">text</a> element, is to provide a way to refer to
+          an attribute node for a <a class="elem" href="#set">set</a> element.
+        </p>
+        <p>
+          An <a class="elem" href="#attribute">attribute</a> element must have a <a class="attr" href="#attribute-name">name</a>
+          attribute.
+        </p>
+      <p>
+            The <a href="#idl-attribute-name" class="idl-attribute">name</a> property of a <a href="#interface-BenderAttributeElement" class="idl-interface">BenderAttributeElement</a> reflects
+            the value of the <a class="attr" href="#attribute-name">name</a> attribute of the
+            element.
+            It can be used to get or set the value of the attribute.
+            When setting a new value, all rendered instances of the parent
+            component and components that derive from it are updated.
+          </p>
+<p>
+            The <a href="#idl-attribute-value" class="idl-attribute">value</a> property of a <a href="#interface-BenderAttributeElement" class="idl-interface">BenderAttributeElement</a> reflects
+            the value of the <a class="attr" href="#value">value</a> attribute of the element, or
+            its text content, whichever is set.
+            Getting the value of this property returns the value of the <a class="attr" href="#value">value</a> attribute if it is defined, or the text content of
+            the element otherwise.
+            Setting the value always sets the <a class="attr" href="#value">value</a> attribute
+            and clears the text content of the element, if any.
+            When setting a new value, all rendered instances of the parent
+            component and components that derive from it are updated.
+          </p></section></section><section id="component"><h3>4.2 The <code>component</code> element</h3>
 <p class="desc">Define a Bender component.</p>
 <section class="spec"><p>Child of:<ul>
 <li><a href="#component">component</a></li>
@@ -254,7 +335,7 @@
           functionality that is described by its <em>prototype</em>,
           <em>view</em>, <em>properties</em>, and
           <em>watches</em>.</p>
-        <section id="idp359648"><h4>4.1.1 The component as a container</h4>
+        <section id="idp285072"><h4>4.2.1 The component as a container</h4>
 <p>Components are identified by their URI. This specification only
             describe the identification of a component by its URL; that is, the
             URL of its document with the addition of the value of its <a class="attr" href="#id">id</a> attribute as a fragment identifier. A component that
@@ -272,7 +353,7 @@
             scheme for identifying components with URIs that do not depend on
             the specific location of documents, <em>e.g.</em>, using search
             paths for known component libraries.</p></section>
-        <section id="idp365360"><h4>4.1.2 Component prototype and inheritance</h4>
+        <section id="idp290608"><h4>4.2.2 Component prototype and inheritance</h4>
 <p>Bender implements <strong>inheritance</strong> through
             <em>prototypes</em> rather than classes, following Javascript in
             this respect. A component may have another component as its
@@ -285,7 +366,7 @@
             It cannot contain a cycle; <em>i.e.</em>, a component cannot
             appear more than once in the prototype chain.
           </p></section>
-        <section id="idp370112"><h4>4.1.3 Component view and rendering</h4>
+        <section id="idp295248"><h4>4.2.3 Component view and rendering</h4>
 <p>
             The <a class="elem" href="#view">view</a> element defines the
             <strong>rendering</strong> of the component.
@@ -307,7 +388,7 @@
             element of the component will replace the descendant <a class="elem" href="#content">content</a> element its prototype's view to extend it.
             If neither condition is met, then the component has no view.
           </p></section>
-        <section id="idp377600"><h4>4.1.4 Component properties, watches and bindings</h4>
+        <section id="idp302736"><h4>4.2.4 Component properties, watches and bindings</h4>
 <p>
             A component can be parametrized through the use of
             <em>properties</em>.
@@ -321,7 +402,7 @@
             elements.
             All child <a class="elem" href="#property">property</a> elements of a component must
             have a different name.
-            The order of definition of properties is not pertinent.
+            The order of definition of properties is not significant.
           </p>
 <p>
             A component inherits the properties of its prototype.
@@ -361,14 +442,14 @@
             A watch is described by the <a class="elem" href="#watch">watch</a> element.
             A component may have have any number of child <a class="elem" href="#watch">watch</a>
             elements.
-            The order of definition of watches is not pertinent.
+            The order of definition of watches is not significant.
           </p>
 <p>
             A <strong>binding</strong> is a different syntax for a watch
             that binds property values to text nodes and attributes in the XML
             document directly.
           </p></section>
-        <section id="idp393984"><h4>4.1.5 Component delegates</h4>
+        <section id="idp319136"><h4>4.2.5 Component delegates</h4>
 <p>
             The <em>delegate</em> of a component is an object that extends
             the Javascript API of the component.
@@ -379,7 +460,7 @@
             The <strong>delegate</strong> of a component is specified by
             the <a class="attr" href="#delegate">delegate</a> attribute.
           </p></section>
-      </section></section><section id="content"><h3>4.2 The <code>content</code> element</h3>
+      </section></section><section id="content"><h3>4.3 The <code>content</code> element</h3>
 <p class="desc">Provide a location for custom rendering for derived
         components.</p>
 <section class="spec"><p>Child of:<ul>
@@ -389,6 +470,7 @@
 <p>Content:<ul><li>mixed content:<ul>
 <li>zero or more <a href="#component">component</a> elements</li>
 <li>zero or more <a href="#foreign-view-content"><em>foreign view content</em></a> elements</li>
+<li>zero or more <a href="#text">text</a> elements</li>
 </ul>
 </li></ul></p></section><section class="longdesc">
         <p>
@@ -419,7 +501,7 @@
           Although this is not specified in the schema, a <a class="elem" href="#view">view</a>
           element may have at most <a class="elem" href="#content">content</a> descendant.
         </p>
-      </section></section><section id="foreign-view-content"><h3>4.3 Foreign view content</h3>
+      </section></section><section id="foreign-view-content"><h3>4.4 Foreign view content</h3>
 <p class="desc">Foreign content appearing in the view of a component.</p>
 <section class="spec"><p>Child of:<ul>
 <li><a href="#content">content</a></li>
@@ -429,20 +511,57 @@
 <p>Content:<ul>
 <li>zero or more <em>free</em> attributes</li>
 <li>mixed content:<ul>
+<li>zero or more <a href="#attribute">attribute</a> elements</li>
 <li>zero or more <a href="#component">component</a> elements</li>
 <li>optional 
             <a href="#content">content</a> element
           </li>
 <li>zero or more <a href="#foreign-view-content"><em>foreign view content</em></a> elements</li>
+<li>zero or more <a href="#text">text</a> elements</li>
 </ul>
 </li>
 </ul></p></section><section class="longdesc">
-        <p>
-          The view of a component may contain arbitrary markup.
-          This markup is not interpreted by Bender and is passed <em>as
-            is</em>
-        </p>
-      </section></section><section id="get"><h3>4.4 The <code>get</code> element</h3>
+        <section id="idp345600"><h3>4.4.1 Role of foreign content</h3>
+<p>
+            The view of a component may contain arbitrary markup.
+            This markup is not interpreted by Bender and is passed <em>as
+              is</em> to the runtime when the component is rendered.
+            For instance, it is possible to use HTML, SVG and MathML to render
+            Bender components in a HTML5 runtime; but Bender does not need to
+            be aware of any of these markup languages and will just pass that
+            content along.
+          </p>
+<p>
+            Foreign elements in a view have the same content model as the
+            <a class="elem" href="#view">view</a> element, and may also have an <a class="attr" href="#id">id</a> attribute and any attribute that is not in the Bender
+            namespace.
+            A foreign element may have other foreign elements, Bender
+            <a class="elem" href="#component">component</a> elements or text content as children.
+            It is possible to have a Bender <a class="elem" href="#content">content</a> element
+            as a child, as long as the view as a whole has only one such
+            descendant element.
+          </p></section>
+        <section id="idp350560"><h3>4.4.2 Rendering of foreign content</h3>
+<p>
+            A foreign element is rendered by creating a new element with the
+            same qualified name in the target document.
+            All of its attribute except for <a class="attr" href="#id">id</a> are copied to
+            the new element with the same value.
+            The <a class="attr" href="#id">id</a> attribute is used by the component watches
+            to identify this element through the <a class="attr" href="#view"></a>
+            attribute.
+            A new <a class="elem" href="#watch">watch</a> is created for every attribute value
+            that contains bindings to a component's properties.
+          </p>
+<p>
+            Then, the contents of the element are rendered.
+            Element children are rendered following their rendering rules.
+            Text child nodes are copied to the new element (<em>i.e.</em>,
+            new text child nodes are created in the target document.)
+            A new <a class="elem" href="#watch">watch</a> is created for every text node that
+            contains bindings to a component's properties.
+          </p></section>
+      </section></section><section id="get"><h3>4.5 The <code>get</code> element</h3>
 <p class="desc">Event or property being watched.</p>
 <section class="spec"><p>Child of:<ul><li><a href="#watch">watch</a></li></ul></p>
 <p>Content:<ul>
@@ -481,10 +600,10 @@
 </ul>
         </li>
 </ul></p></section><section class="longdesc">
-        <section id="idp426944"><h4>4.4.1 Bender events</h4></section>
-        <section id="idp427728"><h4>4.4.2 DOM events</h4></section>
-        <section id="idp428512"><h4>4.4.3 Properties</h4></section>
-      </section></section><section id="getter"><h3>4.5 The <code>getter</code> element</h3>
+        <section id="idp364144"><h4>4.5.1 Bender events</h4></section>
+        <section id="idp364928"><h4>4.5.2 DOM events</h4></section>
+        <section id="idp365712"><h4>4.5.3 Properties</h4></section>
+      </section></section><section id="getter"><h3>4.6 The <code>getter</code> element</h3>
 <p class="desc">Custom getter for a property.</p>
 <section class="spec"><p>Child of:<ul><li><a href="#property">property</a></li></ul></p>
 <p>Content:<ul><li>choice of:<ul>
@@ -492,7 +611,7 @@
 <a href="#value">value</a> attribute</li>
 <li><em>text</em></li>
 </ul>
-</li></ul></p></section></section><section id="link"><h3>4.6 The <code>link</code> element</h3>
+</li></ul></p></section></section><section id="link"><h3>4.7 The <code>link</code> element</h3>
 <p class="desc">Associate external resources with the component.</p>
 <section class="spec"><p>Child of:<ul><li><a href="#component">component</a></li></ul></p>
 <p>Content:<ul>
@@ -525,12 +644,12 @@
         </ul>
         <p>The context manages the linked resources for all components and
           loads resources only once.</p>
-      </section></section><section id="property"><h3>4.7 The <code>property</code> element</h3>
+      </section></section><section id="property"><h3>4.8 The <code>property</code> element</h3>
 <p class="desc">Define a property of the component.</p>
 <section class="spec"><p>Child of:<ul><li><a href="#component">component</a></li></ul></p>
 <p>Content:<ul>
 <li>
-<a href="#name">name</a> attribute</li>
+<a href="#property-name">name</a> attribute</li>
 <li>optional 
           <a href="#as">as</a> attribute
         </li>
@@ -546,7 +665,33 @@
           </li>
 </ul>
 </li>
-</ul></p></section></section><section id="set"><h3>4.8 The <code>set</code> element</h3>
+</ul></p></section><section class="longdesc">
+        <p>
+          A property is a named Javascript value associated with a component.
+          A property allows a component to maintain its state.
+          Properties can be <strong>watched</strong> and
+          <strong>bound</strong>.
+        </p>
+        <p>
+          The <strong>name</strong> of the property is given by the <a class="attr" href="#property-name">name</a> attribute, which must be present and must
+          contain a non-empty string of characters potentially surrounded by
+          spaces.
+          The name of the property is obtained by trimming leading and trailing
+          whitespace from the <a class="attr" href="#property-name">name</a> attribute.
+          No other normalization is performed on the name of a property.
+          One consequence is that property names are case-sensitive, as they are
+          in Javascript.
+          A property name must be unique within a component; <em>i.e.</em>,
+          a <a class="elem" href="#component">component</a> element cannot have two or more child
+          <a class="elem" href="#property">property</a> elements with the same <a class="attr" href="#property-name">name</a> attribute (after whitespace has been
+          trimmed.)
+        </p>
+        <p>
+          The <strong>value</strong> of the property is given by the <a class="attr" href="#value">value</a> attribute.
+          Because an XML attribute can only contain a string, authors may also
+          specify how that string should be interpreted with the <a class="attr" href="#as">as</a> attribute.
+        </p>
+      </section></section><section id="set"><h3>4.9 The <code>set</code> element</h3>
 <p class="desc">Action associated with a watch.</p>
 <section class="spec"><p>Child of:<ul><li><a href="#watch">watch</a></li></ul></p>
 <p>Content:<ul>
@@ -584,7 +729,7 @@
 <li><em>text</em></li>
 </ul>
         </li>
-</ul></p></section></section><section id="setter"><h3>4.9 The <code>setter</code> element</h3>
+</ul></p></section></section><section id="setter"><h3>4.10 The <code>setter</code> element</h3>
 <p class="desc">Custom setter for a property.</p>
 <section class="spec"><p>Child of:<ul><li><a href="#property">property</a></li></ul></p>
 <p>Content:<ul><li>choice of:<ul>
@@ -592,7 +737,24 @@
 <a href="#value">value</a> attribute</li>
 <li><em>text</em></li>
 </ul>
-</li></ul></p></section></section><section id="view"><h3>4.10 The <code>view</code> element</h3>
+</li></ul></p></section></section><section id="text"><h3>4.11 The <code>text</code> element</h3>
+<p class="desc">Output a text node on rendering.</p>
+<section class="spec"><p>Child of:<ul>
+<li><a href="#content">content</a></li>
+<li><a href="#foreign-view-content"><em>foreign view content</em></a></li>
+<li><a href="#view">view</a></li>
+</ul></p>
+<p>Content:<ul>
+<li>optional 
+          <a href="#id">id</a> attribute
+        </li>
+<li>choice of:<ul>
+<li>
+<a href="#value">value</a> attribute</li>
+<li><em>text</em></li>
+</ul>
+</li>
+</ul></p></section></section><section id="view"><h3>4.12 The <code>view</code> element</h3>
 <p class="desc">Describe the rendering of a component.</p>
 <section class="spec"><p>Child of:<ul><li><a href="#component">component</a></li></ul></p>
 <p>Content:<ul><li>mixed content:<ul>
@@ -601,62 +763,117 @@
             <a href="#content">content</a> element
           </li>
 <li>zero or more <a href="#foreign-view-content"><em>foreign view content</em></a> elements</li>
+<li>zero or more <a href="#text">text</a> elements</li>
 </ul>
-</li></ul></p></section></section><section id="watch"><h3>4.11 The <code>watch</code> element</h3>
+</li></ul></p></section></section><section id="watch"><h3>4.13 The <code>watch</code> element</h3>
 <p class="desc">Define a watch for the component.</p>
 <section class="spec"><p>Child of:<ul><li><a href="#component">component</a></li></ul></p>
 <p>Content:<ul><li>interleaving of:<ul>
 <li>one or more <a href="#get">get</a> elements</li>
 <li>zero or more <a href="#set">set</a> elements</li>
 </ul>
-</li></ul></p></section></section></section><section id="idp470576"><h2>5 Attributes</h2>
+</li></ul></p></section></section></section><section id="idp420560"><h2>5 Attributes</h2>
 <section id="as"><h3>5.1 The <code>as</code> attribute</h3>
 <p class="desc">How to parse a property value.</p>
-<section class="spec"><p>Attribute of: <ul><li><a href="#property">property</a></li></ul></p></section></section><section id="attr"><h3>5.2 The <code>attr</code> attribute</h3>
+<section class="spec"><p>Attribute of:<ul><li><a href="#property">property</a></li></ul></p>
+<p>Content:<ul>choice of:<ul>
+<li>value <span class="keyword">boolean</span>
+</li>
+<li>value <span class="keyword">dynamic</span>
+</li>
+<li>value <span class="keyword">number</span>
+</li>
+<li>value <span class="keyword">string</span>
+</li>
+</ul>
+</ul></p></section><section class="longdesc">
+        <p>
+
+        </p>
+      </section></section><section id="attr"><h3>5.2 The <code>attr</code> attribute</h3>
 <p class="desc">Attribute of a view element to be set.</p>
-<section class="spec"><p>Attribute of: <ul><li><a href="#set">set</a></li></ul></p></section></section><section id="component-ref"><h3>5.3 The <code>component</code> attribute</h3>
+<section class="spec"><p>Attribute of:<ul><li><a href="#set">set</a></li></ul></p>
+<p>Content:<ul>data of type <span class="data-type">Name</span>
+</ul></p></section></section><section id="component-ref"><h3>5.3 The <code>component</code> attribute</h3>
 <p class="desc">Reference to a component.</p>
-<section class="spec"><p>Attribute of: <ul>
+<section class="spec"><p>Attribute of:<ul>
 <li><a href="#get">get</a></li>
 <li><a href="#set">set</a></li>
+</ul></p>
+<p>Content:<ul>data of type <span class="data-type">IDREF</span>
 </ul></p></section></section><section id="delegate"><h3>5.4 The <code>delegate</code> attribute</h3>
 <p class="desc">Delegate object for a component.</p>
-<section class="spec"><p>Attribute of: <ul><li><a href="#component">component</a></li></ul></p></section></section><section id="dom-event"><h3>5.5 The <code>dom-event</code> attribute</h3>
+<section class="spec"><p>Attribute of:<ul><li><a href="#component">component</a></li></ul></p>
+<p>Content:<ul><li>any string</li></ul></p></section></section><section id="dom-event"><h3>5.5 The <code>dom-event</code> attribute</h3>
 <p class="desc">DOM event to watch.</p>
-<section class="spec"><p>Attribute of: <ul><li><a href="#get">get</a></li></ul></p></section></section><section id="event"><h3>5.6 The <code>event</code> attribute</h3>
+<section class="spec"><p>Attribute of:<ul><li><a href="#get">get</a></li></ul></p>
+<p>Content:<ul><li>any string</li></ul></p></section></section><section id="event"><h3>5.6 The <code>event</code> attribute</h3>
 <p class="desc">Bender event to watch or to notify.</p>
-<section class="spec"><p>Attribute of: <ul>
+<section class="spec"><p>Attribute of:<ul>
 <li><a href="#get">get</a></li>
 <li><a href="#set">set</a></li>
-</ul></p></section></section><section id="href-component"><h3>5.7 The <code>href</code> attribute</h3>
+</ul></p>
+<p>Content:<ul><li>any string</li></ul></p></section></section><section id="href-component"><h3>5.7 The <code>href</code> attribute</h3>
 <p class="desc">URI of the prototype component.</p>
-<section class="spec"><p>Attribute of: <ul><li><a href="#component">component</a></li></ul></p></section></section><section id="href-link"><h3>5.8 The <code>href</code> attribute</h3>
+<section class="spec"><p>Attribute of:<ul><li><a href="#component">component</a></li></ul></p>
+<p>Content:<ul>data of type <span class="data-type">anyURI</span>
+</ul></p></section></section><section id="href-link"><h3>5.8 The <code>href</code> attribute</h3>
 <p class="desc">URI of a linked resource.</p>
-<section class="spec"><p>Attribute of: <ul><li><a href="#link">link</a></li></ul></p></section></section><section id="id"><h3>5.9 The <code>id</code> attribute</h3>
+<section class="spec"><p>Attribute of:<ul><li><a href="#link">link</a></li></ul></p>
+<p>Content:<ul>data of type <span class="data-type">anyURI</span>
+</ul></p></section></section><section id="id"><h3>5.9 The <code>id</code> attribute</h3>
 <p class="desc">Unique identifier for an element.</p>
-<section class="spec"><p>Attribute of: <ul><li><a href="#component">component</a></li></ul></p></section></section><section id="name"><h3>5.10 The <code>name</code> attribute</h3>
+<section class="spec"><p>Attribute of:<ul>
+<li><a href="#attribute">attribute</a></li>
+<li><a href="#component">component</a></li>
+<li><a href="#text">text</a></li>
+</ul></p>
+<p>Content:<ul>data of type <span class="data-type">ID</span>
+</ul></p></section></section><section id="attribute-name"><h3>5.10 The <code>name</code> attribute</h3>
+<p class="desc">Name of an attribute.</p>
+<section class="spec"><p>Attribute of:<ul><li><a href="#attribute">attribute</a></li></ul></p>
+<p>Content:<ul>data of type <span class="data-type">Name</span>
+</ul></p></section></section><section id="property-name"><h3>5.11 The <code>name</code> attribute</h3>
 <p class="desc">Name of a property.</p>
-<section class="spec"><p>Attribute of: <ul><li><a href="#property">property</a></li></ul></p></section></section><section id="property-ref"><h3>5.11 The <code>property</code> attribute</h3>
+<section class="spec"><p>Attribute of:<ul><li><a href="#property">property</a></li></ul></p>
+<p>Content:<ul><li>any string</li></ul></p></section></section><section id="ns"><h3>5.12 The <code>ns</code> attribute</h3>
+<p class="desc">Namespace URI of an attribute.</p>
+<section class="spec"><p>Attribute of:<ul><li><a href="#attribute">attribute</a></li></ul></p>
+<p>Content:<ul><li>any string</li></ul></p></section></section><section id="property-ref"><h3>5.13 The <code>property</code> attribute</h3>
 <p class="desc">Reference a component’s property.</p>
-<section class="spec"><p>Attribute of: <ul>
+<section class="spec"><p>Attribute of:<ul>
 <li><a href="#get">get</a></li>
 <li><a href="#set">set</a></li>
-</ul></p></section></section><section id="rel"><h3>5.12 The <code>rel</code> attribute</h3>
+</ul></p>
+<p>Content:<ul>data of type <span class="data-type">Name</span>
+</ul></p></section></section><section id="rel"><h3>5.14 The <code>rel</code> attribute</h3>
 <p class="desc">Relationship of the linked resource with the component.</p>
-<section class="spec"><p>Attribute of: <ul><li><a href="#link">link</a></li></ul></p></section></section><section id="view-ref"><h3>5.13 The <code>view</code> attribute</h3>
+<section class="spec"><p>Attribute of:<ul><li><a href="#link">link</a></li></ul></p>
+<p>Content:<ul>choice of:<ul>
+<li>value <span class="keyword">script</span>
+</li>
+<li>value <span class="keyword">stylesheet</span>
+</li>
+</ul>
+</ul></p></section></section><section id="view-ref"><h3>5.15 The <code>view</code> attribute</h3>
 <p class="desc">Reference an element in the view of the component.</p>
-<section class="spec"><p>Attribute of: <ul>
+<section class="spec"><p>Attribute of:<ul>
 <li><a href="#get">get</a></li>
 <li><a href="#set">set</a></li>
-</ul></p></section></section><section id="value"><h3>5.14 The <code>value</code> attribute</h3>
+</ul></p>
+<p>Content:<ul>data of type <span class="data-type">IDREF</span>
+</ul></p></section></section><section id="value"><h3>5.16 The <code>value</code> attribute</h3>
 <p class="desc">Set a value.</p>
-<section class="spec"><p>Attribute of: <ul>
+<section class="spec"><p>Attribute of:<ul>
+<li><a href="#attribute">attribute</a></li>
 <li><a href="#get">get</a></li>
 <li><a href="#getter">getter</a></li>
 <li><a href="#property">property</a></li>
 <li><a href="#set">set</a></li>
 <li><a href="#setter">setter</a></li>
-</ul></p></section></section></section>
+<li><a href="#text">text</a></li>
+</ul></p>
+<p>Content:<ul><li>any string</li></ul></p></section></section></section>
 </div></div>
 </div>
 <script src="../../flexo.js"></script><script src="../../bender.js"></script><script>

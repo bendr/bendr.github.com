@@ -62,8 +62,13 @@ a {
   margin: 1em 0;
 }
 
-code, pre, .keyword, .attr {
+code, pre, .keyword, .nsuri, .data-type, .idl-attribute, .idl-interface {
   font-family: Inconsolata, Consolas, monospace;
+}
+
+.nsuri, .keyword {
+  background-color: yellow;
+  padding: 0 0.2em;
 }
 
 .desc {
@@ -76,7 +81,7 @@ code, pre, .keyword, .attr {
   background-color: #f8f8f8;
 }
 
-.spec p {
+.spec p:first-child {
   margin: 0;
 }
 
@@ -95,4 +100,12 @@ code, pre, .keyword, .attr {
   font-size: smaller;
   border-left: thick solid #888;
   padding-left: 1em;
+}
+
+.api {
+  margin: 0.5em 0 0 1em;
+}
+
+.idl-attribute-def, .idl-interface-def {
+
 }
