@@ -1,5 +1,4 @@
 body {
-  font-family: Univers, "Helvetica Neue", Helvetica, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #66cdaa;
@@ -62,8 +61,9 @@ a {
   margin: 1em 0;
 }
 
-code, pre, .keyword, .nsuri, .data-type, .idl-attribute, .idl-interface {
-  font-family: Inconsolata, Consolas, monospace;
+code, pre, .keyword, .nsuri, .data-type, .idl-attribute, .idl-interface,
+.idl-method {
+  font-family: Inconsolata, monospace;
 }
 
 .nsuri, .keyword {
@@ -106,6 +106,6 @@ code, pre, .keyword, .nsuri, .data-type, .idl-attribute, .idl-interface {
   margin: 0.5em 0 0 1em;
 }
 
-.idl-attribute-def, .idl-interface-def {
-
+.idl-attribute-def, .idl-interface-def, .idl-method-def {
+  font-weight: bold;
 }

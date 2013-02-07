@@ -12,7 +12,9 @@
           <ref name="id"/>
         </optional>
         <ref name="attribute-name"/>
-        <ref name="ns"/>
+        <optional>
+          <ref name="ns"/>
+        </optional>
         <choice>
           <ref name="value"/>
           <text/>
