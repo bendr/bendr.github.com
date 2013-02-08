@@ -61,9 +61,9 @@
     graphical user interfaces</h1>
 <h2>XML grammar and Javascript API specification</h2></hgroup><p class="creator">Julien Quint, <a href="http://igel.co.jp/">IGEL Co.,
       Ltd.</a></p>
-<p class="date">Version 0.8 (pre), 7 February 2013</p></header><nav id="toc"><h2>Table of contents</h2>
+<p class="date">Version 0.8, 8 February 2013</p></header><nav id="toc"><h2>Table of contents</h2>
 <ul>
-<li><a href="#idp241632">1 Introduction</a></li>
+<li><a href="#idp241616">1 Introduction</a></li>
 <li>
 <a href="#idp248912">2 Bender runtimes</a><ul>
 <li><a href="#idp252144">2.1 Reference runtime usage</a></li>
@@ -101,9 +101,10 @@
 <li><a href="#foreign-view-content">5.4 Foreign view content</a></li>
 <li>
 <a href="#get">5.5 The <code>get</code> element</a><ul>
-<li><a href="#idp413232">5.5.1 Bender events</a></li>
-<li><a href="#idp414016">5.5.2 DOM events</a></li>
-<li><a href="#idp414800">5.5.3 Properties</a></li>
+<li><a href="#idp413232">5.5.1 Watch inputs</a></li>
+<li><a href="#idp418192">5.5.2 Bender events</a></li>
+<li><a href="#idp418976">5.5.3 DOM events</a></li>
+<li><a href="#idp419760">5.5.4 Properties</a></li>
 </ul>
 </li>
 <li><a href="#getter">5.6 The <code>getter</code> element</a></li>
@@ -117,7 +118,7 @@
 </ul>
 </li>
 <li>
-<a href="#idp486208">6 Attributes</a><ul>
+<a href="#idp501744">6 Attributes</a><ul>
 <li><a href="#as">6.1 The <code>as</code> attribute</a></li>
 <li><a href="#attr">6.2 The <code>attr</code> attribute</a></li>
 <li><a href="#component-ref">6.3 The <code>component</code> attribute</a></li>
@@ -136,7 +137,7 @@
 <li><a href="#value">6.16 The <code>value</code> attribute</a></li>
 </ul>
 </li>
-</ul></nav><section id="idp241632"><h2>1 Introduction</h2>
+</ul></nav><section id="idp241616"><h2>1 Introduction</h2>
 <section class="longdesc">
       <p>
         This specification defines the XML syntax, Javascript API, and
@@ -151,11 +152,10 @@
         the <strong>logic</strong> of the application.
         A Bender application <em>description</em> can be serialized to XML
         following the syntax described in this specification.
-        Such a description can then be read and interpreted by a
+        Such a description can then be <em>rendered</em> by a
         <em>runtime</em> hosted by an application such as a Web browser.
-      </p>
-      <p>
-        This document also covers the reference Bender runtime.
+        To the end user, a Bender application looks and behave just like any
+        other Web application.
       </p>
     </section></section><section id="idp248912"><h2>2 Bender runtimes</h2>
 <section class="longdesc">
@@ -681,9 +681,22 @@
 </ul>
         </li>
 </ul></p></section><section class="longdesc">
-        <section id="idp413232"><h4>5.5.1 Bender events</h4></section>
-        <section id="idp414016"><h4>5.5.2 DOM events</h4></section>
-        <section id="idp414800"><h4>5.5.3 Properties</h4></section>
+        <section id="idp413232"><h4>5.5.1 Watch inputs</h4>
+<p>
+            A <a class="elem" href="#get">get</a> element describe an <strong>input</strong> of a
+            <a class="elem" href="#watch">watch</a>.
+            An input can be <strong>activated</strong> once its
+            <em>activation criteria</em> are met, as described in the
+            following sections.
+            Once an input is actived, the corresponding
+            <strong>outputs</strong> (<em>i.e.</em>, <a class="elem" href="#set">set</a> child elements) of the parent watch are applied.
+            An active input stays active, and cannot be activated anymore, until
+            the end of a dataflow cycle, at which point all active inputs become
+            inactive.
+          </p></section>
+        <section id="idp418192"><h4>5.5.2 Bender events</h4></section>
+        <section id="idp418976"><h4>5.5.3 DOM events</h4></section>
+        <section id="idp419760"><h4>5.5.4 Properties</h4></section>
       </section></section><section id="getter"><h3>5.6 The <code>getter</code> element</h3>
 <p class="desc">Custom getter for a property.</p>
 <section class="spec"><p>Child of:<ul><li><a href="#property">property</a></li></ul></p>
@@ -903,7 +916,34 @@
 <li>one or more <a href="#get">get</a> elements</li>
 <li>zero or more <a href="#set">set</a> elements</li>
 </ul>
-</li></ul></p></section></section></section><section id="idp486208"><h2>6 Attributes</h2>
+</li></ul></p>
+<p>Javascript API:</p>
+<pre class="api">Interface <span class="idl-interface-def" id="interface-WatchElement">WatchElement</span> : <a href="#interface-BenderElement">BenderElement</a> {
+  readonly attribute GetElement[] <span class="idl-attribute-def" id="idl-attribute-gets">gets</span>;
+  readonly attribute SetElement[] <span class="idl-attribute-def" id="idl-attribute-sets">sets</span>;
+}</pre></section><section class="longdesc">
+        <p>
+          The <a class="elem" href="#watch">watch</a> element defines a <strong>watch</strong> for the
+          component.
+          A watch has <em>inputs</em>, described by <a class="elem" href="#get">get</a>
+          elements, and <em>outputs</em>, described by <a class="elem" href="#set">set</a>
+          elements.
+          Once an input of the watch is active, all of its outputs are applied
+          in document order.
+        </p>
+        <p>
+          When a child <a class="elem" href="#get">get</a> or <a class="elem" href="#set">set</a> element is
+          added or removed, the rendering of the component and of the components
+          that derive from it is updated.
+        </p>
+      <p>
+            <a href="#idl-attribute-gets" class="idl-attribute">gets</a> is the list of the <a class="elem" href="#get">get</a>
+            child elements in document order.
+          </p>
+<p>
+            <a href="#idl-attribute-sets" class="idl-attribute">sets</a> is the list of the <a class="elem" href="#set">set</a>
+            child elements in document order.
+          </p></section></section></section><section id="idp501744"><h2>6 Attributes</h2>
 <section id="as"><h3>6.1 The <code>as</code> attribute</h3>
 <p class="desc">How to parse a property value.</p>
 <section class="spec"><p>Attribute of:<ul><li><a href="#property">property</a></li></ul></p>

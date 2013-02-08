@@ -57,8 +57,12 @@ a {
   color:#db7093;
 }
 
-.description h2, .description h3, .description h4 {
+.description hgroup h2, .description h3, .description h4 {
   margin: 1em 0;
+}
+
+.description h2 {
+  margin: 2em 0 1em 0;
 }
 
 code, pre, .keyword, .nsuri, .data-type, .idl-attribute, .idl-interface,

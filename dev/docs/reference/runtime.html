@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>The Bender runtime</title>
+    <link rel="stylesheet" href="../../bender.css">
+    <link rel="stylesheet" href="reference.css">
+    <link rel="stylesheet" href="../font-awesome.css">
+  </head>
+  <body>
+    <div class="under-dev">
+      <div class="icon-wrench">  Under Development</div>
+      <a href="#" id="to_top"><div class="icon-arrow-up to_top_icon"></div></a>
+    </div>
+    <div class="content">
+      <div class="tiles quarter">
+        <div class="pink-bg" id="logo">
+          <a href="../../index.html"></a>
+      </div>
+      <div class="text brown-bg">
+        <div>
+          <h2>
+            <a href="reference.html">XML grammar and Javascript API</a>
+          </h2>
+        </div>
+      </div>
+      <div class="text gray-bg">
+        <div>
+          <p>
+            Copyright © 2011-2013, <a href="http://www.igel.co.jp">IGEL Co.,
+            Ltd.</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="description threefourth">
+      <div>
+        <header>
+          <hgroup>
+            <h1>Bender; or, a declarative, dynamic framework for Web application
+            graphical user interfaces</h1>
+            <h2>The Bender runtime</h2>
+          </hgroup>
+          <p class="creator">
+            Julien Quint, <a href="http://igel.co.jp/">IGEL Co., Ltd.</a>
+          </p>
+          <p class="date">
+            Version 0.8, 8 February 2013
+          </p>
+        </header>
+
+        <section>
+          <h2>Introduction</h2>
+          <p>
+            This document describes the main concepts behind the Bender runtime.
+            There can be different types of runtimes for Bender, such as
+            <em>DOM-based</em> runtimes, <em>static</em> runtimes or
+            <em>procedural</em> runtimes.
+            This specification covers only the first case in detail, as it is
+            implemented by the reference runtime.
+            Later versions may cover other types of runtimes in more detail.
+          </p>
+          <p>
+            A <strong>DOM-based</strong> runtime is a runtime that uses the DOM
+            tree of a document, called the <strong>host document</strong>, as
+            the target of its output.
+            Rendering is done by adding DOM nodes (elements, attributes, and
+            text nodes) in the host tree.
+            The host tree itself is rendered by a <strong>host
+              application</strong>, most likely a Web browser.
+            The reference runtime follows this model.
+            It is run inside a browser, using a HTML5 host document and
+            Javascript to render components.
+          </p>
+          <p>
+            The Bender reference implementation also allows authors to write
+            custom runtimes.
+            It is possible for instance to duplicate the functionality of the
+            reference runtime but with an SVG host document as opposed to an
+            HTML5 host document.
+            It is also possible to insert one or more Bender components into a
+            document at arbitrary locations using scripting and the Bender
+            Javascript library.
+            See the Javascript API of the Bender context for the documentation
+            of these functionalities.
+          </p>
+          <p>
+            A <strong>static</strong> runtime is not really a runtime, but more
+            of a translator, or compiler (whereas a DOM-based or procedural
+            runtime is more similar to an interpreter.)
+            In a static runtime, the Bender application is rendered into a
+            static output, which in the context of Bender means that the
+            result output has lost its ability to refer to its original
+            definition (just like a compiler usually discards the source of the
+            program to produce its output.)
+            It is possible to go further and imagine two kinds of static
+            runtimes:
+          </p>
+          <ol>
+            <li>
+              the <em>compiler</em>, which translates a Bender description into
+              a form that can be run directly.
+              For instance, a Bender compiler would produce a HTML5 document
+              with Javascript code that looks just like a regular Web
+              application and can run directly into a regular browser without
+              requiring any additional support;
+            </li>
+            <li>
+              the <em>printer</em>, which outputs a static document, such as an
+              image or a PDF file, of the current state of the application.
+            </li>
+          </ol>
+          <p>
+            Lastly, a <strong>procedural</strong> runtime is a runtime that
+            renders a Bender document in a procedural, rather than declarative,
+            fashion.
+            While a DOM-based runtime is lazy and simply outputs DOM nodes,
+            leaving the host application in charge managing the resul, a
+            procedural runtime takes full control and actively manages all
+            aspects of the output.
+            An hypothetic procedural render could render Bender applications in
+            a HTML5 <code>canvas</code> element, using a 2D context, or WebGL
+            for a 3D rendering.
+          </p>
+        </section>
+
+        <section>
+          <h2>The Bender context</h2>
+          <p>
+            The Bender <strong>context</strong> is the entity in charge
+            of managing the execution environment of Bender components.
+            It provides basic functionality for component loading and rendering,
+            as well as convenience methods to support the runtime and Bender
+            applications.
+            It also runs the different runtime cycles as described below.
+          </p>
+        </section>
+
+        <section>
+          <h2>Rendering a Bender component in host document</h2>
+          <p>
+            In a DOM-based runtime, a component is rendered by creating a
+            document fragment, and inserting it in the tree of the host
+            document.
+            The <strong>target</strong> of a component is the insertion point
+            for a fragment
+          </p>
+        </section>
+
+        <section>
+          <h2>Runtime cycles</h2>
+          <section>
+            <h3>The rendering cycle</h3>
+            <p>
+              The rendering cycle is the execution of the rendering process
+              for components that have been added to the Bender tree but have
+              not been rendered yet.
+            </p>
+          </section>
+          <section>
+            <h3>The dataflow cycle</h3>
+          </section>
+          <section>
+            <h3>The update cycle</h3>
+            <p>
+              
+            </p>
+          </section>
+        </section>
+
+      </div>
+    </div>
+  </div>
+  <script src="../../flexo.js"></script>
+  <script src="../../bender.js"></script>
+  <script>
+
+"use strict";
+
+var context = bender.create_context();
+context.$("component", { href: "../../demo/logo.xml", sides: "7", fgcolor: "#db7093",
+  bgcolor: "white" }).create_instance(document.querySelector("#logo a"));
+
+  </script>
+  </body>
+</html>
