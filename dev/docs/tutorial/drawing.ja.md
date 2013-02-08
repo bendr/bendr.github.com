@@ -7,8 +7,8 @@ title: Bender チュートリアル
 -----
 このチュートリアルで出来るアプリケーション : [描画アプリ](../../run.html?href=docs/tutorial/draw_app/draw-view.xml)
 
-[dom-eventとproperty](canvas.ja.html)で使った*canvas*コンポーネントを使用して、描画アプリを作成してみましょう。  
-*canvas*コンポーネント以外にもいくつかのコンポーネントを用意し、それらを組み合わせることによってアプリケーションの形にしていきたいと思います。コンポーネントの組み合わせの基本に関しては、[外部コンポーネント](external-component.ja.html)を参照してください。
+[dom-eventとproperty](canvas.ja.html)で使った<tt>canvas</tt>コンポーネントを使用して、描画アプリを作成してみましょう。  
+<tt>canvas</tt>コンポーネント以外にもいくつかのコンポーネントを用意し、それらを組み合わせることによってアプリケーションの形にしていきたいと思います。コンポーネントの組み合わせの基本に関しては、[外部コンポーネント](external-component.ja.html)を参照してください。
 
 ##アプリケーション概要
 描画アプリケーションの概要は以下の通りです。
@@ -28,7 +28,7 @@ title: Bender チュートリアル
 
 <strong><a href="#draw-title">draw.xml</a></strong>
 描画コンポーネントを定義します。
-前項の描画コンポーネントをベースに線の色や太さなどいくつかの*property*の追加と*property*に対する処理の追加を行います。
+前項の描画コンポーネントをベースに線の色や太さなどいくつかの<tt>property</tt>の追加と<tt>property</tt>に対する処理の追加を行います。
 
 <strong><a href="#draw-view-title">draw-view.xml</a></strong>
 アプリケーションのコンテンツエリア内のレイアウトを決定します。
@@ -38,8 +38,8 @@ title: Bender チュートリアル
 <strong>draw.css</strong>
 描画アプリ用のスタイルシート。前項からの変更がないため、特記はしません。
 
-実行するメインのコンポーネントは、"draw-view.xml"で定義したコンポーネントです。
-"draw-view.xml"は、"draw.xml"および"text-box.xml"を内部に組み込んでいます。
+実行するメインのコンポーネントは、*draw-view.xml*で定義したコンポーネントです。
+*draw-view.xml*は、*draw.xml*および*text-box.xml*を内部に組み込んでいます。
 組み込み方は、外部コンポーネントの使い方と同じですが、組み込み対象のコンポーネントが、Benderがあらかじめ用意しているものではなく、自分で作成したものを使用するという点が異なります。
 このことは、現時点では大きな違いではないので、特に意識する必要はありません。
 
@@ -55,8 +55,8 @@ flexo.ez_xhr("draw_app/text-box.xml", { responseType: "text"}, function (req) {
 });
 </script>
 
-入力ボックスを配置し、入力ボックス内に変更が発生した場合、"value"プロパティに設定します。  
-このコンポーネントは"draw-view"内で使用されます。
+入力ボックスを配置し、入力ボックス内に変更が発生した場合、*value*プロパティに設定します。  
+このコンポーネントは*draw-view*内で使用されます。
 
 
 <h2 id="draw-title">draw</h2>
@@ -81,34 +81,34 @@ flexo.ez_xhr("draw_app/draw.xml", { responseType: "text"}, function (req) {
 <property name="linejoin" value="round"/>
 <property name="linecap" value="round"/>
 
-"width" / "height" / "size" / "color" / "linestyle"を*property*として追加しました。  
-"width"と"height"は、*canvas*のサイズを上位コンポーネントから指定出来るようにするために追加しています。  
-"size"は描画時の線の太さ、"color"は描画時の線の色を指定するためのプロパティです。  
-"linejoin"および"linecap"は描画時の線の種類を指定するためのプロパティです。  
-"width" / "height" / "size"は数値を設定するため、型を指定するために、*as*に"number"を設定しています。  
+*width* / *height* / *size* / *color* / *linestyle*を<tt>property</tt>として追加しました。  
+*width*と*height*は、<tt>canvas</tt>のサイズを上位コンポーネントから指定出来るようにするために追加しています。  
+*size*は描画時の線の太さ、*color*は描画時の線の色を指定するためのプロパティです。  
+*linejoin*および*linecap*は描画時の線の種類を指定するためのプロパティです。  
+*width* / *height* / *size*は数値を設定するため、型を指定するために、<tt>as</tt>に*number*を設定しています。  
 
-追加したプロパティに対しても、*watch*要素を使って、監視処理を記載します。  
+追加したプロパティに対しても、<tt>watch</tt>要素を使って、監視処理を記載します。  
 
 	<watch>
 	  <get instance="$self" property="color">
 	    this.properties.context.strokeStyle = value;
 	  </get>
 	</watch>
-"color"プロパティに変更があった場合、*canvas*のコンテキストが持つ*strokeStyle*に"value"を設定します。  
-"value"は色コードを指定されます。
+*color*プロパティに変更があった場合、<tt>canvas</tt>のコンテキストが持つ<tt>strokeStyle</tt>に*value*を設定します。  
+*value*は色コードを指定されます。
 
 	<watch>
 	  <get instance="$self" property="size">
 	    this.properties.context.lineWidth = value;
 	  </get>
 	</watch>
-"size"プロパティに変更があった場合、*lineWidth*(線幅)に"value"を設定します。  
-"value"は数値が指定されます。
+*size*プロパティに変更があった場合、<tt>lineWidth</tt>(線幅)に*value*を設定します。  
+*value*は数値が指定されます。
 
-"linejoin" / "linecap"も同様に*watch*要素を使用して、*canvas*のコンテキストに設定しています。
+*linejoin* / *linecap*も同様に<tt>watch</tt>要素を使用して、<tt>canvas</tt>のコンテキストに設定しています。
 ただし、これらは途中で変更されることはありません。（読み込み時のみの処理の正しいソリューションは別途説明する予定です。）
 
-mouseイベントに関する処理は特に変更ありませんが、モバイル端末向けにtouchイベントも取得出きるように、*get*要素(*touchstart* / *touchmove* / *touchend*)を追加しています。
+mouseイベントに関する処理は特に変更ありませんが、モバイル端末向けにtouchイベントも取得出きるように、<tt>get</tt>要素(<tt>touchstart</tt> / <tt>touchmove</tt> / <tt>touchend</tt>)を追加しています。
 
 
 <h2 id="draw-view-title">draw-view</h2>
@@ -124,11 +124,12 @@ flexo.ez_xhr("draw_app/draw-view.xml", { responseType: "text"}, function (req) {
 });
 </script>
 
-プロパティは"draw-vew"コンポーネント内で使用する"color"と"size"のみ定義します。
-
-*view*では、用意した外部コンポーネントを使用して、アプリケーションとしてのレイアウトを決定します。  
+プロパティは*draw-vew*コンポーネント内で使用する*color*と*size*のみ定義します。
+<br>
+<br>
+<tt>view</tt>では、用意した外部コンポーネントを使用して、アプリケーションとしてのレイアウトを決定します。  
 タイトル、ラベル+入力ボックス(線色、線サイズ)、描画エリアを配置しています。
-それぞれ*html*要素を使用しているため、基本的な記述方法はHTMLのソースコードを書く場合と同じになります。  
+それぞれ<tt>html</tt>要素を使用しているため、基本的な記述方法はHTMLのソースコードを書く場合と同じになります。  
 
 このコンポーネントでは、入力ボックスに入力された値を描画コンポーネントに引き渡すための処理をしています。
 
@@ -136,10 +137,13 @@ flexo.ez_xhr("draw_app/draw-view.xml", { responseType: "text"}, function (req) {
 	  <get instance="color" property="value"/>
 	  <set instance="draw" property="color"/>
 	</watch>
-*instance*には、*view*内で読み込んだ*component*の*id*を指定します。
-つまり、*get*要素では*id*が"color"であるコンポーネントの"value"プロパティを取得します。  
-そして、*set*要素では*get*要素で取得した値を*id*が"draw"のコンポートネントの"color"プロパティに受け渡します。  
-"size"に関しても同様に処理を追加しています。
+
+<br>
+<br>
+この<tt>instance</tt>には、<tt>view</tt>内で読み込んだ<tt>component</tt>の<tt>id</tt>を指定します。
+つまり、<tt>get</tt>要素では<tt>id</tt>が*color*であるコンポーネントの*value*プロパティを取得します。  
+そして、<tt>set</tt>要素では<tt>get</tt>要素で取得した値を<tt>id</tt>が*draw*のコンポートネントの*color*プロパティに受け渡します。  
+*size*に関しても同様に処理を追加しています。
 
 上記の通り、3つのコンポーネントを組み合わせることにより、描画アプリケーションを組み上げることが出来ます。  
 これ以外にも、コントロールパネル用のコンポーネントなどを別途作成し、自由自在にカスタマイズすることが可能になります。

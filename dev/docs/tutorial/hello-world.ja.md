@@ -21,12 +21,12 @@ flexo.ez_xhr("hello-world.xml", { responseType: "text" }, function (req) {
 </script>
 
 HTMLを使用して表示するため、HTMLの要素には"html:"のようにネームスペースを明記する必要があります。  
-ネームスペースが明記されていない*component*や*view*はBender独自の要素です。  
+ネームスペースが明記されていない<tt>component</tt>や<tt>view</tt>はBender独自の要素です。  
 HTMLの他にSVGなども利用することが可能です。その場合はXMLNSでネームスペースを宣言することを忘れないでください。  
 
 ※ Bender要素の詳細に関しては[API Reference](../reference/reference.html)を参照してください。
 
-上記のコードを記述し、ファイル名を"hello-world.xml"として保存します。
+上記のコードを記述し、ファイル名を*hello-world.xml*として保存します。
 
 チュートリアルの基本編では、作成したBenderアプリケーションを実行する際に、*run.html*を使用します。
 *run.html*はBenderが提供する基本的なBenderランタイムです。
@@ -35,7 +35,7 @@ HTMLの他にSVGなども利用することが可能です。その場合はXMLN
 
 を、ブラウザから実行します。
 
-*href*には*run.html*からの相対パスでBenderアプリケーションを指定します。
+<tt>href</tt>には*run.html*からの相対パスでBenderアプリケーションを指定します。
 
 > __補足__
 >
