@@ -45,7 +45,7 @@
             Julien Quint, <a href="http://igel.co.jp/">IGEL Co., Ltd.</a>
           </p>
           <p class="date">
-            Version 0.8, 8 February 2013
+            Version 0.8, 12 February 2013
           </p>
         </header>
 
@@ -132,42 +132,158 @@
             It provides basic functionality for component loading and rendering,
             as well as convenience methods to support the runtime and Bender
             applications.
-            It also runs the different runtime cycles as described below.
+            It also runs the different runtime update sequences as described
+            below.
           </p>
         </section>
 
         <section>
-          <h2>Rendering a Bender component in host document</h2>
+          <h2>Rendering a Bender component in a host document</h2>
           <p>
             In a DOM-based runtime, a component is rendered by creating a
             document fragment, and inserting it in the tree of the host
             document.
             The <strong>target</strong> of a component is the insertion point
-            for a fragment
+            for such a fragment.
+            It is defined by a <em>parent element</em> and an optional
+            <em>reference node</em>, which must be a child of the parent
+            element if present.
+            The document fragment is inserted as a child of the parent element,
+            before the reference node if it is defined, or as the last child
+            otherwise.
           </p>
         </section>
 
         <section>
-          <h2>Runtime cycles</h2>
+          <h2>Runtime update sequences</h2>
           <section>
-            <h3>The rendering cycle</h3>
             <p>
-              The rendering cycle is the execution of the rendering process
-              for components that have been added to the Bender tree but have
-              not been rendered yet.
+              The DOM-based runtime operates by first creating one or more
+              contexts as described above.
+              Once a context becomes available, <em>requests</em> can be made
+              to perform operations in that context.
+              The runtime maintains a queue of requests so that they can be
+              prioritized (<em>e.g.</em>, as much of a component should be
+              constructed before it is rendered.)
+              This request mechanism is transparent to the author: no explicit
+              “request” needs to be made to the runtime, but simple calls to the
+              API, such as creating an element, setting a property, &amp;c.
+            </p>
+            <p>
+              It is however useful to describe the handling of requests to
+              better define the semantics of Bender.
+              A batch of requests is processed in an <em>update sequence</em>.
+              While an update sequence is being executed, all new requests are
+              queued and will be processed in the next sequence (with the
+              exception of the internal update sequence as describe below.)
+            </p>
+            <ol>
+              <li>
+                Initialize a request queue <em>Q</em>.
+              </li>
+              <li>
+                When a request is made, add it to <em>Q</em> and set a timer
+                <em>T</em>.
+              </li>
+              <li>
+                Additional requests made before <em>T</em> expires are added to
+                <em>Q</em>.
+              </li>
+              <li>
+                When <em>T</em> expires, initialize a new request queue
+                <em>Q'</em>.
+                Unless otherwise noted, new requests are now added to
+                <em>Q’</em>, setting a timer <em>T’</em>, which will not expire
+                before all requests from <em>Q</em> have been processed.
+              </li>
+              <li>
+                Process requests from <em>Q</em>.
+                <ol style="list-style-type: lower-roman">
+                  <li>
+                    Process all <em>explicit update</em> requests,
+                    <em>i.e.</em>, requests made explicitely through the
+                    Javascript API (see the explicit updates sequence below.)
+                  </li>
+                  <li>
+                    Process all <em>rendering update</em> requests,
+                    <em>i.e.</em>, render components that have been created or
+                    added in the previous step (see the rendering sequence
+                    below.)
+                  </li>
+                  <li>
+                    Process all <em>implicit update</em> requests,
+                    <em>i.e.</em>, requests resulting from changes made in the
+                    previous steps and from component watches (see the implicit
+                    updates sequence below.)
+                  </li>
+                </ol>
+              </li>
+              <li>
+                All requests from <em>Q</em> have been processed, so <em>Q</em>
+                is replaced with <em>Q’</em>.
+                <ol style="list-style-type: lower-roman">
+                  <li>
+                    If <em>T’</em> was not set, go back to step 2.
+                  </li>
+                  <li>
+                    If <em>T’</em> was set (<em>i.e.</em>, <em>Q’</em> is not
+                    empty), replace the expired <em>T</em> with <em>T’</em>,
+                    which may now expire.
+                    Go back to step 3.
+                  </li>
+                </ol>
+              </li>
+            </ol>
+          </section>
+          <section>
+            <h3>The explicit updates sequence</h3>
+            <p>
+              An <strong>explicit update</strong> is a made through the
+              Javascript API.
+              For instance, creating components programmatically and adding them
+              to a context generate explicit update requests.
+              Setting a property on a component through Javascript is another
+              example of explicit update request.
+            </p>
+            <p>
+              An explicit update will most likely create new update requests as
+              a side-effect.
+              These requests are added to the queue <em>Q</em> so that they are
+              processed in the same batch of update sequences.
+              Adding a new component will create a rendering update, so that the
+              component is rendered as soon as possible.
+              Modifying the DOM tree or setting a property of a rendered
+              component will generate implicit update requests.
             </p>
           </section>
           <section>
-            <h3>The dataflow cycle</h3>
+            <h3>The rendering updates sequence</h3>
+            <p>
+              Components that have not been rendered yet are now rendered,
+              using the current DOM content for the component as set through
+              the previously processed explicit updates.
+              This generates a <code>@rendered</code> event which may cause
+              implicit updates.
+            </p>
           </section>
           <section>
-            <h3>The update cycle</h3>
+            <h3>The implicit update sequence</h3>
             <p>
-              
+              An <strong>implicit update</strong> is an update that needs to be
+              made in order to maintain the consistency of the running
+              application.
+              As the name implies, these updates are not made explicitely by the
+              author, but by the runtime itself as a side-effect of a previous
+              update, or as result of a watch being activated.
+            </p>
+            <p>
+              An implicit update may modify the rendering of a component.
+              This differs from a rendering update in that an
+              <code>@update</code> event is generated rather than a
+              <code>@rendered</code> event.
             </p>
           </section>
         </section>
-
       </div>
     </div>
   </div>
