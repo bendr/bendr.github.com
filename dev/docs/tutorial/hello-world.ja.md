@@ -34,7 +34,8 @@ HTMLの他にSVGなども利用することが可能です。その場合はXMLN
 	  http://[server_address]/bender/run.html?href=[work_directory]/hello-world.xml
 
 を、ブラウザから実行します。
-
+<br/>
+<br/>
 <tt>href</tt>には*run.html*からの相対パスでBenderアプリケーションを指定します。
 
 > __補足__
