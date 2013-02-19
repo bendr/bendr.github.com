@@ -120,11 +120,6 @@
         </optional>
       </element>
     </define>
-    <define name="getter">
-      <element name="getter">
-        <ref name="get-set-value"/>
-      </element>
-    </define>
     <define name="get-set-value">
       <choice>
         <ref name="value"/>
@@ -164,14 +159,9 @@
         <optional>
           <ref name="value"/>
         </optional>
-        <interleave>
-          <optional>
-            <ref name="getter"/>
-          </optional>
-          <optional>
-            <ref name="setter"/>
-          </optional>
-        </interleave>
+        <optional>
+          <text/>
+        </optional>
       </element>
     </define>
     <define name="set">
@@ -184,11 +174,6 @@
         <optional>
           <ref name="get-set-value"/>
         </optional>
-      </element>
-    </define>
-    <define name="setter">
-      <element name="setter">
-        <ref name="get-set-value"/>
       </element>
     </define>
     <define name="set-attr">
@@ -257,7 +242,7 @@
     </define>
     <define name="component-ref">
       <attribute name="component">
-        <data type="IDREF"/>
+        <data type="token"/>
       </attribute>
     </define>
     <define name="delegate">
@@ -310,7 +295,7 @@
     </define>
     <define name="view-ref">
       <attribute name="view">
-        <data type="IDREF"/>
+        <data type="token"/>
       </attribute>
     </define>
     <define name="value">

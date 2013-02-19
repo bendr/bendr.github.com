@@ -179,19 +179,24 @@
             </p>
             <ol>
               <li>
-                Initialize a request queue <em>Q</em>.
+                Create a request queue <em>Q</em>.
               </li>
               <li>
                 When a request is made, add it to <em>Q</em> and set a timer
                 <em>T</em>.
+                This specification leaves the specifics of timer expiry to
+                implementations.
+                For instance, the reference Javascript implementation is
+                single-threaded and simply sets a 0-length timer so that
+                request processing will begin when the current thread is done
+                running.
               </li>
               <li>
                 Additional requests made before <em>T</em> expires are added to
                 <em>Q</em>.
               </li>
               <li>
-                When <em>T</em> expires, initialize a new request queue
-                <em>Q'</em>.
+                When <em>T</em> expires, create a new request queue <em>Q'</em>.
                 Unless otherwise noted, new requests are now added to
                 <em>Q’</em>, setting a timer <em>T’</em>, which will not expire
                 before all requests from <em>Q</em> have been processed.
@@ -281,12 +286,16 @@
               This differs from a rendering update in that an
               <code>@update</code> event is generated rather than a
               <code>@rendered</code> event.
+              Because a component is rendered only once, but see multiple
+              updates even in the same update sequence, <code>@update</code>
+              events are consolidated and sent only once per sequence.
             </p>
           </section>
         </section>
       </div>
     </div>
   </div>
+
   <script src="../../flexo.js"></script>
   <script src="../../bender.js"></script>
   <script>
