@@ -59,58 +59,63 @@
     graphical user interfaces</h1>
 <h2>XML grammar and Javascript API specification</h2></hgroup><p class="creator">Julien Quint, <a href="http://igel.co.jp/">IGEL Co.,
       Ltd.</a></p>
-<p class="date">Version 0.8, 19 February 2013</p></header><nav id="toc"><h2>Table of contents</h2>
+<p class="date">Version 0.8, 2 March 2013</p></header><nav id="toc"><h2>Table of contents</h2>
 <ul>
-<li><a href="#idp353504">1 Introduction</a></li>
 <li>
-<a href="#idp360800">2 Bender runtimes</a><ul>
-<li><a href="#idp361712">2.1 DOM-based and other runtimes</a></li>
-<li><a href="#idp374464">2.2 Rendering a Bender component in a host document</a></li>
-<li><a href="#idp377440">2.3 Runtime update sequences</a></li>
+<a href="#idp353504">1 Introduction</a><ul>
+<li><a href="#idp354480">1.1 About this document</a></li>
+<li><a href="#idp361456">1.2 Bender in a nutshell</a></li>
 </ul>
 </li>
 <li>
-<a href="#idp410000">3 Document structure</a><ul>
-<li><a href="#idp411808">3.1 The Bender namespace URI</a></li>
-<li><a href="#idp415136">3.2 Document element</a></li>
-<li><a href="#idp417136">3.3 Relax NG grammar and terminology</a></li>
+<a href="#idp402128">2 Bender runtimes</a><ul>
+<li><a href="#idp403040">2.1 DOM-based and other runtimes</a></li>
+<li><a href="#idp416320">2.2 Rendering a Bender component in a host document</a></li>
+<li><a href="#idp419296">2.3 Runtime update sequences</a></li>
 </ul>
 </li>
 <li>
-<a href="#idp431504">4 Introduction to the Bender Javascript API</a><ul>
-<li><a href="#idp433600">4.1 The Bender runtime</a></li>
-<li><a href="#idp439824">4.2 The Bender context</a></li>
-<li><a href="#idp459872">4.3 The Bender DOM</a></li>
+<a href="#idp452208">3 Document structure</a><ul>
+<li><a href="#idp454016">3.1 The Bender namespace URI</a></li>
+<li><a href="#idp457344">3.2 Document element</a></li>
+<li><a href="#idp459344">3.3 Relax NG grammar and terminology</a></li>
 </ul>
 </li>
 <li>
-<a href="#idp467872">5 Events</a><ul>
-<li><a href="#idp468784">5.1 Bender events</a></li>
+<a href="#idp473712">4 Introduction to the Bender Javascript API</a><ul>
+<li><a href="#idp475808">4.1 The Bender runtime</a></li>
+<li><a href="#idp489664">4.2 The Bender context</a></li>
+<li><a href="#idp502112">4.3 The Bender DOM</a></li>
+</ul>
+</li>
+<li>
+<a href="#idp510112">5 Events</a><ul>
+<li><a href="#idp511024">5.1 Bender events</a></li>
 <li><a href="#event-ready">5.2 The <code>@ready</code> event</a></li>
 <li><a href="#event-rendered">5.3 The <code>@rendered</code> event</a></li>
 <li><a href="#event-updated">5.4 The <code>@updated</code> event</a></li>
 </ul>
 </li>
 <li>
-<a href="#idp487920">6 Elements</a><ul>
+<a href="#idp530160">6 Elements</a><ul>
 <li><a href="#attribute">6.1 The <code>attribute</code> element</a></li>
 <li>
 <a href="#component">6.2 The <code>component</code> element</a><ul>
-<li><a href="#idp535232">6.2.1 The component as a container</a></li>
-<li><a href="#idp540992">6.2.2 Component prototype and inheritance</a></li>
-<li><a href="#idp545744">6.2.3 Component view and rendering</a></li>
-<li><a href="#idp553568">6.2.4 Component properties and watches</a></li>
-<li><a href="#idp570048">6.2.5 Component delegates</a></li>
+<li><a href="#idp577472">6.2.1 The component as a container</a></li>
+<li><a href="#idp583232">6.2.2 Component prototype and inheritance</a></li>
+<li><a href="#idp587984">6.2.3 Component view and rendering</a></li>
+<li><a href="#idp595808">6.2.4 Component properties and watches</a></li>
+<li><a href="#idp612288">6.2.5 Component delegates</a></li>
 </ul>
 </li>
 <li><a href="#content">6.3 The <code>content</code> element</a></li>
 <li><a href="#foreign-view-content">6.4 Foreign view content</a></li>
 <li>
 <a href="#get">6.5 The <code>get</code> element</a><ul>
-<li><a href="#idp643328">6.5.1 Watch inputs</a></li>
-<li><a href="#idp648288">6.5.2 Bender events</a></li>
-<li><a href="#idp649072">6.5.3 DOM events</a></li>
-<li><a href="#idp649856">6.5.4 Properties</a></li>
+<li><a href="#idp685568">6.5.1 Watch inputs</a></li>
+<li><a href="#idp690528">6.5.2 Bender events</a></li>
+<li><a href="#idp691312">6.5.3 DOM events</a></li>
+<li><a href="#idp692096">6.5.4 Properties</a></li>
 </ul>
 </li>
 <li><a href="#link">6.6 The <code>link</code> element</a></li>
@@ -122,7 +127,7 @@
 </ul>
 </li>
 <li>
-<a href="#idp724416">7 Attributes</a><ul>
+<a href="#idp766656">7 Attributes</a><ul>
 <li><a href="#as">7.1 The <code>as</code> attribute</a></li>
 <li><a href="#attr">7.2 The <code>attr</code> attribute</a></li>
 <li><a href="#component-ref">7.3 The <code>component</code> attribute</a></li>
@@ -143,27 +148,120 @@
 </li>
 </ul></nav><section id="idp353504"><h2>1 Introduction</h2>
 <section class="longdesc">
-      <p>
-        This specification defines the XML syntax, Javascript API, and
-        informal semantics of the Bender framework.
-        Bender is an experimental framework for client-side Web application
-        authoring.
-        Bender is <strong>declarative</strong>, building on existing
-        declarative languages such as <a href="http://www.w3.org/html/wg/drafts/html/master/Overview.html">HTML</a>,
-        <a href="http://www.w3.org/TR/SVG/">SVG</a> and
-        <a href="http://www.w3.org/TR/CSS2/">CSS</a> to describe the
-        <strong>layout</strong>, <strong>structure</strong> as well as
-        the <strong>logic</strong> of the application.
-        A Bender application <em>description</em> can be serialized to XML
-        following the syntax described in this specification.
-        Such a description can then be <em>rendered</em> by a
-        <em>runtime</em> hosted by an application such as a Web browser.
-        To the end user, a Bender application looks and behaves just like any
-        other Web application.
-      </p>
-    </section></section><section id="idp360800"><h2>2 Bender runtimes</h2>
+      <section id="idp354480"><h3>1.1 About this document</h3>
+<p>
+          This specification defines the XML syntax, Javascript API, and
+          informal semantics of the Bender framework.
+          Bender is an experimental framework for client-side Web application
+          authoring.
+          Bender is <strong>declarative</strong>, building on existing
+          declarative languages such as <a href="http://www.w3.org/html/wg/drafts/html/master/Overview.html">HTML</a>,
+          <a href="http://www.w3.org/TR/SVG/">SVG</a> and
+          <a href="http://www.w3.org/TR/CSS2/">CSS</a> to describe the
+          <strong>layout</strong>, <strong>structure</strong> as well as
+          the <strong>logic</strong> of the application.
+          A Bender application <em>description</em> can be serialized to XML
+          following the syntax described in this specification.
+          Such a description can then be <em>rendered</em> by a
+          <em>runtime</em> hosted by an application such as a Web browser.
+          To the end user, a Bender application looks and behaves just like any
+          other Web application.
+        </p></section>
+      <section id="idp361456"><h3>1.2 Bender in a nutshell</h3>
+<p>
+          In its pre-release state, Bender is purposefully minimalistic.
+          The aim is to build a small but extensible core of functionality that
+          will be added to in future versions to improve expressivity and make
+          applications and components easier to author.
+          The current features of Bender are as follows.
+        </p>
+<ul>
+          <li>
+            The <a class="elem" href="#component">component</a> element is used to describe the
+            building blocks of a Bender application.
+          </li>
+          <li>
+            The <a class="elem" href="#property">property</a> element is used to describe properties
+            of components, which have a name and a value that can be used to
+            parametrize the component and track its state.
+          </li>
+          <li>
+            The <a class="elem" href="#view">view</a> element is used to describe the rendering
+            of the component, using markup such as HTML and SVG, and CSS
+            styling.
+          </li>
+          <li>
+            The <a class="elem" href="#link">link</a> element is used to include external
+            script and stylesheet resources.
+          </li>
+          <li>
+            The <a class="elem" href="#attribute">attribute</a> and <a class="elem" href="#text">text</a> elements
+            can appear in the view of a component to insert property values in
+            the rendering of the component.
+          </li>
+          <li>
+            Components can receive and generate <em>custom events</em>, as
+            well as regular DOM events from the browser in which they are
+            rendered.
+          </li>
+          <li>
+            The <a class="elem" href="#watch">watch</a> element describres how a component reacts
+            to event notifications and property changes.
+          </li>
+          <li>
+            The <a class="elem" href="#get">get</a> elements inside a <a class="elem" href="#watch">watch</a>
+            describe which events or properties the component is monitoring.
+          </li>
+          <li>
+            The <a class="elem" href="#set">set</a> elements inside a <a class="elem" href="#watch">watch</a>
+            describe what happens when an event notification is received or a
+            watch property has changes, such as modifying another property
+            or sending a new event notification.
+          </li>
+          <li>
+            A Bender component can <em>inherit</em> the view, properties and
+            watches of a <em>prototype</em> component.
+            (This inheritance scheme will be familiar to Javascript
+            programmers.)
+            The derived component can add its new properties and watches; its
+            property values can be redefined.
+            The view behaves slightly differently, in that the derived
+            component's view will be rendered <em>inside</em> the
+            prototype's view; the <a class="elem" href="#content">content</a> element is used to
+            provide a location for derived components to extend their
+            prototype's view.
+          </li>
+        </ul>
+<p>
+          This document describes in detail the syntax and semantics of the
+          aforementioned elements, as well as their properties.
+          The mechanisms for rendering <a class="elem" href="#view">view</a>s and <a class="elem" href="#watch">watch</a>es is also described in detail.
+        </p>
+<p>
+          Below is a simple example that shows most of the above features.
+          It is followed by a line-by-line explanation.
+        </p>
+<blockquote>
+          <pre><span class="line-no">1</span>  &lt;<a class="elem" href="#component">component</a> xmlns="http://bender.igel.co.jp"&gt;
+<span class="line-no">2</span>    &lt;<a class="elem" href="#view">view</a>&gt;
+<span class="line-no">3</span>      &lt;<a class="elem" href="#component">component</a> <a class="attr" href="#href-component">href</a>="#hello" what="world"/&gt;
+<span class="line-no">4</span>      &lt;<a class="elem" href="#component">component</a> <a class="attr" href="#href-component">href</a>="#hello" what="世界"/&gt;
+<span class="line-no">5</span>    &lt;/<a class="elem" href="#view">view</a>&gt;
+<span class="line-no">6</span>    &lt;<a class="elem" href="#component">component</a> <a class="attr" href="#id">id</a>="hello"&gt;
+<span class="line-no">7</span>      &lt;<a class="elem" href="#property">property</a> <a class="attr" href="#property-name">name</a>="what"/&gt;
+<span class="line-no">8</span>      &lt;<a class="elem" href="#view">view</a> xmlns:html="http://www.w3.org/1999/xhtml"&gt;
+<span class="line-no">9</span>        &lt;html:p&gt;Hello, &lt;<a class="elem" href="#text">text</a> <a class="attr" href="#id">id</a>="t"/&gt;!&lt;/html:p&gt;
+<span class="line-no">10</span>      &lt;/<a class="elem" href="#view">view</a>&gt;
+<span class="line-no">11</span>      &lt;<a class="elem" href="#watch">watch</a>&gt;
+<span class="line-no">12</span>        &lt;<a class="elem" href="#get">get</a> <a class="attr" href="#property-ref">property</a>="what"/&gt;
+<span class="line-no">13</span>        &lt;<a class="elem" href="#set">set</a> <a class="attr" href="#view-ref">view</a>="t"/&gt;
+<span class="line-no">14</span>      &lt;/<a class="elem" href="#watch">watch</a>&gt;
+<span class="line-no">15</span>    &lt;/<a class="elem" href="#component">component</a>&gt;
+<span class="line-no">16</span>  &lt;/<a class="elem" href="#component">component</a>&gt;</pre>
+        </blockquote></section>
+    </section></section><section id="idp402128"><h2>2 Bender runtimes</h2>
 <section class="longdesc">
-      <section id="idp361712"><h3>2.1 DOM-based and other runtimes</h3>
+      <section id="idp403040"><h3>2.1 DOM-based and other runtimes</h3>
 <p>
           There can be different types of runtimes for Bender, such as
           <em>DOM-based</em> runtimes, <em>static</em> runtimes or
@@ -236,7 +334,7 @@
           a HTML5 canvas element, using a 2D context, or WebGL
           for a 3D rendering.
         </p></section>
-      <section id="idp374464"><h3>2.2 Rendering a Bender component in a host document</h3>
+      <section id="idp416320"><h3>2.2 Rendering a Bender component in a host document</h3>
 <p>
           In a DOM-based runtime, a component is rendered by creating a document
           fragment, and inserting it in the tree of the host document.
@@ -249,7 +347,7 @@
           before the reference node if it is defined, or as the last child
           otherwise.
         </p></section>
-      <section id="idp377440"><h3>2.3 Runtime update sequences</h3>
+      <section id="idp419296"><h3>2.3 Runtime update sequences</h3>
 <p>
           Once the runtime has started, <em>requests</em> can be made to
           perform updates.
@@ -336,7 +434,7 @@
             </ol>
           </li>
         </ol>
-<section id="idp400080"><h4>2.3.1 The explicit updates sequence</h4>
+<section id="idp442288"><h4>2.3.1 The explicit updates sequence</h4>
 <p>
             An <strong>explicit update</strong> is a made through the
             Javascript API.
@@ -354,14 +452,14 @@
             component is rendered as soon as possible.
             Modifying the DOM tree or setting a property of a rendered
             component will generate implicit update requests.
-          </p></section><section id="idp403328"><h4>2.3.2 The rendering updates sequence</h4>
+          </p></section><section id="idp445536"><h4>2.3.2 The rendering updates sequence</h4>
 <p>
             Components that have not been rendered yet are now rendered,
             using the current DOM content for the component as set through
             the previously processed explicit updates.
             This generates a <a class="event" href="#event-rendered">@rendered</a> event which may
             cause implicit updates.
-          </p></section><section id="idp405312"><h4>2.3.3 The implicit update sequence</h4>
+          </p></section><section id="idp447520"><h4>2.3.3 The implicit update sequence</h4>
 <p>
             An <strong>implicit update</strong> is an update that needs to be
             made in order to maintain the consistency of the running
@@ -379,9 +477,9 @@
             updates even in the same update sequence, <a class="event" href="#event-updated">@updated</a> events are consolidated and sent only once per
             sequence.
           </p></section></section>
-    </section></section><section id="idp410000"><h2>3 Document structure</h2>
+    </section></section><section id="idp452208"><h2>3 Document structure</h2>
 <section class="longdesc">
-      <section id="idp411808"><h3>3.1 The Bender namespace URI</h3>
+      <section id="idp454016"><h3>3.1 The Bender namespace URI</h3>
 <p>
           All Bender elements are in the <span class="nsuri">http://bender.igel.co.jp</span> namespace URI.
         </p>
@@ -394,13 +492,13 @@
           <span class="nsuri">http://www.w3.org/1999/xhtml</span> is used to
           identify HTML content.
         </p></section>
-      <section id="idp415136"><h3>3.2 Document element</h3>
+      <section id="idp457344"><h3>3.2 Document element</h3>
 <p>A Bender XML document always describes a component; therefore, the
           document element is a <a class="elem" href="#component">component</a> element. Since almost
           everything in Bender is a component, a document may define a single
           reusable widget-like component, a complete application, or a library
           of components.</p></section>
-      <section id="idp417136"><h3>3.3 Relax NG grammar and terminology</h3>
+      <section id="idp459344"><h3>3.3 Relax NG grammar and terminology</h3>
 <p>
           This specification includes the complete <a href="bender.rng">Relax
             NG grammar</a> for checking the validity of Bender XML documents.
@@ -459,13 +557,13 @@
             tutorial</a> for an introduction to and more information about
           Relax NG.
         </p></section>
-    </section></section><section id="idp431504"><h2>4 Introduction to the Bender Javascript API</h2>
+    </section></section><section id="idp473712"><h2>4 Introduction to the Bender Javascript API</h2>
 <section class="longdesc">
       <p>
         The Javascript API for Bender is described using a syntax similar to
         <a href="http://www.w3.org/TR/WebIDL/">Web IDL</a>.
       </p>
-      <section id="idp433600"><h3>4.1 The Bender runtime</h3>
+      <section id="idp475808"><h3>4.1 The Bender runtime</h3>
 <p>
           In the reference implementation, the bender runtime is accessible
           through the <span class="keyword">window.bender</span> object.
@@ -473,6 +571,7 @@
 <section><p><em>Javascript API</em></p>
 <pre class="api">Interface <span class="idl-interface-def" id="interface-DOMRuntime">DOMRuntime</span> {
   Context <span class="idl-method-def" id="idl-DOMRuntime-create_context">create_context</span>(Document host?);
+  void <span class="idl-method-def" id="idl-DOMRuntime-render_component">render_component</span>(BenderComponentElement component, Element parent, Node ref?);
 }</pre>
 <p>
             This specification focuses on DOM-based runtimes.
@@ -483,8 +582,19 @@
               The context is created is created in the <code>host</code>
               document, which defaults to the document in which the runtime is
               executed.
+            </p>
+<p>
+              <a href="#idl-DOMRuntime-render_component" class="idl-method">render_component</a> adds the rendered nodes of
+              <code>component</code> to the element <code>parent</code>.
+              The parent element must be an element of the host document.
+              If the <code>reference</code> node is present, it must be a
+              child of <code>parent</code>.
+              The rendered nodes are added to <code>parent</code> before
+              <code>reference</code>, or as the last children of
+              <code>parent</code> if <code>reference</code> is not
+              specified.
             </p></section></section>
-      <section id="idp439824"><h3>4.2 The Bender context</h3>
+      <section id="idp489664"><h3>4.2 The Bender context</h3>
 <p>
           The Bender <strong>context</strong> is the entity in charge of
           managing the execution environment of Bender components.
@@ -497,23 +607,11 @@
 <section><p><em>Javascript API</em></p>
 <pre class="api">Interface <span class="idl-interface-def" id="interface-Context">Context</span> {
   readonly attribute Document <span class="idl-attribute-def" id="idl-attribute-document">document</span>;
-  void <span class="idl-method-def" id="idl-Context-render_component">render_component</span>(BenderComponentElement component, Element parent, Node ref?);
   Element <span class="idl-method-def" id="idl-Context-$">$</span>(string name, dictionary&lt;string, any&gt; attrs?, ...);
 }</pre>
 <p>
               <a href="#idl-attribute-document" class="idl-attribute">document</a> is the host document for the context, as set
               by <a href="#idl-DOMRuntime-create_context" class="idl-method">create_context</a>.
-            </p>
-<p>
-              <a href="#idl-Context-render_component" class="idl-method">render_component</a> adds the rendered nodes of
-              <code>component</code> to the element <code>parent</code>.
-              The parent element must be an element of the host document.
-              If the <code>reference</code> node is present, it must be a
-              child of <code>parent</code>.
-              The rendered nodes are added to <code>parent</code> before
-              <code>reference</code>, or as the last children of
-              <code>parent</code> if <code>reference</code> is not
-              specified.
             </p>
 <p>
               <a href="#idl-Context-%24" class="idl-method">$</a> is a utility method to create new elements in the
@@ -536,7 +634,7 @@
               or arrays, the contents of which are added as contents of the
               new element.
             </p></section></section>
-      <section id="idp459872"><h3>4.3 The Bender DOM</h3>
+      <section id="idp502112"><h3>4.3 The Bender DOM</h3>
 <p>
           The Bender DOM extends the host DOM by providing additional attributes
           and methods to Bender elements.
@@ -564,9 +662,9 @@
               <a href="#idl-attribute-context" class="idl-attribute">context</a> points to the context in which this element
               was created.
             </p></section></section>
-    </section></section><section id="idp467872"><h2>5 Events</h2>
+    </section></section><section id="idp510112"><h2>5 Events</h2>
 <section class="longdesc">
-      <section id="idp468784"><h3>5.1 Bender events</h3>
+      <section id="idp511024"><h3>5.1 Bender events</h3>
 <p>
           Bender <strong>events</strong> are Bender-specific events similar
           to DOM events.
@@ -622,7 +720,7 @@
           seen some updates of their properties and/or view during the last
           update sequence.
         </p></section>
-    </section></section><section id="idp487920"><h2>6 Elements</h2>
+    </section></section><section id="idp530160"><h2>6 Elements</h2>
 <section id="attribute"><h3>6.1 The <code>attribute</code> element</h3>
 <p class="desc">Output an attribute node on rendering.</p>
 <section class="spec"><p>Child of:<ul><li><a href="#foreign-view-content"><em>foreign view content</em></a></li></ul></p>
@@ -757,7 +855,7 @@
           functionality that is described by its <em>prototype</em>,
           <em>view</em>, <em>properties</em>, and
           <em>watches</em>.</p>
-        <section id="idp535232"><h4>6.2.1 The component as a container</h4>
+        <section id="idp577472"><h4>6.2.1 The component as a container</h4>
 <p>Components are identified by their URI. This specification only
             describe the identification of a component by its URL; that is, the
             URL of its document with the addition of the value of its <a class="attr" href="#id">id</a> attribute as a fragment identifier. A component that
@@ -775,7 +873,7 @@
             scheme for identifying components with URIs that do not depend on
             the specific location of documents, <em>e.g.</em>, using search
             paths for known component libraries.</p></section>
-        <section id="idp540992"><h4>6.2.2 Component prototype and inheritance</h4>
+        <section id="idp583232"><h4>6.2.2 Component prototype and inheritance</h4>
 <p>Bender implements <strong>inheritance</strong> through
             <em>prototypes</em> rather than classes, following Javascript in
             this respect. A component may have another component as its
@@ -788,7 +886,7 @@
             It cannot contain a cycle; <em>i.e.</em>, a component cannot
             appear more than once in the prototype chain.
           </p></section>
-        <section id="idp545744"><h4>6.2.3 Component view and rendering</h4>
+        <section id="idp587984"><h4>6.2.3 Component view and rendering</h4>
 <p>
             The <a class="elem" href="#view">view</a> element defines the
             <strong>rendering</strong> of the component.
@@ -810,7 +908,7 @@
             element of the component will replace the descendant <a class="elem" href="#content">content</a> element its prototype’s view to extend it.
             If neither condition is met, then the component has no view.
           </p></section>
-        <section id="idp553568"><h4>6.2.4 Component properties and watches</h4>
+        <section id="idp595808"><h4>6.2.4 Component properties and watches</h4>
 <p>
             A component can be parametrized through the use of
             <em>properties</em>.
@@ -869,7 +967,7 @@
             elements.
             The order of definition of watches is not significant.
           </p></section>
-        <section id="idp570048"><h4>6.2.5 Component delegates</h4>
+        <section id="idp612288"><h4>6.2.5 Component delegates</h4>
 <p>
             The <em>delegate</em> of a component is an object that extends
             the Javascript API of the component.
@@ -1017,7 +1115,7 @@
 </ul>
 </li>
 </ul></p></section><section class="longdesc">
-        <section id="idp626016"><h3>6.4.1 Role of foreign content</h3>
+        <section id="idp668256"><h3>6.4.1 Role of foreign content</h3>
 <p>
             The view of a component may contain arbitrary markup.
             This markup is not interpreted by Bender and is passed <em>as
@@ -1037,7 +1135,7 @@
             as a child, as long as the view as a whole has only one such
             descendant element.
           </p></section>
-        <section id="idp630976"><h3>6.4.2 Rendering of foreign content</h3>
+        <section id="idp673216"><h3>6.4.2 Rendering of foreign content</h3>
 <p>
             A foreign element is rendered by creating a new element with the
             same qualified name in the target document.
@@ -1092,7 +1190,7 @@
 </ul>
         </li>
 </ul></p></section><section class="longdesc">
-        <section id="idp643328"><h4>6.5.1 Watch inputs</h4>
+        <section id="idp685568"><h4>6.5.1 Watch inputs</h4>
 <p>
             A <a class="elem" href="#get">get</a> element describe an <strong>input</strong> of a
             <a class="elem" href="#watch">watch</a>.
@@ -1105,9 +1203,9 @@
             the end of a dataflow cycle, at which point all active inputs become
             inactive.
           </p></section>
-        <section id="idp648288"><h4>6.5.2 Bender events</h4></section>
-        <section id="idp649072"><h4>6.5.3 DOM events</h4></section>
-        <section id="idp649856"><h4>6.5.4 Properties</h4></section>
+        <section id="idp690528"><h4>6.5.2 Bender events</h4></section>
+        <section id="idp691312"><h4>6.5.3 DOM events</h4></section>
+        <section id="idp692096"><h4>6.5.4 Properties</h4></section>
       </section></section><section id="link"><h3>6.6 The <code>link</code> element</h3>
 <p class="desc">Associate external resources with the component.</p>
 <section class="spec"><p>Child of:<ul><li><a href="#component">component</a></li></ul></p>
@@ -1331,7 +1429,7 @@
 <p>
             <a href="#idl-attribute-sets" class="idl-attribute">sets</a> is the list of the <a class="elem" href="#set">set</a>
             child elements in document order.
-          </p></section></section></section></section><section id="idp724416"><h2>7 Attributes</h2>
+          </p></section></section></section></section><section id="idp766656"><h2>7 Attributes</h2>
 <section id="as"><h3>7.1 The <code>as</code> attribute</h3>
 <p class="desc">How to parse a property value.</p>
 <section class="spec"><p>Attribute of:<ul><li><a href="#property">property</a></li></ul></p>

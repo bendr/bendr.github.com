@@ -120,3 +120,15 @@ code, pre, .keyword, .nsuri, .data-type, .idl-attribute, .idl-interface,
 .idl-attribute-def, .idl-interface-def, .idl-method-def {
   font-weight: bold;
 }
+
+.line-no {
+  display: inline-block;
+  background-color: #222;
+  color: white;
+  font-size: small;
+  font-weight: bold;
+  border-radius: 1em;
+  padding: 0.2em;
+  width: 1em;
+  text-align: center;
+}
