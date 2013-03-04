@@ -24,9 +24,6 @@
     <define name="component">
       <element name="component">
         <optional>
-          <ref name="delegate"/>
-        </optional>
-        <optional>
           <ref name="href-component"/>
         </optional>
         <optional>
@@ -36,7 +33,6 @@
           <attribute>
             <nsName ns="">
               <except>
-                <name>delegate</name>
                 <name>href</name>
                 <name>id</name>
               </except>
@@ -244,9 +240,6 @@
       <attribute name="component">
         <data type="token"/>
       </attribute>
-    </define>
-    <define name="delegate">
-      <attribute name="delegate"/>
     </define>
     <define name="dom-event">
       <attribute name="dom-event"/>

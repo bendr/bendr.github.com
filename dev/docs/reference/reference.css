@@ -125,10 +125,10 @@ code, pre, .keyword, .nsuri, .data-type, .idl-attribute, .idl-interface,
   display: inline-block;
   background-color: #222;
   color: white;
-  font-size: small;
-  font-weight: bold;
+  font-size: 0.7em;
   border-radius: 1em;
   padding: 0.2em;
   width: 1em;
+  height: 1em;
   text-align: center;
 }
