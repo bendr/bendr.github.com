@@ -13,7 +13,7 @@
     <div class="tiles">
 
       <div class="orange-bg" id="logo">
-        <a href="run.html?href=demo/logo.xml"></a>
+        <a href="dom/runtime.svg?href=test/logo-nobg.xml&sides=7&bgcolor=white&fgcolor=%23ff6a4d"></a>
       </div>
 
       <div class="text blue-bg">
@@ -38,7 +38,9 @@
         <div>
           <h2>Docs</h2>
           <ul>
-            <li><a href="docs/reference/reference.html">API Reference</a></li>
+            <li><a href="https://github.com/bendr/bender/blob/master/spec/data-model.md">Data Model</a></li>
+            <li><a href="https://github.com/bendr/bender/blob/master/spec/processing-model.md">Processing Model</a></li>
+            <li><a href="https://github.com/bendr/bender/blob/master/spec/bender.rng">RelaxNG Grammar</a></li>
             <li><a href="http://bender-framework.tumblr.com/tagged/english">Development log</a></li>
           </ul>
         </div>
@@ -63,14 +65,14 @@
       <div class="text peach-bg">
         <div>
           <ul>
-            <li><a href="run.html?href=demo/logo.xml">Bender logo</a></li>
-            <li><a href="run.html?href=demo/improved-draw-app/draw-view.xml">Drawing</a></li>
+            <li><a href="dom/runtime.html?href=test/sample.xml">Sample</a></li>
+            <li><a href="dom/runtime.svg?href=test/logos.xml">Four logos</a></li>
           </ul>
         </div>
       </div>
 
       <div class="text black-bg">
-        <a href="run.html?href=t/arrow.xml"></a>
+        <a href="dom/runtime.svg?href=test/arrow.xml"></a>
       </div>
 
       <div class="text red-bg">
@@ -84,10 +86,10 @@
         <div>
           <h3>Automated tests</h3>
           <ul>
-            <li><a href="test/flexo.html">Flexo</a>
-            (see <a href="flexo.js">flexo.js</a>)</li>
-            <li><a href="test/bender.html">Bender</a>
-            (see <a href="bender.js">bender.js</a>)</li>
+            <li><a href="http://romulusetrem.us/flexo/test/flexo.html">Flexo</a>
+            (see <a href="https://github.com/julienq/flexo/blob/master/flexo.js">flexo.js</a>)</li>
+            <li><a href="dom/test/bender.html">Bender</a>
+            (see <a href="https://github.com/bendr/bender/blob/master/dom/bender.js">bender.js</a>)</li>
             <li>All tests should pass</li>
           </ul>
         </div>
@@ -96,26 +98,23 @@
       <div class="text green-bg">
         <div>
           <ul>
-            <li><a href="run.html?href=t/hello.xml">t/hello.xml</a></li>
-            <li><a href="run.html?href=t/mix.xml">t/mix.xml</a></li>
-            <li><a href="run.html?href=t/attr.xml">t/attr.xml</a></li>
-            <li><a href="run.html?href=t/nest.xml">t/nest.xml</a></li>
-            <li><a href="run.html?href=t/a.xml">t/a.xml</a></li>
-            <li><a href="run.html?href=t/shelled.xml">t/shelled.xml</a></li>
+            <li><a href="dom/runtime.html?href=test/hello.xml">test/hello.xml</a></li>
+            <li><a href="dom/runtime.html?href=test/text-inputs.xml">test/text-inputs.xml</a></li>
+            <li><a href="dom/runtime.html?href=lib/button.xml">lib/button.xml</a></li>
           </ul>
         </div>
       </div>
 
       <div class="text black-bg">
-        <a href="run.html?href=t/arrow.xml"></a>
+        <a href="dom/runtime.svg?href=test/arrow.xml"></a>
       </div>
 
       <div class="text black-bg">
-        <a href="run.html?href=t/arrow.xml"></a>
+        <a href="dom/runtime.svg?href=test/arrow.xml"></a>
       </div>
 
       <div class="text black-bg">
-        <a href="run.html?href=t/arrow.xml"></a>
+        <a href="dom/runtime.svg?href=test/arrow.xml"></a>
       </div>
 
       <div class="text pink-bg">
@@ -136,20 +135,20 @@
     </div>
     </div>
 
-    <script src="flexo.js"></script>
-    <script src="bender.js"></script>
+    <script src="dom/flexo.js"></script>
+    <script src="dom/bender.js"></script>
     <script>
+
 "use strict";
 
-var context = bender.create_context();
-context.$("component", { href: "demo/logo.xml", sides: "7", fgcolor: "#ff6a4d",
-  bgcolor: "white" }).create_instance(document.querySelector("#logo a"));
+var env = bender.load_app(document.querySelector("#logo a"),
+  { href: "dom/test/logo-nobg.xml", sides: 7, fgcolor: "white",
+    bgcolor: "#ff6a4d" });
 
-var arrow_component = context.$("component", { href: "t/arrow.xml", r: "120",
-  "white-bg": "false" });
 Array.prototype.forEach.call(document.querySelectorAll(".black-bg a"),
   function (a) {
-    arrow_component.create_instance(a);
+    bender.load_app(a, { href: "dom/test/arrow.xml", r: 120,
+      "white-bg": false }, env);
   });
 
     </script>

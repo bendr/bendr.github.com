@@ -1,0 +1,33 @@
+<component xmlns="http://bender.igel.co.jp" id="text-input">
+  <link rel="stylesheet" href="lib.css"/>
+
+  <property name="enabled" as="boolean" value="true"/>
+  <property name="placeholder"/>
+  <property name="value"/>
+
+  <view xmlns:html="http://www.w3.org/1999/xhtml">
+    <html:input id="input" aria-role="textbox" class="text-input"/>
+  </view>
+
+  <watch>
+    <get property="enabled"/>
+    <set elem="input" property="readOnly" value="!input"/>
+  </watch>
+
+  <watch>
+    <get property="placeholder"/>
+    <set elem="input" attr="placeholder"/>
+  </watch>
+
+  <watch>
+    <get property="value"/>
+    <set elem="input" property="value"/>
+    <set elem="input" dom-event="change"/>
+  </watch>
+
+  <watch>
+    <get elem="input" dom-event="change"/>
+    <set property="value" value="input.target.value"/>
+  </watch>
+
+</component>
