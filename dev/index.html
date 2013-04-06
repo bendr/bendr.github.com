@@ -13,7 +13,7 @@
     <div class="tiles">
 
       <div class="orange-bg" id="logo">
-        <a href="dom/runtime.svg?href=test/logo-nobg.xml&sides=7&bgcolor=white&fgcolor=%23ff6a4d"></a>
+        <a href="dom/runtime.svg?href=test/logo.xml&sides=7&bgcolor=white&fgcolor=%23ff6a4d"></a>
       </div>
 
       <div class="text blue-bg">
@@ -66,7 +66,8 @@
         <div>
           <ul>
             <li><a href="dom/runtime.html?href=test/sample.xml">Sample</a></li>
-            <li><a href="dom/runtime.svg?href=test/logos.xml">Four logos</a></li>
+            <li><a href="dom/runtime.svg?href=test/logos.xml">Sixteen
+              logos</a></li>
           </ul>
         </div>
       </div>
@@ -142,7 +143,7 @@
 "use strict";
 
 var env = bender.load_app(document.querySelector("#logo a"),
-  { href: "dom/test/logo-nobg.xml", sides: 7, fgcolor: "white",
+  { href: "dom/test/logo.xml", sides: 7, fgcolor: "white",
     bgcolor: "#ff6a4d" });
 
 Array.prototype.forEach.call(document.querySelectorAll(".black-bg a"),
