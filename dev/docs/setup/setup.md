@@ -1,25 +1,33 @@
 ---
 layout: setup
-title: Bender Environement Setup 
+title: Bender Environement Setup
 ---
-#Build Bender applications development environment.
+#Setting up the Bender application development environment.
 
 -----
 
-Only two steps are required to create Bender application development environment.
+Follow these steps to create a Bender application development environment.
 
-##1. Download the source code.
-Download source code from the following URL and save it in arbitrary directory.
+##1. Download Bender
 
-  URL
-
-<br>
-##2. Prepare the Web server.
-Developer can use arbitrary Web server (e.g. Apache).
-If you have already installed and setup Web server, you have almost nothing to do.
-Only you have to do here, is prepare Web server and set up the server to be accessed from the downloaded source code.
+[Download Bender version 0.8](https://github.com/bendr/bender/archive/v0.8.zip) and unzip it into any directory.
 
 <br>
-After you have done above setup, please go to the tutorial page.
-The tutorial describes how to develop Web Application with Bender.
+##2. Prepare a Web server (optional)
+Since the Bender runtime uses XMLHttpRequest to load components and resources,
+you may want to serve the Bender runtime and components through a Web server.
+If you have already installed and set up a Web server, you only have to make
+sure the Bender directory setup in step 1 above is accessible.
 
+<br>
+##3. Install a RelaxNG validator (optional)
+
+Bender components are saved as XML and their syntax can be checked against a
+Relax NG grammar found in `spec/bender.rng`. You may want to install a Relax NG
+validator such as [Jing](http://www.thaiopensource.com/relaxng/jing.html) to
+validate your content.
+
+<br>
+After you have completed the setup above, please go to the [tutorial
+page](../tutorial/tutorial.html), which will get your started with Web
+application development with Bender.
