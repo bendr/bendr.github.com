@@ -5,15 +5,13 @@ title: Bender チュートリアル
 #Hello World!を表示する
 
 -----
-このチュートリアルで出来るアプリケーション : [Hello Worldの表示](../../run.html?href=docs/tutorial/hello-world.xml)
+このチュートリアルで出来るアプリケーション : [Hello Worldの表示](../../dom/runtime.html?href=../docs/tutorial/hello-world.xml)
 
 
 "Hello world!"を表示するには、以下の様にコードを記述します:
 
 <blockquote class="code">
 </blockquote>
-<script src="../../flexo.js">
-</script>
 <script>
 flexo.ez_xhr("hello-world.xml", { responseType: "text" }, function (req) {
   document.querySelector("blockquote").appendChild(flexo.$pre(req.response));
@@ -24,19 +22,21 @@ HTMLを使用して表示するため、HTMLの要素には"html:"のように�
 ネームスペースが明記されていない<tt>component</tt>や<tt>view</tt>はBender独自の要素です。  
 HTMLの他にSVGなども利用することが可能です。その場合はXMLNSでネームスペースを宣言することを忘れないでください。  
 
+<!--
 ※ Bender要素の詳細に関しては[API Reference](../reference/reference.html)を参照してください。
+-->
 
 上記のコードを記述し、ファイル名を*hello-world.xml*として保存します。
 
-チュートリアルの基本編では、作成したBenderアプリケーションを実行する際に、*run.html*を使用します。
-*run.html*はBenderが提供する基本的なBenderランタイムです。
+チュートリアルの基本編では、作成したBenderアプリケーションを実行する際に、*runtime.html*を使用します。
+*runtime.html*はBenderが提供する基本的なBenderランタイムです。
 
-	  http://[server_address]/bender/run.html?href=[work_directory]/hello-world.xml
+	  http://[server_address]/bender/runtime.html?href=[work_directory]/hello-world.xml
 
 を、ブラウザから実行します。
 <br/>
 <br/>
-<tt>href</tt>には*run.html*からの相対パスでBenderアプリケーションを指定します。
+<tt>href</tt>には*runtime.html*からの相対パスでBenderアプリケーションを指定します。
 
 > __補足__
 >
