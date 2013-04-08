@@ -46,3 +46,4 @@ Set your Bender application to *href* with relative path from `runtime.html`.
 > Also, Bender application in this Tutorial can be located in arbitrary
 > directory.
 
+In the [next step](external-component.md), we will use a component and react to user input.
