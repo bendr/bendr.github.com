@@ -5,7 +5,7 @@ title: Bender チュートリアル
 #外部コンポーネントを使う
 
 -----
-このチュートリアルで出来るアプリケーション : [ボタンでアラート表示](../../run.html?href=docs/tutorial/welcome.xml)
+このチュートリアルで出来るアプリケーション : [ボタンでアラート表示](../../dom/runtime.html?href=../docs/tutorial/welcome.xml)
 
 [Hello World.](./hello-world.ja.html)のページで作成したコードも1つのコンポーネントです。
 Benderは小さいコンポーネントを組み合わせて、大きなアプリケーションを作成することが出来ます。
@@ -16,8 +16,6 @@ Benderは小さいコンポーネントを組み合わせて、大きなアプ�
 
 <blockquote class="code">
 </blockquote>
-<script src="../../flexo.js">
-</script>
 <script>
 flexo.ez_xhr("welcome.xml", { responseType: "text" }, function (req) {
   document.querySelector("blockquote").appendChild(flexo.$pre(req.response));
@@ -26,7 +24,7 @@ flexo.ez_xhr("welcome.xml", { responseType: "text" }, function (req) {
 
 
 実行方法は、Hello World.の時と同じです。
-上記のソースコードを*welcome.xml*として保存し、*run.html*を使って実行してみて下さい。
+上記のソースコードを*welcome.xml*として保存し、*runtime.html*を使って実行してみて下さい。
 ラベルとグレーのボタンが表示されたかと思います。
 ボタンをクリックしてみると、アラートが表示されるので、試してみて下さい。
 <br>
@@ -38,7 +36,11 @@ Benderはボタン以外にも、いくつかのコントロールをコンポ�
 <br>
 <br>
 
-	<component id="thanks-button" href="button.xml">Thanks</component>
+     <component id="thanks-button" href="../../dom/lib/button.xml">
+       <view>
+         Thanks
+       </view>
+     </component>
 
 *button.xml*はボタン コンポーネントが定義されているXMLファイルです。
 <tt>component</tt>要素の<tt>href</tt>に外部コンポーネントのファイルを指定することで、ターゲットドキュメントに対して、コンポーネントを組み込みます。
