@@ -2,7 +2,7 @@
 layout: setup
 title: Bender Environement Setup
 ---
-#Setting up the Bender application development environment.
+#Setting up the Bender application development environment
 
 -----
 
