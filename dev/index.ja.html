@@ -13,7 +13,7 @@
     <div class="tiles">
 
       <div class="orange-bg" id="logo">
-        <a href="run.html?href=demo/logo.xml"></a>
+        <a href="dom/runtime.svg?href=test/logo.xml&sides=7&bgcolor=white&fgcolor=%23ff6a4d"></a>
       </div>
 
       <div class="text blue-bg">
@@ -72,7 +72,7 @@
       </div>
 
       <div class="text black-bg">
-        <a href="run.html?href=t/arrow.xml"></a>
+        <a href="dom/runtime.svg?href=test/arrow.xml"></a>
       </div>
 
       <div class="text red-bg">
@@ -109,15 +109,15 @@
       </div>
 
       <div class="text black-bg">
-        <a href="run.html?href=t/arrow.xml"></a>
+        <a href="dom/runtime.svg?href=test/arrow.xml"></a>
       </div>
 
       <div class="text black-bg">
-        <a href="run.html?href=t/arrow.xml"></a>
+        <a href="dom/runtime.svg?href=test/arrow.xml"></a>
       </div>
 
       <div class="text black-bg">
-        <a href="run.html?href=t/arrow.xml"></a>
+        <a href="dom/runtime.svg?href=test/arrow.xml"></a>
       </div>
 
       <div class="text pink-bg">
@@ -138,20 +138,20 @@
     </div>
     </div>
 
-    <script src="flexo.js"></script>
-    <script src="bender.js"></script>
+    <script src="dom/flexo.js"></script>
+    <script src="dom/bender.js"></script>
     <script>
+
 "use strict";
 
-var context = bender.create_context();
-context.$("component", { href: "demo/logo.xml", sides: "7", fgcolor: "#ff6a4d",
-  bgcolor: "white" }).create_instance(document.querySelector("#logo a"));
+var env = bender.load_app(document.querySelector("#logo a"),
+  { href: "dom/test/logo.xml", sides: "7", fgcolor: "white",
+    bgcolor: "#ff6a4d" });
 
-var arrow_component = context.$("component", { href: "t/arrow.xml", r: "120",
-  "white-bg": "false" });
 Array.prototype.forEach.call(document.querySelectorAll(".black-bg a"),
   function (a) {
-    arrow_component.create_instance(a);
+    bender.load_app(a, { href: "dom/test/arrow.xml", r: "120",
+      "white-bg": false }, env);
   });
 
     </script>

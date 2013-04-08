@@ -1,16 +1,13 @@
-<component xmlns="http://bender.igel.co.jp" id="button-prototype">
+<component xmlns="http://bender.igel.co.jp" href="ui-elem.xml" id="button">
 
-  <link rel="stylesheet" href="lib.css"/>
-
-  <property name="class"/>
+  <property name="base-class" value="button"/>
   <property name="down" as="boolean" value="false"/>
-  <property name="enabled" as="boolean" value="true"/>
 
   <view xmlns:html="http://www.w3.org/1999/xhtml">
     <html:div id="div">
       <attribute name="class">
-        button <text id="class-class"/> <text id="enabled-class"/>
-        <text id="down-class"/>
+        <text id="base-class-class"/> <text id="class-class"/>
+        <text id="enabled-class"/> <text id="down-class"/>
       </attribute>
       <content>
         OK
@@ -19,18 +16,8 @@
   </view>
 
   <watch>
-    <get property="class"/>
-    <set elem="class-class"/>
-  </watch>
-
-  <watch>
     <get property="down"/>
     <set elem="down-class" value="input ? 'down' : ''"/>
-  </watch>
-
-  <watch>
-    <get property="enabled"/>
-    <set elem="enabled-class" value="input ? '' : 'disabled'"/>
   </watch>
 
   <watch>
@@ -43,7 +30,7 @@
     <get elem="$document" dom-event="mouseup"
       value="cancel(!this.properties.down)"/>
     <set property="down" value="false"/>
-    <set event="@pushed"/>
+    <set event="!pushed"/>
   </watch>
 
 </component>

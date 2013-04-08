@@ -123,17 +123,6 @@
     k();
   };
 
-  // This function gets passed to input and output value functions so that the
-  // input or output can be cancelled. If called with no parameter or a single
-  // parameter evaluating to a truthy value, throw a cancel exception;
-  // otherwise, return false.
-  function cancel(p) {
-    if (p === undefined || !!p) {
-      throw "cancel";
-    }
-    return false;
-  }
-
   // Traverse the graph for all scheduled vertex/value pairs. The traversal is
   // breadth-first. If a vertex was already visited, check the old value with
   // the new value: when they are equal, just stop; otherwise, re-schedule the
@@ -463,7 +452,7 @@
           }
           var prev_id = id;
           id = new_id;
-          flexo.notify(this, "@id-change", { prev: prev_id });
+          flexo.notify(this, "!id-change", { prev: prev_id });
         }
       }
     });
@@ -553,7 +542,7 @@
       stack[stack.i++].views[""].render(target, stack);
     }
     render_watches(queue);
-    flexo.notify(this, "@rendered");
+    flexo.notify(this, "!rendered");
     render_properties(queue);
   };
 
@@ -571,8 +560,10 @@
     }
   }
 
+  // Render script links for HTML and SVG documents; overload this function to
+  // handle other types of document. Scripts are handled synchronously.
   bender.Link.render.script = function (target, k) {
-    if (target.documentElement.namspaceURI === flexo.ns.svg) {
+    if (target.documentElement.namespaceURI === flexo.ns.svg) {
       var script = flexo.$("svg:script", { "xlink:href": this.uri });
       script.addEventListener("load", k, false);
       target.documentElement.appendChild(script);
@@ -587,6 +578,8 @@
     }
   };
 
+  // Render stylesheet links for HTML documents; overload this function to
+  // handle other types of document. Stylesheets are handled asynchronously.
   bender.Link.render.stylesheet = function (target, k) {
     if (target.documentElement.namespaceURI === flexo.ns.html) {
       target.head.appendChild(flexo.$link({ rel: this.rel,
@@ -761,37 +754,40 @@
   };
 
   function set_attribute_value(target) {
-    target.setAttributeNS(this.ns, this.name, this.children.map(function (ch) {
-      return ch.text;
-    }).join(""));
+    target.setAttributeNS(this.attr.ns, this.attr.name,
+        this.children.map(function (ch) { return ch.text; }).join(""));
   }
 
   bender.Attribute.render = function (target, stack) {
-    var attr = this;
-    if (this.id) {
-      stack.component.rendered[this.id] = {};
-      Object.defineProperty(stack.component.rendered[this.id], "textContent", {
-        enumerable: true,
-        set: function (t) {
-          attr.remove_children();
-          attr.append_child(bender.init_dom_text_node(t));
-          set_attribute_value.call(attr, target);
+    var rendered = { attr: this, component: stack.component };
+    rendered.children = this.children.map(function (ch) {
+      if (flexo.instance_of(ch, bender.Text)) {
+        var ch_ = { text: ch.text };
+        if (ch.id) {
+          stack.component.rendered[ch.id] = ch_;
         }
-      });
-    }
-    this.children.forEach(function (ch) {
-      if (flexo.instance_of(ch, bender.Text) && ch.id) {
-        stack.component.rendered[ch.id] = {};
-        Object.defineProperty(stack.component.rendered[ch.id], "textContent", {
+        Object.defineProperty(ch_, "textContent", {
           enumerable: true,
           set: function (t) {
-            ch.text = t;
-            set_attribute_value.call(attr, target);
+            ch_.text = t;
+            set_attribute_value.call(rendered, target);
           }
         });
+        return ch_;
+      }
+      return ch;
+    });
+    Object.defineProperty(rendered, "textContent", {
+      enumerable: true,
+      set: function (t) {
+        rendered.children = [bender.init_dom_text_node(t)];
+        set_attribute_value.call(rendered, target);
       }
     });
-    set_attribute_value.call(this, target);
+    if (this.id) {
+      stack.component.rendered[this.id] = rendered;
+    }
+    set_attribute_value.call(rendered, target);
   };
 
   bender.init_attribute = function (id, ns, name, children) {
@@ -810,6 +806,8 @@
     var e = target.appendChild(target.ownerDocument.createTextNode(this.text));
     if (this.id) {
       stack.component.rendered[this.id] = e;
+    } else {
+      console.warn("No id for Bender text node", this);
     }
   };
 
@@ -1157,7 +1155,7 @@
   // A regular edge executes its input and output functions for the side effects
   // only.
   bender.Edge.visit = function (input) {
-    var v = this.value.call(this.context, input, cancel);
+    var v = this.value.call(this.context, input, flexo.cancel);
     // console.log("  - %0 = %1".fmt(this, v));
     return v;
   };
@@ -1186,7 +1184,7 @@
 
   // A PropertyEdge sets a property
   bender.PropertyEdge.visit = function (input) {
-    var v = this.value.call(this.context, input, cancel);
+    var v = this.value.call(this.context, input, flexo.cancel);
     this.component.properties[this.property] = v;
     // console.log("  - %0 = %1".fmt(this, v));
     return v;
@@ -1215,7 +1213,7 @@
 
   // An EventEdge sends an event notification
   bender.EventEdge.visit = function (input) {
-    var v = this.value.call(this.context, input, cancel);
+    var v = this.value.call(this.context, input, flexo.cancel);
     flexo.notify(this.component, this.event, v);
     // console.log("  - %0 = %1".fmt(this, v));
     return v;
@@ -1244,7 +1242,7 @@
 
   // A DOMAttribute edge sets an attribute, has no other effect.
   bender.DOMAttributeEdge.visit = function (input) {
-    var v = this.value.call(this.context, input, cancel);
+    var v = this.value.call(this.context, input, flexo.cancel);
     this.target.setAttributeNS(this.ns, this.attr, v);
     // console.log("  - %0 = %1".fmt(this, v));
     return v;
@@ -1272,7 +1270,7 @@
 
   // A DOMAttribute edge sets a property, has no other effect.
   bender.DOMPropertyEdge.visit = function (input) {
-    var v = this.value.call(this.context, input, cancel);
+    var v = this.value.call(this.context, input, flexo.cancel);
     this.target[this.property] = v;
     // console.log("  - %0 = %1".fmt(this, v));
     return v;

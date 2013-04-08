@@ -26,23 +26,13 @@
 
       <div class="text blue-bg">
         <div>
+          <p><a href="https://github.com/bendr/bender/archive/v0.8.zip"><span class="big">Download</span> Bender v0.8</a>, released 9 April 2013.</a>
+          </p>
           <p>Bender is free software and is released under the
           <a href="https://github.com/bendr/bender/blob/master/LICENSE">Apache
             License v2.0</a>. The <a
             href="https://github.com/bendr/bender">source code</a> is hosted on
           Github.</p>
-        </div>
-      </div>
-
-      <div class="text yellow-bg">
-        <div>
-          <h2>Docs</h2>
-          <ul>
-            <li><a href="https://github.com/bendr/bender/blob/master/spec/data-model.md">Data Model</a></li>
-            <li><a href="https://github.com/bendr/bender/blob/master/spec/processing-model.md">Processing Model</a></li>
-            <li><a href="https://github.com/bendr/bender/blob/master/spec/bender.rng">RelaxNG Grammar</a></li>
-            <li><a href="http://bender-framework.tumblr.com/tagged/english">Development log</a></li>
-          </ul>
         </div>
       </div>
 
@@ -52,6 +42,28 @@
           <ul>
             <li><a href="docs/setup/setup.html">Setup</a></li>
             <li><a href="docs/tutorial/tutorial.html">Tutorial</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text yellow-bg">
+        <div>
+          <h2>Specs</h2>
+          <ul>
+            <li><a href="https://github.com/bendr/bender/blob/master/spec/data-model.md">Data Model</a></li>
+            <li><a href="https://github.com/bendr/bender/blob/master/spec/processing-model.md">Processing Model</a></li>
+            <li><a href="https://github.com/bendr/bender/blob/master/spec/bender.rng">RelaxNG Grammar</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text yellow-bg">
+        <div>
+          <h2>Docs</h2>
+          <ul>
+            <li><a href="https://github.com/bendr/bender/blob/master/dom/api.md">Javascript API</a></li>
+            <li><a href="https://github.com/bendr/bender/blob/master/spec/todo.md">TODO list</a></li>
+            <li><a href="http://bender-framework.tumblr.com/tagged/english">Development log</a></li>
           </ul>
         </div>
       </div>
@@ -70,10 +82,6 @@
               logos</a></li>
           </ul>
         </div>
-      </div>
-
-      <div class="text black-bg">
-        <a href="dom/runtime.svg?href=test/arrow.xml"></a>
       </div>
 
       <div class="text red-bg">
@@ -143,12 +151,12 @@
 "use strict";
 
 var env = bender.load_app(document.querySelector("#logo a"),
-  { href: "dom/test/logo.xml", sides: 7, fgcolor: "white",
+  { href: "dom/test/logo.xml", sides: "7", fgcolor: "white",
     bgcolor: "#ff6a4d" });
 
 Array.prototype.forEach.call(document.querySelectorAll(".black-bg a"),
   function (a) {
-    bender.load_app(a, { href: "dom/test/arrow.xml", r: 120,
+    bender.load_app(a, { href: "dom/test/arrow.xml", r: "120",
       "white-bg": false }, env);
   });
 
