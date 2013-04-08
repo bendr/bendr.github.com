@@ -28,9 +28,9 @@ For more information about Bender element, please refer [API reference](../refer
 
 Write above code, and save it as "hello-world.xml".
 
-In Basics section of this tutorial, the "run.html" is used for
+In Basics section of this tutorial, the "runtime.html" is used for
 running sample Bender application.
-The "run.html" is the basic Bender runtime which Bender provides.
+The "runtime.html" is the basic Bender runtime which Bender provides.
 
     http://[server_address]/bender/runtime.html?href=[work_directory]/hello-world.xml
 
