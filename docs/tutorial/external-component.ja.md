@@ -62,6 +62,5 @@ Benderはボタン以外にも、いくつかのコントロールをコンポ�
 サンプルコードでも使用している<tt>get</tt>要素は、<tt>instance</tt>で指定したインスタンスに対して、<tt>event</tt>で指定したイベントが発生した場合に行う処理を定義する事が出来ます。
 上記の例では、*thanks-button*（ボタン）で<tt>@pushed</tt>イベントが発生した場合、アラートを表示する様に指定しています。
 
-各要素およびイベント種別の詳細に関しては、<a href="../reference/reference.html">API Reference</a>を参照してください。
 
 
