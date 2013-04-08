@@ -29,8 +29,9 @@ validate your content.
 
 <br>
 After you have completed the setup above, you can check that Bender is running
-by visiting the URL `dev/dom/runtime.svg?href=test/logo.xml` in your browser
-(the URL should be prefixed by the location where Bender was installed.) The
-Bender logo should appear. Your next step is to go to the [tutorial
-page](../tutorial/tutorial.html), which will get your started with Web
+by visiting the URL
+[dev/dom/runtime.svg?href=test/logo.xml](../../dom/runtime.svg?href=test/logo.xml)
+in your browser (the URL should be prefixed by the location where Bender was
+installed.) The Bender logo should appear. Your next step is to go to the
+[tutorial page](../tutorial/tutorial.html), which will get your started with Web
 application development with Bender.
