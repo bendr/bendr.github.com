@@ -12,10 +12,8 @@ To show string, "Hello world!", actual code is as follows:
 
 <blockquote class="code">
 </blockquote>
-<script src="../../flexo.js">
-</script>
 <script>
-flexo.ez_xhr("hello-world.xml", { responsType: "text" }, function (req) {
+flexo.ez_xhr("hello-world.xml", { responseType: "text" }, function (req) {
   document.querySelector("blockquote").appendChild(flexo.$pre(req.response));
 });
 </script>
