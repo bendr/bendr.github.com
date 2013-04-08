@@ -2,7 +2,7 @@
 layout: tutorial
 title: Bender Tutorial
 ---
-#Bender Tutorial
+#A Bender Tutorial
 
 -----
 
@@ -19,4 +19,6 @@ Though basic Bender runtime("run.html") is used in the Basics section, Advanced 
 explanation about how to create developer original runtime.
 
 After you go through this tutorial, you will be able to develop Bender application.
-For further information, please refer [API Reference](../reference/reference.html).
+For further information, please refer to the [Javascript API Reference](https://github.com/bendr/bender/blob/master/dom/api.md).
+
+For now, you can start with the classic [Hello, world](hello-world.html).
