@@ -29,6 +29,6 @@ BenderコンポーネントはXMLとして保存され、その構文はRelax NG
 [dev/dom/runtime.svg?href=test/logo.xml](../../dom/runtime.svg?href=test/logo.xml)
 （URLにはBenderがインストールされた場所をPrefixとして指定する必要があります。）
 これでBenderのロゴが表示されるはずです。
-次はBenderを利用したWebアプリケーション開発を始める為[チュートリアル](../tutorial/tutorial.html)のページに進みましょう。
+次はBenderを利用したWebアプリケーション開発を始める為[チュートリアル](../tutorial/tutorial.ja.html)のページに進みましょう。
 
 
