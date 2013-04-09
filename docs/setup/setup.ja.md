@@ -9,17 +9,14 @@ title: Bender 環境構築
 Benderアプリケーションを作成する環境を構築するためには以下の手順で作業して下さい。
 
 ##1. Benderソースコードのダウンロード
-任意のディレクトリに、以下のURLで公開しているソースコードをダウンロードします。
 
-[Bender version 0.8](https://github.com/bendr/bender/archive/v0.8.zip) 
-のダウンロード後、任意のディレクトリに解凍して下さい。
+[Bender version 0.8](https://github.com/bendr/bender/archive/v0.8.zip) のダウンロード後、任意のディレクトリに解凍して下さい。
 
 <br>
 ##2. Webサーバの準備（オプション）
 Bender runtimeはコンポーネントとリソースをロードするのにXMLHttpRequestを使用するので、
 Bender runtimeとコンポーネントをWebサーバ経由で利用したい場合はWebサーバを設定して下さい。
-既にWebサーバをインストールし設定されている方は、上記ステップ1で設定したBenderのディレクトリ
-にアクセス可能かどうかを確認して下さい。
+既にWebサーバをインストールし設定されている方は、上記ステップ1で設定したBenderのディレクトリにアクセス可能かどうかを確認して下さい。
 
 <br>
 ##3. RelaxNG validatorのインストール（オプション）
