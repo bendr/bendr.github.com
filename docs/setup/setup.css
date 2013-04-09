@@ -5,9 +5,9 @@ body {
   padding: 0;
   background-color: #6b5344;
   background-image: -webkit-linear-gradient(top, #fff, #6b5344);
-  background-image:    -moz-linear-gradient(top, #fff, #fff8c2);
-  background-image:      -o-linear-gradient(top, #fff, #fff8c2);
-  background-image:         linear-gradient(to bottom, #fff, #fff8c2);
+  background-image:    -moz-linear-gradient(top, #fff, #6b5344);
+  background-image:      -o-linear-gradient(top, #fff, #6b5344);
+  background-image:         linear-gradient(to bottom, #fff, #6b5344);
   background-attachment: fixed;
 }
 
