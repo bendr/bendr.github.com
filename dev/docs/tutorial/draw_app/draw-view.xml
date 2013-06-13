@@ -1,0 +1,58 @@
+<component xmlns="http://bender.igel.co.jp">
+
+  <link rel="stylesheet" href="draw.css"/>
+
+  <property name="color" value="black"/>
+  <property name="size" as="number" value="10"/>
+
+  <property name="width" as="number" value="500"/>
+  <property name="height" as="number" value="500"/>
+
+  <view xmlns:html="http://www.w3.org/1999/xhtml">
+    <html:div class="title">
+      <html:h2>
+        DRAWING APPLICATION
+      </html:h2>
+    </html:div>
+
+    <html:div class="input_label">
+      <html:label>
+        Color
+        <component id="color" href="text-box.xml" value="{color}"/>
+      </html:label>
+    </html:div>
+
+    <html:div class="input_label">
+      <html:label>
+        Size
+        <component id="size" href="text-box.xml" value="{size}"/>
+      </html:label>
+    </html:div>
+
+    <html:p>
+      <component id="draw" href="draw.xml"/>
+    </html:p>
+
+  </view>
+
+  <watch>
+    <get instance="color" property="value"/>
+    <set instance="draw" property="color"/>
+  </watch>
+
+  <watch>
+    <get instance="size" property="value"/>
+    <set instance="draw" property="size"/>
+  </watch>
+
+  <watch>
+    <get instance="$self" property="width"/>
+    <set instance="draw" property="width"/>
+  </watch>
+
+  <watch>
+    <get instance="$self" property="height"/>
+    <set instance="draw" property="height"/>
+  </watch>
+</component>
+

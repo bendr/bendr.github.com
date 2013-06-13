@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Bender; or, a declarative, dynamic framework for Web application
+    graphical user interfaces</title>
+<link rel="stylesheet" href="../../bender.css">
+<link rel="stylesheet" href="reference.css">
+<link rel="stylesheet" href="../font-awesome.css">
+</head>
+<body>
+<div class="under-dev"><div class="icon-wrench">  Under Development</div></div>
+<a href="#" id="to_top"><div class="icon-arrow-up to_top_icon"></div></a><div class="content">
+<div class="tiles quarter">
+<div class="pink-bg" id="logo"><a href="../../index.html"></a></div>
+<div class="text blue-bg"><div>
+<h2>Elements</h2>
+<ul class="inline-list">
+<li><a href="#attribute">attribute</a></li>
+<li><a href="#component">component</a></li>
+<li><a href="#content">content</a></li>
+<li><a href="#foreign-view-content"><em>foreign view content</em></a></li>
+<li><a href="#get">get</a></li>
+<li><a href="#link">link</a></li>
+<li><a href="#property">property</a></li>
+<li><a href="#set">set</a></li>
+<li><a href="#text">text</a></li>
+<li><a href="#view">view</a></li>
+<li><a href="#watch">watch</a></li>
+</ul>
+</div></div>
+<div class="text green-bg"><div>
+<h2>Attributes</h2>
+<ul class="inline-list">
+<li><a href="#as">as</a></li>
+<li><a href="#attr">attr</a></li>
+<li><a href="#component-ref">component</a></li>
+<li><a href="#dom-event">dom-event</a></li>
+<li><a href="#event">event</a></li>
+<li><a href="#href-component">href</a></li>
+<li><a href="#href-link">href</a></li>
+<li><a href="#id">id</a></li>
+<li><a href="#attribute-name">name</a></li>
+<li><a href="#property-name">name</a></li>
+<li><a href="#ns">ns</a></li>
+<li><a href="#property-ref">property</a></li>
+<li><a href="#rel">rel</a></li>
+<li><a href="#view-ref">view</a></li>
+<li><a href="#value">value</a></li>
+</ul>
+</div></div>
+<div class="text peach-bg"><div><h2><a href="bender.rng">Relax NG grammar</a></h2></div></div>
+<div class="text gray-bg"><div><p>Copyright © 2011-2013, <a href="http://www.igel.co.jp">IGEL
+              Co., Ltd.</a></p></div></div>
+</div>
+<div class="description threefourth"><div>
+<header><hgroup><h1>Bender; or, a declarative, dynamic framework for Web application
+    graphical user interfaces</h1>
+<h2>XML grammar and Javascript API specification</h2></hgroup><p class="creator">Julien Quint, <a href="http://igel.co.jp/">IGEL Co.,
+      Ltd.</a></p>
+<p class="date">Version 0.8, 4 March 2013</p></header><nav id="toc"><h2>Table of contents</h2>
+<ul>
+<li>
+<a href="#idp353504">1 Introduction</a><ul>
+<li><a href="#idp354480">1.1 About this document</a></li>
+<li><a href="#idp361456">1.2 Bender in a nutshell</a></li>
+<li><a href="#idp378752">1.3 An introductory example</a></li>
+</ul>
+</li>
+<li>
+<a href="#idp484592">2 Bender runtimes</a><ul>
+<li><a href="#idp485488">2.1 DOM-based and other runtimes</a></li>
+<li><a href="#idp498528">2.2 Rendering a Bender component in a host document</a></li>
+<li><a href="#idp501504">2.3 Runtime update sequences</a></li>
+</ul>
+</li>
+<li>
+<a href="#idp534416">3 Document structure</a><ul>
+<li><a href="#idp536224">3.1 The Bender namespace URI</a></li>
+<li><a href="#idp539584">3.2 Document element</a></li>
+<li><a href="#idp541584">3.3 Relax NG grammar and terminology</a></li>
+</ul>
+</li>
+<li>
+<a href="#idp555952">4 Introduction to the Bender Javascript API</a><ul>
+<li><a href="#idp558048">4.1 The Bender runtime</a></li>
+<li><a href="#idp571904">4.2 The Bender context</a></li>
+<li><a href="#idp584352">4.3 The Bender DOM</a></li>
+</ul>
+</li>
+<li>
+<a href="#idp592352">5 Events</a><ul>
+<li><a href="#idp593264">5.1 Bender events</a></li>
+<li><a href="#event-ready">5.2 The <code>@ready</code> event</a></li>
+<li><a href="#event-rendered">5.3 The <code>@rendered</code> event</a></li>
+<li><a href="#event-updated">5.4 The <code>@updated</code> event</a></li>
+</ul>
+</li>
+<li>
+<a href="#idp612400">6 Elements</a><ul>
+<li><a href="#attribute">6.1 The <code>attribute</code> element</a></li>
+<li>
+<a href="#component">6.2 The <code>component</code> element</a><ul>
+<li><a href="#idp658432">6.2.1 The component as a container</a></li>
+<li><a href="#idp664192">6.2.2 Component prototype and inheritance</a></li>
+<li><a href="#idp668944">6.2.3 Component view and rendering</a></li>
+<li><a href="#idp676768">6.2.4 Component properties and watches</a></li>
+</ul>
+</li>
+<li><a href="#content">6.3 The <code>content</code> element</a></li>
+<li><a href="#foreign-view-content">6.4 Foreign view content</a></li>
+<li>
+<a href="#get">6.5 The <code>get</code> element</a><ul>
+<li><a href="#idp744640">6.5.1 Watch inputs</a></li>
+<li><a href="#idp749600">6.5.2 Bender events</a></li>
+<li><a href="#idp750384">6.5.3 DOM events</a></li>
+<li><a href="#idp751168">6.5.4 Properties</a></li>
+</ul>
+</li>
+<li><a href="#link">6.6 The <code>link</code> element</a></li>
+<li><a href="#property">6.7 The <code>property</code> element</a></li>
+<li><a href="#set">6.8 The <code>set</code> element</a></li>
+<li><a href="#text">6.9 The <code>text</code> element</a></li>
+<li><a href="#view">6.10 The <code>view</code> element</a></li>
+<li><a href="#watch">6.11 The <code>watch</code> element</a></li>
+</ul>
+</li>
+<li>
+<a href="#idp825728">7 Attributes</a><ul>
+<li><a href="#as">7.1 The <code>as</code> attribute</a></li>
+<li><a href="#attr">7.2 The <code>attr</code> attribute</a></li>
+<li><a href="#component-ref">7.3 The <code>component</code> attribute</a></li>
+<li><a href="#dom-event">7.4 The <code>dom-event</code> attribute</a></li>
+<li><a href="#event">7.5 The <code>event</code> attribute</a></li>
+<li><a href="#href-component">7.6 The <code>href</code> attribute</a></li>
+<li><a href="#href-link">7.7 The <code>href</code> attribute</a></li>
+<li><a href="#id">7.8 The <code>id</code> attribute</a></li>
+<li><a href="#attribute-name">7.9 The <code>name</code> attribute</a></li>
+<li><a href="#property-name">7.10 The <code>name</code> attribute</a></li>
+<li><a href="#ns">7.11 The <code>ns</code> attribute</a></li>
+<li><a href="#property-ref">7.12 The <code>property</code> attribute</a></li>
+<li><a href="#rel">7.13 The <code>rel</code> attribute</a></li>
+<li><a href="#view-ref">7.14 The <code>view</code> attribute</a></li>
+<li><a href="#value">7.15 The <code>value</code> attribute</a></li>
+</ul>
+</li>
+</ul></nav><section id="idp353504"><h2>1 Introduction</h2>
+<section class="longdesc">
+      <section id="idp354480"><h3>1.1 About this document</h3>
+<p>
+          This specification defines the XML syntax, Javascript API, and
+          informal semantics of the Bender framework.
+          Bender is an experimental framework for client-side Web application
+          authoring.
+          Bender is <strong>declarative</strong>, building on existing
+          declarative languages such as <a href="http://www.w3.org/html/wg/drafts/html/master/Overview.html">HTML</a>,
+          <a href="http://www.w3.org/TR/SVG/">SVG</a> and
+          <a href="http://www.w3.org/TR/CSS2/">CSS</a> to describe the
+          <strong>layout</strong>, <strong>structure</strong> as well as
+          the <strong>logic</strong> of the application.
+          A Bender application <em>description</em> can be serialized to XML
+          following the syntax described in this specification.
+          Such a description can then be <em>rendered</em> by a
+          <em>runtime</em> hosted by an application such as a Web browser.
+          To the end user, a Bender application looks and behaves just like any
+          other Web application.
+        </p></section>
+      <section id="idp361456"><h3>1.2 Bender in a nutshell</h3>
+<p>
+          In its pre-release state, Bender is purposefully minimalistic.
+          The aim is to build a small but extensible core of functionality that
+          will be added to in future versions to improve expressivity and make
+          applications and components easier to author.
+          The current features of Bender are as follows.
+        </p>
+<ul>
+          <li>
+            The <a class="elem" href="#component">component</a> element is used to describe the
+            building blocks of a Bender application.
+          </li>
+          <li>
+            The <a class="elem" href="#property">property</a> element is used to describe properties
+            of components, which have a name and a value that can be used to
+            parametrize the component and track its state.
+          </li>
+          <li>
+            The <a class="elem" href="#view">view</a> element is used to describe the rendering
+            of the component, using markup such as HTML and SVG, and CSS
+            styling.
+          </li>
+          <li>
+            The <a class="elem" href="#link">link</a> element is used to include external
+            script and stylesheet resources.
+          </li>
+          <li>
+            The <a class="elem" href="#attribute">attribute</a> and <a class="elem" href="#text">text</a> elements
+            can appear in the view of a component to insert property values in
+            the rendering of the component.
+          </li>
+          <li>
+            Components can receive and generate <em>custom events</em>, as
+            well as regular DOM events from the browser in which they are
+            rendered.
+          </li>
+          <li>
+            The <a class="elem" href="#watch">watch</a> element describres how a component reacts
+            to event notifications and property changes.
+          </li>
+          <li>
+            The <a class="elem" href="#get">get</a> elements inside a <a class="elem" href="#watch">watch</a>
+            describe which events or properties the component is monitoring.
+          </li>
+          <li>
+            The <a class="elem" href="#set">set</a> elements inside a <a class="elem" href="#watch">watch</a>
+            describe what happens when an event notification is received or a
+            watch property has changes, such as modifying another property
+            or sending a new event notification.
+          </li>
+          <li>
+            A Bender component can <em>inherit</em> the view, properties and
+            watches of a <em>prototype</em> component.
+            (This inheritance scheme will be familiar to Javascript
+            programmers.)
+            The derived component can add its new properties and watches; its
+            property values can be redefined.
+            The view behaves slightly differently, in that the derived
+            component's view will be rendered <em>inside</em> the
+            prototype's view; the <a class="elem" href="#content">content</a> element is used to
+            provide a location for derived components to extend their
+            prototype's view.
+          </li>
+        </ul>
+<p>
+          This document describes in detail the syntax and semantics of the
+          aforementioned elements, as well as their properties.
+          The mechanisms for rendering <a class="elem" href="#view">view</a>s and <a class="elem" href="#watch">watch</a>es is also described in detail.
+        </p></section>
+      <section id="idp378752"><h3>1.3 An introductory example</h3>
+<p>
+          Below is a simple example that shows most of the above features.
+        </p>
+<blockquote>
+          <pre><a href="#hello-ref-1" class="line-no" id="hello-1">1</a>  &lt;<a class="elem" href="#component">component</a> xmlns="http://bender.igel.co.jp"&gt;
+<a href="#hello-ref-2" class="line-no" id="hello-2">2</a>    &lt;<a class="elem" href="#view">view</a>&gt;
+<a href="#hello-ref-3" class="line-no" id="hello-3">3</a>      &lt;<a class="elem" href="#component">component</a> <a class="attr" href="#href-component">href</a>="#hello"/&gt;
+<a href="#hello-ref-4" class="line-no" id="hello-4">4</a>      &lt;<a class="elem" href="#component">component</a> <a class="attr" href="#href-component">href</a>="#hello" what="世界"/&gt;
+<a href="#hello-ref-2" class="line-no" id="hello-5">5</a>    &lt;/<a class="elem" href="#view">view</a>&gt;
+<a href="#hello-ref-6" class="line-no" id="hello-6">6</a>    &lt;<a class="elem" href="#component">component</a> <a class="attr" href="#id">id</a>="hello"&gt;
+<a href="#hello-ref-7" class="line-no" id="hello-7">7</a>      &lt;<a class="elem" href="#view">view</a> xmlns:html="http://www.w3.org/1999/xhtml"&gt;
+<a href="#hello-ref-8" class="line-no" id="hello-8">8</a>        &lt;html:p&gt;Hello, &lt;<a class="elem" href="#text">text</a> <a class="attr" href="#id">id</a>="t"/&gt;!&lt;/html:p&gt;
+<a href="#hello-ref-7" class="line-no" id="hello-9">9</a>      &lt;/<a class="elem" href="#view">view</a>&gt;
+<a href="#hello-ref-10" class="line-no" id="hello-10">10</a>      &lt;<a class="elem" href="#property">property</a> <a class="attr" href="#property-name">name</a>="what" <a class="attr" href="#value">value</a>="world"/&gt;
+<a href="#hello-ref-11" class="line-no" id="hello-11">11</a>      &lt;<a class="elem" href="#watch">watch</a>&gt;
+<a href="#hello-ref-12" class="line-no" id="hello-12">12</a>        &lt;<a class="elem" href="#get">get</a> <a class="attr" href="#property-ref">property</a>="what"/&gt;
+<a href="#hello-ref-13" class="line-no" id="hello-13">13</a>        &lt;<a class="elem" href="#set">set</a> <a class="attr" href="#view-ref">view</a>="t"/&gt;
+<a href="#hello-ref-11" class="line-no" id="hello-14">14</a>      &lt;/<a class="elem" href="#watch">watch</a>&gt;
+<a href="#hello-ref-6" class="line-no" id="hello-15">15</a>    &lt;/<a class="elem" href="#component">component</a>&gt;
+<a href="#hello-ref-1" class="line-no" id="hello-16">16</a>  &lt;/<a class="elem" href="#component">component</a>&gt;</pre>
+        </blockquote>
+<p>
+          When saved into an XML document, this component can then be rendered
+          in a browser by the Bender runtime (see below for more about runtimes)
+          to produce the following output:
+        </p>
+<blockquote>
+          <p>Hello, world!</p>
+          <p>Hello, 世界!</p>
+        </blockquote>
+<section id="idp412448"><h4>1.3.1 Line-by-line explanation</h4>
+<p>
+            The root element of the document <a href="#hello-1" id="hello-ref-1" class="line-no">1</a> is a <a class="elem" href="#component">component</a> element.
+            This component spans the whole document, up to line <a href="#hello-16" class="line-no">16</a>.
+            Bender uses the <span class="keyword">http://bender.igel.co.jp</span>
+            namespace URI.
+          </p>
+<p>
+            The first child element of the top-level component is a <a class="elem" href="#view">view</a> element <a class="line-no" id="hello-ref-2" href="#hello-2">2</a>.
+            The contents of this element describe how the component is rendered.
+            The view contains <em>foreign markup</em>, that the runtime does
+            not interpret but simply hands down to its host application, as well
+            as Bender content.
+          </p>
+<p>
+            Another <a class="elem" href="#component">component</a> element appears <a class="line-no" id="hello-ref-3" href="#hello-3">3</a>.
+            Because this element appears in the view of another component, it
+            will be rendered as part of the view of its parent component.
+            It has an attribute <a class="attr" href="#href-component">href</a>  with value
+            is <span class="keyword">#hello</span>.
+            The value of <a class="attr" href="#href-component">href</a> must be the URL of a
+            Bender component; in this case, the component is described in the
+            same document <a class="line-no" href="#hello-6">6</a>.
+            This attribute defines the <em>prototype</em> of the component.
+            Here, the prototype is the "Hello" component defined below.
+            This component now has the same view, properties and watches as
+            <strong>hello</strong>, which will all be detailed below.
+          </p>
+<p>
+            Yet another <a class="elem" href="#component">component</a> element appears <a class="line-no" id="hello-ref-4" href="#hello-4">4</a>.
+            It is almost identical to the previous one, with the difference that
+            it has an extra attribute <code>what</code>, with value
+            <span class="keyword">世界</span> (<em>world</em> in Japanese.)
+            This is not a Bender attribute; this is a <em>free
+              attribute</em> that can be used as a shorthand to set the value
+            of a property for the component.
+            The name of the property to be set is the name of the attribute, and
+            the value to set the property to is the value of the attribute.
+            In this instance, the <code>what</code> property will be set to
+            <span class="keyword">世界</span>.
+          </p>
+<p>
+            The second child element of the top-level component is a <a class="elem" href="#component">component</a> element <a class="line-no" id="hello-ref-6" href="#hello-6">6</a>.
+            Because this element does not appear within a <a class="elem" href="#view">view</a>
+            element, it will not be rendered.
+            The component has an <a class="attr" href="#id">id</a> attribute so that it can be
+            identified by the name <span class="keyword">hello</span> (and by the URL
+            of the document that it is in, with the fragment identifier 
+            <span class="keyword">#hello</span>.)
+            Note that this matches the <a class="attr" href="#href"></a> attributes of the
+            above components <a class="line-no" href="#hello-3">3</a><a class="line-no" href="#hello-4">4</a> that inherit from this
+            component.
+          </p>
+<p>
+            The <a class="elem" href="#view">view</a> of this component <a href="#hello-7" id="hello-ref-7" class="line-no">7</a> uses HTML elements.
+            Because this is an XML document, it is necessary to specify the HTML
+            namespace, and obey the strict well-formedness rules of XML (tags
+            must be closed, attributes must have a value inside quotes, &amp;c.)
+          </p>
+<p>
+            The view of this component mixes HTML and Bender elemnents <a href="#hello-8" id="hello-ref-8" class="line-no">8</a>.
+            First there is an HTML paragraph element with some text content.
+            Then, a Bender <a class="elem" href="#text">text</a> element.
+            This element designates a text node which can be referred to using
+            its <a class="attr" href="#id">id</a> attribute (here, <span class="keyword">t</span>.)
+          </p>
+<p>
+            After the view comes a <a class="elem" href="#property">property</a> element <a href="#hello-10" id="hello-ref-10" class="line-no">10</a>,
+            defining a property for the component.
+            The property has a <a class="attr" href="#name"></a> attribute,
+            giving it the name <span class="keyword">what</span>, and a <a class="attr" href="#value">value</a> attribute, giving it the value
+            <span class="keyword">world</span>.
+          </p>
+<p>
+            The purpose of the <code>what</code> property of the component
+            is to customize its output: it should output the message
+            <code>Hello, <em>what</em>!</code>, whatever the value of
+            the <code>what</code> property is.
+            This is where the <a class="elem" href="#watch">watch</a> element <a href="#hello-11" id="hello-ref-11" class="line-no">11</a> comes
+            in.
+            Whenever the value of the <code>what</code> property changes
+            (including when it is set for the first time), the view should be
+            updated accordingly.
+          </p>
+<p>
+            A watch has inputs and outputs.
+            The <a class="elem" href="#get">get</a> element <a href="#hello-12" id="hello-ref-12" class="line-no">12</a> describes an input for
+            its parent watch element.
+            This particular input monitors the changes of the
+            <code>what</code> property, as indicated by the value of the
+            <a class="attr" href="#property"></a> attribute.
+          </p>
+<p>
+            The <a class="elem" href="#set">set</a> element <a href="#hello-13" id="hello-ref-13" class="line-no">13</a> describes an output for
+            its parent watch element.
+            This particular output sets the content of the <code>t</code>
+            view element (<em>i.e.</em>, the element inside the view of the
+            component with the <a class="attr" href="#id">id</a> <code>t</code>) to the
+            value of the input for the watch.
+            The value of the input for the watch is the value of the property
+            <code>what</code>, as seen just above.
+          </p></section><section id="idp459232"><h4>1.3.2 Step-by-step rendering</h4>
+<p>
+            The rendering of this example component is the default Bender HTML5
+            runtime, running inside a Web browser, is carried out as follows.
+          </p>
+<ol>
+            <li>
+              The component document is loaded.
+              The runtime has a default target element in which the root
+              component of the document is to be rendered.
+            </li>
+            <li>
+              The view of the root component is rendered in the target element.
+              The root component has no prototype, so its view is entirely
+              defined by its <a class="elem" href="#view">view</a> element.
+              To render the view, all contents of the <a class="elem" href="#view">view</a>
+              element (text and element nodes) are rendered inside the target in
+              the same order.
+              Text nodes and foreign elements (<em>i.e.</em>, elements not
+              in the Bender namespace) are rendered by simply copying them in
+              the target. A Bender <a class="elem" href="#component">component</a> element, however,
+              is rendered by rendering its view in the target.
+            </li>
+            <li>
+              The first child <a class="elem" href="#component">component</a> <a href="#hello-3" class="line-no">3</a> is rendered.
+              Because this component has a prototype, it inherits its view from
+              its prototype, so the view of the prototype is rendered now.
+              (Note that in this example, no component extends the view of its
+              prototype, but it is possible.)
+            </li>
+            <li>
+              This component (or more acurately its prototype) also has a
+              property <a href="#hello-10" class="inline-no"></a>, so the
+              property is rendered first.
+              The <code>what</code> property is initialized with the value
+              <span class="keyword">world</span>.
+            </li>
+            <li>
+              The view of the prototype component <a href="#hello-7" class="line-no">7</a> is rendered.
+              First, an HTML <code>p</code> element is created in the
+              target, containing three text nodes: a text node with the content
+              <span class="keyword">Hello, </span>, an empty text node (corresponding
+              to the Bender <a class="elem" href="#text">text</a> element), and a text node with
+              the content <span class="keyword">!</span>.
+            </li>
+            <li>
+              Finally, watches are rendered.
+              The only watch for this component <a href="#hello-11" class="line-no">11</a> is setup to monitor the changes of the
+              property <code>what</code>, including its initialization, and
+              set the content of the text node <code>t</code> with the
+              value.
+              Hence, the formerly empty text node will now contain the text
+              <span class="keyword">world</span>; the final rendering of the component
+              will thus be the paragraph <span class="keyword">Hello, world!</span>.
+            </li>
+            <li>
+              The second child <a class="elem" href="#component">component</a> <a href="#hello-4" class="line-no">4</a> is then rendered.
+              The rendering is done in the same manner as its preceding sibling,
+              with the exception that this component has a different value for
+              the <code>what</code> property, namely
+              <span class="keyword">世界</span>.
+              The final rendering of the component, after properties, view and
+              watches are rendered, will thus be the paragraph <span class="keyword">Hello,
+                世界!</span>.
+            </li>
+            <li>
+              The component has been completely rendered.
+            </li>
+          </ol>
+<p>
+            After rendering, the component tree is available and
+            <em>live</em>, and can be modified through a Javascript API.
+            When a modification is made in the tree, it will be mirrored in the
+            rendering.
+            For instance, if a component at line <a href="#hello-3" class="line-no">3</a> or <a href="#hello-4" class="line-no">4</a> is removed, then its rendering is also
+            removed.
+            Or if the view of the hello component <a href="#hello-8" class="line-no">8</a> were to be modified, changing "Hello" to
+            "Goodbye" for instance, then the rendering of the two components
+            that inherit from it would change to "Goodye, world!" and "Goodbye,
+            世界!" respectively.
+          </p></section></section>
+    </section></section><section id="idp484592"><h2>2 Bender runtimes</h2>
+<section class="longdesc">
+      <section id="idp485488"><h3>2.1 DOM-based and other runtimes</h3>
+<p>
+          There can be different types of runtimes for Bender, such as
+          <em>DOM-based</em> runtimes, <em>static</em> runtimes or
+          <em>procedural</em> runtimes.
+          This specification covers only the first case in detail, as it is
+          implemented by the reference runtime.
+          Later versions may cover other types of runtimes in more detail.
+        </p>
+<p>
+          A <strong>DOM-based</strong> runtime is a runtime that uses the
+          <a href="http://www.w3.org/TR/2011/WD-domcore-20110531/">DOM
+            tree of a document</a>, called the <strong>host
+            document</strong>, as the target of its output.
+          Rendering is done by adding DOM nodes (elements, attributes, and text
+          nodes) to the host tree.
+          The host tree itself is rendered by a <strong>host
+            application</strong>, most likely a Web browser.
+          The reference runtime follows this model.
+          It is run inside a browser, using a HTML5 host document and Javascript
+          to render components.
+        </p>
+<p>
+          The Bender reference implementation also allows authors to write
+          custom runtimes.
+          It is possible for instance to duplicate the functionality of the
+          reference runtime but with an SVG host document as opposed to an
+          HTML5 host document.
+          It is also possible to insert one or more Bender components into a
+          document at arbitrary locations using scripting and the Bender
+          Javascript library.
+        </p>
+<p>
+          A <strong>static</strong> runtime is not really a runtime, but
+          more of a translator, or compiler (whereas a DOM-based or procedural
+          runtime is more similar to an interpreter.)
+          In a static runtime, the Bender application is rendered into a static
+          output, which in the context of Bender means that the result output
+          has lost its ability to refer to its original definition (just like a
+          compiler usually discards the source of the program to produce its
+          output.)
+          It is possible to go further and imagine at least two kinds of static
+          runtimes:
+        </p>
+<ol>
+          <li>
+            the <em>compiler</em>, which translates a Bender description
+            into a form that can be run directly.
+            For instance, a Bender compiler would produce a “cooked” HTML5
+            document with Javascript code that looks just like a regular Web
+            application and can run directly into a regular browser without
+            requiring any additional runtime support;
+          </li>
+          <li>
+            the <em>printer</em>, which outputs a static document, such as
+            an image or a PDF file, of the state of the application as
+            described.
+            (In the future, it is expected that Bender will support some kind of
+            persistence to make this feature more useful.)
+          </li>
+        </ol>
+<p>
+          Lastly, a <strong>procedural</strong> runtime is a runtime that
+          renders a Bender document in a procedural, rather than declarative,
+          fashion.
+          While a DOM-based runtime is lazy and simply outputs DOM nodes,
+          leaving the host application in charge of rendering the result, a
+          procedural runtime takes full control and actively manages all
+          aspects of the output.
+          An hypothetic procedural runtime could render Bender applications in
+          a HTML5 canvas element, using a 2D context, or WebGL
+          for a 3D rendering.
+        </p></section>
+      <section id="idp498528"><h3>2.2 Rendering a Bender component in a host document</h3>
+<p>
+          In a DOM-based runtime, a component is rendered by creating a document
+          fragment, and inserting it in the tree of the host document.
+          The <strong>target</strong> of a component is the insertion point
+          for such a fragment.
+          It is defined by a <em>parent element</em> and an optional
+          <em>reference node</em>, which must be a child of the parent
+          element if present.
+          The document fragment is inserted as a child of the parent element,
+          before the reference node if it is defined, or as the last child
+          otherwise.
+        </p></section>
+      <section id="idp501504"><h3>2.3 Runtime update sequences</h3>
+<p>
+          Once the runtime has started, <em>requests</em> can be made to
+          perform updates.
+          The runtime maintains a queue of requests so that they can be
+          prioritized (<em>e.g.</em>, as much of a component should be
+          constructed before it is rendered.)
+          This request mechanism is transparent to the author: no explicit
+          “request” needs to be made to the runtime, but simple calls to the
+          API, such as creating an element, setting a property, &amp;c.
+        </p>
+<p>
+          It is however useful to describe the handling of requests to better
+          define the semantics of Bender.
+          A batch of requests is processed in an <em>update sequence</em>.
+          While an update sequence is being executed, all new requests are
+          queued and will be processed in the next sequence (with the
+          exception of the internal update sequence as describe below.)
+        </p>
+<ol>
+          <li>
+            Create a request queue <em>Q</em>.
+          </li>
+          <li>
+            When a request is made, add it to <em>Q</em> and set a timer
+            <em>T</em>.
+            This specification leaves the specifics of timer expiry to
+            implementations.
+            For instance, the reference Javascript implementation is
+            single-threaded and simply sets a zero-length timer so that
+            request processing will begin when the current thread is done
+            running.
+          </li>
+          <li>
+            Additional requests made before <em>T</em> expires are added
+            to <em>Q</em>.
+          </li>
+          <li>
+            When <em>T</em> expires, create a new request queue
+            <em>Q’</em>.
+            Unless otherwise noted, new requests are now added to
+            <em>Q’</em>, setting a timer <em>T’</em>, which must not
+            expire before all requests from <em>Q</em> have been
+            processed.
+          </li>
+          <li>
+            Process requests from <em>Q</em>.
+            <ol style="list-style-type: lower-roman">
+              <li>
+                Process all <em>explicit update</em> requests,
+                <em>i.e.</em>, requests made explicitely through the
+                Javascript API (see the explicit updates sequence below.)
+              </li>
+              <li>
+                Process all <em>rendering update</em> requests,
+                <em>i.e.</em>, render components that have been created or
+                added in the previous step (see the rendering sequence
+                below.)
+              </li>
+              <li>
+                Process all <em>implicit update</em> requests,
+                <em>i.e.</em>, requests resulting from changes made in the
+                previous steps and from component watches (see the implicit
+                updates sequence below.)
+              </li>
+            </ol>
+          </li>
+          <li>
+            Reset all <a class="elem" href="#watch">watch</a> inputs that were activated during
+            the processing of the requests to inactive.
+          </li>
+          <li>
+            All requests from <em>Q</em> have been processed, so
+            <em>Q</em> is replaced with <em>Q’</em>.
+            <ol style="list-style-type: lower-roman">
+              <li>
+                If <em>T’</em> was not set, go back to step 2.
+              </li>
+              <li>
+                If <em>T’</em> was set (<em>i.e.</em>, <em>Q’</em>
+                is not empty), replace the expired <em>T</em> with
+                <em>T’</em>, which is now allowed to expire.
+                Then, go back to step 3.
+              </li>
+            </ol>
+          </li>
+        </ol>
+<section id="idp524496"><h4>2.3.1 The explicit updates sequence</h4>
+<p>
+            An <strong>explicit update</strong> is a made through the
+            Javascript API.
+            For instance, creating components programmatically and adding them
+            to a context generate explicit update requests.
+            Setting a property on a component through Javascript is another
+            example of explicit update request.
+          </p>
+<p>
+            An explicit update will most likely create new update requests as
+            a side-effect.
+            These requests are added to the queue <em>Q</em> so that they
+            are processed in the same batch of update sequences.
+            Adding a new component will create a rendering update, so that the
+            component is rendered as soon as possible.
+            Modifying the DOM tree or setting a property of a rendered
+            component will generate implicit update requests.
+          </p></section><section id="idp527744"><h4>2.3.2 The rendering updates sequence</h4>
+<p>
+            Components that have not been rendered yet are now rendered,
+            using the current DOM content for the component as set through
+            the previously processed explicit updates.
+            This generates a <a class="event" href="#event-rendered">@rendered</a> event which may
+            cause implicit updates.
+          </p></section><section id="idp529728"><h4>2.3.3 The implicit update sequence</h4>
+<p>
+            An <strong>implicit update</strong> is an update that needs to be
+            made in order to maintain the consistency of the running
+            application.
+            As the name implies, these updates are not made explicitely by the
+            author, but by the runtime itself as a side-effect of a previous
+            update, or as result of a watch being activated.
+          </p>
+<p>
+            An implicit update may modify the rendering of a component.
+            This differs from a rendering update in that an
+            <a class="event" href="#event-updated">@updated</a> event is generated rather than a
+            <a class="event" href="#event-rendered">@rendered</a> event.
+            Because a component is rendered only once, but see multiple
+            updates even in the same update sequence, <a class="event" href="#event-updated">@updated</a> events are consolidated and sent only once per
+            sequence.
+          </p></section></section>
+    </section></section><section id="idp534416"><h2>3 Document structure</h2>
+<section class="longdesc">
+      <section id="idp536224"><h3>3.1 The Bender namespace URI</h3>
+<p>
+          All Bender elements are in the <span class="nsuri">http://bender.igel.co.jp</span> namespace URI.
+        </p>
+<p>
+          Some Bender elements can have <em>foreign content</em>, that is
+          elements belonging to namespaces other than Bender.
+          It is important to correctly specify the namespace of these foreign
+          elements, for instance using namespace prefixes.
+          The XHTML namespace URI
+          <span class="nsuri">http://www.w3.org/1999/xhtml</span> is used to
+          identify HTML content.
+        </p></section>
+      <section id="idp539584"><h3>3.2 Document element</h3>
+<p>A Bender XML document always describes a component; therefore, the
+          document element is a <a class="elem" href="#component">component</a> element. Since almost
+          everything in Bender is a component, a document may define a single
+          reusable widget-like component, a complete application, or a library
+          of components.</p></section>
+      <section id="idp541584"><h3>3.3 Relax NG grammar and terminology</h3>
+<p>
+          This specification includes the complete <a href="bender.rng">Relax
+            NG grammar</a> for checking the validity of Bender XML documents.
+          The specification of every element and attribute includes information
+          extracted from this grammar, describing in which context it may
+          appear, and what contents it may have.
+          Attributes may occur once, unless otherwise noted, and in any order.
+          Elements must occur once, and in the order specified, unless otherwise
+          noted.
+          The following terms from Relax NG are used:
+        </p>
+<ul>
+          <li>
+            <strong>choice</strong>: only one of the possible contents may
+            occur;
+          </li>
+          <li>
+            <strong>data</strong>: a data value that matches the given type.
+          </li>
+          <li>
+            <strong>group</strong>: all of the contents must occur;
+          </li>
+          <li>
+            <strong>interleaving</strong>: the children of the element may
+            occur in any order;
+          </li>
+          <li>
+            <strong>mixed</strong>: the element has <em>mixed</em>
+            content, which means that its children may occur in any order, and
+            it may also contain text;
+          </li>
+          <li>
+            <strong>optional</strong>: the element or attribute may not
+            occur (<em>i.e.</em>, it may occur once or not at all);
+          </li>
+          <li>
+            <strong>one or more</strong>: the element may occur any number
+            of times, but at least once;
+          </li>
+          <li>
+            <strong>text</strong>: plain text.
+            This is not the same as the <a class="elem" href="#text">text</a> element;
+          </li>
+          <li>
+            <strong>value</strong>: a text string that matches the given
+            value exactly, with the possibily of leading and trailing
+            whitespace;
+          </li>
+          <li>
+            <strong>zero or more</strong>: the element may occur any number
+            of the times, including not at all.
+          </li>
+        </ul>
+<p>
+          Please refer to the <a href="http://relaxng.org/tutorial-20011203.html">Relax NG
+            tutorial</a> for an introduction to and more information about
+          Relax NG.
+        </p></section>
+    </section></section><section id="idp555952"><h2>4 Introduction to the Bender Javascript API</h2>
+<section class="longdesc">
+      <p>
+        The Javascript API for Bender is described using a syntax similar to
+        <a href="http://www.w3.org/TR/WebIDL/">Web IDL</a>.
+      </p>
+      <section id="idp558048"><h3>4.1 The Bender runtime</h3>
+<p>
+          In the reference implementation, the bender runtime is accessible
+          through the <span class="keyword">window.bender</span> object.
+        </p>
+<section><p><em>Javascript API</em></p>
+<pre class="api">Interface <span class="idl-interface-def" id="interface-DOMRuntime">DOMRuntime</span> {
+  Context <span class="idl-method-def" id="idl-DOMRuntime-create_context">create_context</span>(Document host?);
+  void <span class="idl-method-def" id="idl-DOMRuntime-render_component">render_component</span>(BenderComponentElement component, Element parent, Node ref?);
+}</pre>
+<p>
+            This specification focuses on DOM-based runtimes.
+            In the future, different runtime interfaces may be added.
+          </p>
+<p>
+              <a href="#idl-DOMRuntime-create_context" class="idl-method">create_context</a> creates a new <a href="#interface-Context" class="idl-interface">Context</a>.
+              The context is created is created in the <code>host</code>
+              document, which defaults to the document in which the runtime is
+              executed.
+            </p>
+<p>
+              <a href="#idl-DOMRuntime-render_component" class="idl-method">render_component</a> adds the rendered nodes of
+              <code>component</code> to the element <code>parent</code>.
+              The parent element must be an element of the host document.
+              If the <code>reference</code> node is present, it must be a
+              child of <code>parent</code>.
+              The rendered nodes are added to <code>parent</code> before
+              <code>reference</code>, or as the last children of
+              <code>parent</code> if <code>reference</code> is not
+              specified.
+            </p></section></section>
+      <section id="idp571904"><h3>4.2 The Bender context</h3>
+<p>
+          The Bender <strong>context</strong> is the entity in charge of
+          managing the execution environment of Bender components.
+          It provides basic functionality for component loading and rendering,
+          as well as convenience methods to support the runtime and Bender
+          applications.
+          It also runs the different runtime update sequences as described
+          below.
+        </p>
+<section><p><em>Javascript API</em></p>
+<pre class="api">Interface <span class="idl-interface-def" id="interface-Context">Context</span> {
+  readonly attribute Document <span class="idl-attribute-def" id="idl-attribute-document">document</span>;
+  Element <span class="idl-method-def" id="idl-Context-$">$</span>(string name, dictionary&lt;string, any&gt; attrs?, ...);
+}</pre>
+<p>
+              <a href="#idl-attribute-document" class="idl-attribute">document</a> is the host document for the context, as set
+              by <a href="#idl-DOMRuntime-create_context" class="idl-method">create_context</a>.
+            </p>
+<p>
+              <a href="#idl-Context-%24" class="idl-method">$</a> is a utility method to create new elements in the
+              host document.
+              <code>name</code> is the qualified name of the element to
+              create; by default, the Bender namespace is implied.
+              Know prefixes are implementation dependent.
+              <code>attrs</code> is an optional dictionary of attributes,
+              mapping attribute names for the new element to their value.
+              Attributes are created with values as-is, except when the value
+              is <span class="keyword">false</span> (<em>i.e.</em>, with the
+              boolean type, not the empty string or zero),
+              <span class="keyword">null</span> or <span class="keyword">undefined</span>,
+              then no attribute is created for this value.
+            </p>
+<p>
+              There can then be any number of additional parameters, which are
+              all interpreted as contents of the new element. These can be
+              DOM nodes, text strings (for which a new text node is created),
+              or arrays, the contents of which are added as contents of the
+              new element.
+            </p></section></section>
+      <section id="idp584352"><h3>4.3 The Bender DOM</h3>
+<p>
+          The Bender DOM extends the host DOM by providing additional attributes
+          and methods to Bender elements.
+          Moreover, regular DOM methods of Bender nodes are overloaded so that
+          <em>mutations</em> of the DOM tree of a Bender component
+          (<em>i.e.</em>, adding, removing or modifying attributes, child
+          nodes and text content) are mirrored in the output by the runtime.
+        </p>
+<p>
+          However, note that <em>properties</em> are not overloaded, so that
+          setting the <code>textContent</code> or <code>nodeValue</code>
+          of an element is not mirrored.
+          Elements that can have text content provide a
+          <code>set_textContent</code> that can be used instead.
+        </p>
+<section><p><em>Javascript API</em></p>
+<pre class="api">Interface <span class="idl-interface-def" id="interface-BenderElement">BenderElement</span> : <a href="#interface-Element">Element</a> {
+  attribute Context <span class="idl-attribute-def" id="idl-attribute-context">context</span>;
+}</pre>
+<p>
+            <a href="#interface-BenderElement" class="idl-interface">BenderElement</a> is the base interface for all Bender elements
+            defined below.
+          </p>
+<p>
+              <a href="#idl-attribute-context" class="idl-attribute">context</a> points to the context in which this element
+              was created.
+            </p></section></section>
+    </section></section><section id="idp592352"><h2>5 Events</h2>
+<section class="longdesc">
+      <section id="idp593264"><h3>5.1 Bender events</h3>
+<p>
+          Bender <strong>events</strong> are Bender-specific events similar
+          to DOM events.
+          Components can send and received events to and from each other through
+          watches.
+          A small number of predefined events are described below, and
+          application authors may introduce their own custom events to manage
+          inter-component communication inside their application.
+        </p>
+<p>
+          Bender events may also be sent and received programmatically.
+          This is actually <a href="/test/flexo.html?grep=Custom%20Events">handled by the Flexo
+            library</a> through the
+          <span class="keyword">flexo.listen()</span>,
+          <span class="keyword">flexo.listen_once()</span>,
+          <span class="keyword">flexo.notify()</span>, and
+          <span class="keyword">flexo.unlisten()</span> functions.
+        </p>
+<section><p><em>Javascript API</em></p>
+<pre class="api">Interface <span class="idl-interface-def" id="interface-BenderEvent">BenderEvent</span> {
+  attribute Object <span class="idl-attribute-def" id="idl-attribute-source">source</span>;
+  attribute string <span class="idl-attribute-def" id="idl-attribute-type">type</span>;
+}</pre>
+<p>
+            An event notification is a simple Javascript object that can contain
+            any number of properties as its arguments. There are however two
+            properties that all events share as described below.
+          </p>
+<p>
+              <a href="#idl-attribute-source" class="idl-attribute">source</a> is the Javascript object that generated the
+              event.
+            </p>
+<p>
+              <a href="#idl-attribute-type" class="idl-attribute">type</a> is the event type.
+              Bender event types are by convention named starting with a
+              <code>@</code> character, <em>e.g.</em>,
+              <a href="#interface-@ready" class="idl-interface">@ready</a>, <a href="#interface-@rendered" class="idl-interface">@rendered</a>,
+              <a href="#interface-@updated" class="idl-interface">@updated</a>, &amp;c.
+            </p></section></section>
+      <section id="event-ready"><h3>5.2 The <code>@ready</code> event</h3>
+<p>
+          The <code>@ready</code> event is sent by a component just before
+          it is rendered.
+        </p></section>
+      <section id="event-rendered"><h3>5.3 The <code>@rendered</code> event</h3>
+<p>
+          The <code>@ready</code> event is sent by a component just after
+          it was rendered.
+        </p></section>
+      <section id="event-updated"><h3>5.4 The <code>@updated</code> event</h3>
+<p>
+          The <code>@updated</code> event is sent by components that have
+          seen some updates of their properties and/or view during the last
+          update sequence.
+        </p></section>
+    </section></section><section id="idp612400"><h2>6 Elements</h2>
+<section id="attribute"><h3>6.1 The <code>attribute</code> element</h3>
+<p class="desc">Output an attribute node on rendering.</p>
+<section class="spec"><p>Child of:<ul><li><a href="#foreign-view-content"><em>foreign view content</em></a></li></ul></p>
+<p>Content:<ul>
+<li>optional 
+          <a href="#id">id</a> attribute
+        </li>
+<li>
+<a href="#attribute-name">name</a> attribute</li>
+<li>optional 
+          <a href="#ns">ns</a> attribute
+        </li>
+<li>choice of:<ul>
+<li>
+<a href="#value">value</a> attribute</li>
+<li><em>text</em></li>
+</ul>
+</li>
+</ul></p></section><section class="longdesc">
+        <p>
+          The purpose of the <a class="elem" href="#attribute">attribute</a> element, similarly to the <a class="elem" href="#text">text</a> element, is twofold.
+          First, it provides a way to set attributes of rendered elements
+          explicitly.
+          Second, by giving an <a class="attr" href="#id">id</a> attribute to the <a class="elem" href="#attribute">attribute</a>
+          element, it can become the target of a <a class="elem" href="#set">set</a> element.
+        </p>
+        <p>
+          An <a class="elem" href="#attribute">attribute</a> element must have a <a class="attr" href="#attribute-name">name</a>
+          attribute.
+          This is the name of the attribute that will be set on the rendered
+          element.
+          An <a class="elem" href="#attribute">attribute</a> element may have a <a class="attr" href="#ns">ns</a> attribute.
+          The value must be a namespace URI (not a prefix.)
+          If this attribute is present, then the attribute name will be
+          qualified with this namespace.
+        </p>
+        <p>
+          An <a class="elem" href="#attribute">attribute</a> element must have either a <a class="attr" href="#attribute-name">name</a> attribute or (possibly empty) text content.
+          This is the value for the rendered attribute.
+        </p>
+        <p>
+          When the parent element is rendered, an attribute is added to this
+          element.
+          The local name (and possibly namespace URI) of the attribute are
+          the values of the <a class="attr" href="#attribute-name">name</a> and <a class="attr" href="#ns">ns</a> of the element.
+          The value of the attribute node is the same as the value of the
+          element.
+        </p>
+      <section><p><em>Javascript API</em></p>
+<pre class="api">Interface <span class="idl-interface-def" id="interface-BenderAttributeElement">BenderAttributeElement</span> : <a href="#interface-BenderElement">BenderElement</a> {
+  attribute string <span class="idl-attribute-def" id="idl-attribute-name">name</span>;
+  attribute string <span class="idl-attribute-def" id="idl-attribute-ns">ns</span>;
+  attribute string <span class="idl-attribute-def" id="idl-attribute-value">value</span>;
+  Node <span class="idl-method-def" id="idl-BenderAttributeElement-insertBefore">insertBefore</span>(Node child);
+  void <span class="idl-method-def" id="idl-BenderAttributeElement-set_text_content">set_text_content</span>(string text);
+}</pre>
+<p>
+            The <a href="#idl-attribute-name" class="idl-attribute">name</a> property of a <a href="#interface-BenderAttributeElement" class="idl-interface">BenderAttributeElement</a> reflects
+            the value of the <a class="attr" href="#attribute-name">name</a> attribute of the
+            element.
+            It can be used to get or set the value of the attribute.
+            When setting a new value, all rendered instances of the parent
+            component and components that derive from it are updated.
+          </p>
+<p>
+            The <a href="#idl-attribute-ns" class="idl-attribute">ns</a> property of a <a href="#interface-BenderAttributeElement" class="idl-interface">BenderAttributeElement</a> reflects
+            the value of the <a class="attr" href="#ns">ns</a> attribute of the
+            element.
+            It can be used to get or set the value of the attribute.
+            When setting a new value, all rendered instances of the parent
+            component and components that derive from it are updated.
+          </p>
+<p>
+            The <a href="#idl-attribute-value" class="idl-attribute">value</a> property of a <a href="#interface-BenderAttributeElement" class="idl-interface">BenderAttributeElement</a> reflects
+            the value of the <a class="attr" href="#value">value</a> attribute of the element, or
+            its text content, whichever is set.
+            Getting the value of this property returns the value of the <a class="attr" href="#value">value</a> attribute if it is defined, or the text content of
+            the element otherwise.
+            Setting the value always sets the <a class="attr" href="#value">value</a> attribute
+            and clears the text content of the element, if any.
+            When setting a new value, all rendered instances of the parent
+            component and components that derive from it are updated.
+          </p>
+<p>
+            As <a class="elem" href="#attribute">attribute</a> can only have text content, <a href="#idl-BenderAttributeElement-insertBefore" class="idl-method">insertBefore</a> will only
+            insert a text or CDATA node.
+            When a new child node is inserted, the <a class="attr" href="#value">value</a>
+            attribute is removed the <a class="elem" href="#attribute">attribute</a> element.
+            All rendered instances of the parent component and components that
+            derive from it are updated.
+          </p>
+<p>
+            <a href="#idl-BenderAttributeElement-set_text_content" class="idl-method">set_text_content</a> updates the text content of the <a class="elem" href="#attribute">attribute</a> element.
+            When updating the text content, the <a class="attr" href="#value">value</a> attribute
+            is removed from the <a class="elem" href="#attribute">attribute</a> element.
+            All rendered instances of the parent component and components that
+            derive from it are updated.
+          </p></section></section></section><section id="component"><h3>6.2 The <code>component</code> element</h3>
+<p class="desc">Define a Bender component.</p>
+<section class="spec"><p>Child of:<ul>
+<li><a href="#component">component</a></li>
+<li><a href="#content">content</a></li>
+<li><a href="#foreign-view-content"><em>foreign view content</em></a></li>
+<li><a href="#view">view</a></li>
+</ul></p>
+<p>Content:<ul>
+<li>optional 
+          <a href="#href-component">href</a> attribute
+        </li>
+<li>optional 
+          <a href="#id">id</a> attribute
+        </li>
+<li>zero or more <em>other</em> attributes</li>
+<li>interleaving of:<ul>
+<li>zero or more <a href="#component">component</a> elements</li>
+<li>zero or more <a href="#link">link</a> elements</li>
+<li>zero or more <a href="#property">property</a> elements</li>
+<li>optional 
+            <a href="#view">view</a> element
+          </li>
+<li>zero or more <a href="#watch">watch</a> elements</li>
+</ul>
+</li>
+</ul></p></section><section class="longdesc">
+        <p>The <strong>component</strong> is the core element in Bender.
+          It also plays a dual role: at the <strong>document</strong> level,
+          it may be used as a <strong>container</strong> for other
+          components; at the <strong>runtime</strong> level, it is a unit of
+          functionality that is described by its <em>prototype</em>,
+          <em>view</em>, <em>properties</em>, and
+          <em>watches</em>.</p>
+        <section id="idp658432"><h4>6.2.1 The component as a container</h4>
+<p>Components are identified by their URI. This specification only
+            describe the identification of a component by its URL; that is, the
+            URL of its document with the addition of the value of its <a class="attr" href="#id">id</a> attribute as a fragment identifier. A component that
+            is the document element may be identified by the URL of its document
+            only. A component that is not the document element and has no
+            <a class="attr" href="#id">id</a> cannot be identified using an URL.</p>
+<p>When a <a class="elem" href="#component">component</a> element appears as a child of
+            another <a class="elem" href="#component">component</a> element, it does not modify the
+            definition of its parent component in any way. It is a completely
+            independent component, with its own prototype, view, properties,
+            and watches. This allows to group components with related
+            functionality inside a single document, while making each component
+            available outside thanks to its URI.</p>
+<p class="future">Future specifications of Bender will describe a
+            scheme for identifying components with URIs that do not depend on
+            the specific location of documents, <em>e.g.</em>, using search
+            paths for known component libraries.</p></section>
+        <section id="idp664192"><h4>6.2.2 Component prototype and inheritance</h4>
+<p>Bender implements <strong>inheritance</strong> through
+            <em>prototypes</em> rather than classes, following Javascript in
+            this respect. A component may have another component as its
+            <strong>prototype</strong>, which is identified by the <a class="attr" href="#href-component">href</a> attribute of the component element.</p>
+<p>
+            The prototype of a component may have a prototype, which in turn may
+            have a prototype.
+            The <em>prototype chain</em> can be of arbitrary length and must
+            end in a component that has no prototype.
+            It cannot contain a cycle; <em>i.e.</em>, a component cannot
+            appear more than once in the prototype chain.
+          </p></section>
+        <section id="idp668944"><h4>6.2.3 Component view and rendering</h4>
+<p>
+            The <a class="elem" href="#view">view</a> element defines the
+            <strong>rendering</strong> of the component.
+            The view is optional, and a component with no view can still be
+            instantiated (<em>i.e.</em> it can have properties,
+            send event notifications, &amp;c.)
+            A component cannot have multiple <a class="elem" href="#view">view</a> children.
+          </p>
+<p>
+            A component inherits its prototype’s view, if any.
+            It can also <em>extend</em> that prototype’s view by defining
+            additional <em>content</em>.
+          </p>
+<p>
+            The <strong>view</strong> of a component is defined to be the
+            view of its prototype, if it has a prototype and that prototype has
+            a view; otherwise, it is its child <a class="elem" href="#view">view</a> element.
+            When these two conditions are met, the child <a class="elem" href="#view">view</a>
+            element of the component will replace the descendant <a class="elem" href="#content">content</a> element its prototype’s view to extend it.
+            If neither condition is met, then the component has no view.
+          </p></section>
+        <section id="idp676768"><h4>6.2.4 Component properties and watches</h4>
+<p>
+            A component can be parametrized through the use of
+            <em>properties</em>.
+            Properties are named and have a value which can then be rendered
+            or used to control the behavior of the component using
+            <em>watches</em>.
+          </p>
+<p>
+            A <strong>property</strong> is described by the <a class="elem" href="#property">property</a> element.
+            A component may have any number of child <a class="elem" href="#property">property</a>
+            elements.
+            All child <a class="elem" href="#property">property</a> elements of a component must
+            have a different name.
+            The order of definition of properties is not significant.
+          </p>
+<p>
+            A component inherits the properties of its prototype.
+            A component’s <strong>own properties</strong> are the properties
+            defined by its child <a class="elem" href="#property">property</a> elements, and those
+            for which a value has been set on that component.
+          </p>
+<p>
+            Property values may be set for a component through different means:
+          </p>
+<ul>
+            <li>
+              by setting the value of a child <a class="elem" href="#property">property</a> element:
+              this is the <em>default value</em>;
+            </li>
+            <li>
+              by setting the value of an attribute on the
+              <a class="elem" href="#"></a> element that has the name of the
+              property (provided that this name is not
+              <span class="keyword">href</span> or
+              <span class="keyword">id</span>, and that it is syntactically correct in
+              XML): this is the <em>initial value</em>;
+            </li>
+            <li>
+              with a <a class="elem" href="#watch">watch</a>: the <em>current value</em> is
+              set on the object;
+            </li>
+            <li>
+              with the Javascript API, by manipulating the current value on the
+              component object directly.
+            </li>
+          </ul>
+<p>
+            A <strong>watch</strong> is a device allowing the the mapping of
+            certain <em>inputs</em>, namely events from components, DOM
+            events from rendered elements, and changes in property values from
+            components, to <em>outputs</em>, namely sending event
+            notifications, setting attributes of rendered elements, and setting
+            property values.
+            A watch is described by the <a class="elem" href="#watch">watch</a> element.
+            A component may have have any number of child <a class="elem" href="#watch">watch</a>
+            elements.
+            The order of definition of watches is not significant.
+          </p></section>
+      <section><p><em>Javascript API</em></p>
+<pre class="api">Interface <span class="idl-interface-def" id="interface-BenderComponentElement">BenderComponentElement</span> : <a href="#interface-BenderElement">BenderElement</a> {
+  attribute Array&lt;BenderComponentElement&gt; <span class="idl-attribute-def" id="idl-attribute-derived">derived</span>;
+  attribute string? <span class="idl-attribute-def" id="idl-attribute-href">href</span>;
+  readonly attribute Dictionary&lt;string, any&gt; <span class="idl-attribute-def" id="idl-attribute-initials">initials</span>;
+  readonly attribute Dictionary&lt;string, BenderPropertyElement&gt; <span class="idl-attribute-def" id="idl-attribute-properties">properties</span>;
+  attribute BenderComponentElement? <span class="idl-attribute-def" id="idl-attribute-prototype">prototype</span>;
+  readonly attribute Dictionary&lt;string, any&gt; <span class="idl-attribute-def" id="idl-attribute-values">values</span>;
+  attribute BenderViewElement <span class="idl-attribute-def" id="idl-attribute-view">view</span>;
+}</pre>
+<p>
+            <a href="#idl-attribute-initials" class="idl-attribute">initials</a> is a live dictionary of the <strong>initial
+              values</strong> for the component’s properties.
+            Property names are mapped to initial values.
+            If the component element has an attribute with the same name as
+            a property, then the value of this attribute is the initial value
+            of the property for this component.
+            The <a href="#idl-attribute-initials" class="idl-attribute">initials</a> dictionary maps names of properties that
+            have no initial value to <span class="keyword">null</span>, and strings
+            that do not map to a property of a component to
+            <span class="keyword">undefined</span>.
+            Setting a new initial value for an existing property name will
+            set the corresponding attribute value.
+            Setting a null value will delete the corresponding attribute.
+            In both cases, the current value is set to the new initial value.
+            Setting a new initial value for a string that is not the name of a
+            property has no effect.
+          </p>
+<p>
+            <a href="#idl-attribute-prototype" class="idl-attribute">prototype</a> is the prototype component of this component, if
+            any.
+          </p></section></section></section><section id="content"><h3>6.3 The <code>content</code> element</h3>
+<p class="desc">Provide a location for custom rendering for derived
+        components.</p>
+<section class="spec"><p>Child of:<ul>
+<li><a href="#foreign-view-content"><em>foreign view content</em></a></li>
+<li><a href="#view">view</a></li>
+</ul></p>
+<p>Content:<ul><li>mixed content:<ul>
+<li>zero or more <a href="#component">component</a> elements</li>
+<li>zero or more <a href="#foreign-view-content"><em>foreign view content</em></a> elements</li>
+<li>zero or more <a href="#text">text</a> elements</li>
+</ul>
+</li></ul></p></section><section class="longdesc">
+        <p>
+          A component may extend the view of its prototype by having its own
+          <a class="elem" href="#view">view</a> element.
+          A view can be extended if and only if it has a descendant <a class="elem" href="#content">content</a> element.
+          The purpose of this element is two-fold:
+        </p>
+        <ol>
+          <li>
+            indicate the <strong>location</strong> of the extension.
+            The derived component’s <a class="elem" href="#view">view</a> will be rendered
+            in place of this element;
+          </li>
+          <li>
+            provide <strong>default content</strong> when there is no
+            derived component, or the derived component has no child <a class="elem" href="#view">view</a> element.
+            The children of the element, if any, are rendered following the same
+            rules as the contents of the <a class="elem" href="#view">view</a> element in the
+            absence of extended content.
+          </li>
+        </ol>
+        <p>
+          A view with no descendant <a class="elem" href="#content">content</a> element cannot be
+          extended, even if derived components have their own child <a class="elem" href="#view">view</a> element.
+        </p>
+        <p>
+          Although this is not specified in the schema, a <a class="elem" href="#view">view</a>
+          element may have at most <a class="elem" href="#content">content</a> descendant.
+        </p>
+      </section></section><section id="foreign-view-content"><h3>6.4 Foreign view content</h3>
+<p class="desc">Foreign content appearing in the view of a component.</p>
+<section class="spec"><p>Child of:<ul>
+<li><a href="#content">content</a></li>
+<li><a href="#foreign-view-content"><em>foreign view content</em></a></li>
+<li><a href="#view">view</a></li>
+</ul></p>
+<p>Content:<ul>
+<li>zero or more <em>free</em> attributes</li>
+<li>mixed content:<ul>
+<li>zero or more <a href="#attribute">attribute</a> elements</li>
+<li>zero or more <a href="#component">component</a> elements</li>
+<li>optional 
+            <a href="#content">content</a> element
+          </li>
+<li>zero or more <a href="#foreign-view-content"><em>foreign view content</em></a> elements</li>
+<li>zero or more <a href="#text">text</a> elements</li>
+</ul>
+</li>
+</ul></p></section><section class="longdesc">
+        <section id="idp727328"><h3>6.4.1 Role of foreign content</h3>
+<p>
+            The view of a component may contain arbitrary markup.
+            This markup is not interpreted by Bender and is passed <em>as
+              is</em> to the runtime when the component is rendered.
+            For instance, it is possible to use HTML, SVG and MathML to render
+            Bender components in a HTML5 runtime; but Bender does not need to
+            be aware of any of these markup languages and will just pass that
+            content along.
+          </p>
+<p>
+            Foreign elements in a view have the same content model as the
+            <a class="elem" href="#view">view</a> element, and may also have an <a class="attr" href="#id">id</a> attribute and any attribute that is not in the Bender
+            namespace.
+            A foreign element may have other foreign elements, Bender
+            <a class="elem" href="#component">component</a> elements or text content as children.
+            It is possible to have a Bender <a class="elem" href="#content">content</a> element
+            as a child, as long as the view as a whole has only one such
+            descendant element.
+          </p></section>
+        <section id="idp732288"><h3>6.4.2 Rendering of foreign content</h3>
+<p>
+            A foreign element is rendered by creating a new element with the
+            same qualified name in the target document.
+            All of its attribute except for <a class="attr" href="#id">id</a> are copied to
+            the new element with the same value.
+            The <a class="attr" href="#id">id</a> attribute is used by the component watches
+            to identify this element through the <a class="attr" href="#view"></a>
+            attribute.
+          </p>
+<p>
+            Then, the contents of the element are rendered.
+            Element children are rendered following their rendering rules.
+            Text child nodes are copied to the new element (<em>i.e.</em>,
+            new text child nodes are created in the target document.)
+          </p></section>
+      </section></section><section id="get"><h3>6.5 The <code>get</code> element</h3>
+<p class="desc">Event or property being watched.</p>
+<section class="spec"><p>Child of:<ul><li><a href="#watch">watch</a></li></ul></p>
+<p>Content:<ul>
+<li>choice of:<ul>
+<li>group of:<ul>
+<li>
+<a href="#event">event</a> attribute</li>
+<li>optional 
+        <a href="#component-ref">component</a> attribute
+      </li>
+</ul>
+</li>
+<li>group of:<ul>
+<li>
+<a href="#dom-event">dom-event</a> attribute</li>
+<li>optional 
+        <a href="#view-ref">view</a> attribute
+      </li>
+</ul>
+</li>
+<li>group of:<ul>
+<li>
+<a href="#property-ref">property</a> attribute</li>
+<li>optional 
+        <a href="#component-ref">component</a> attribute
+      </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>optional 
+          choice of:<ul>
+<li>
+<a href="#value">value</a> attribute</li>
+<li><em>text</em></li>
+</ul>
+        </li>
+</ul></p></section><section class="longdesc">
+        <section id="idp744640"><h4>6.5.1 Watch inputs</h4>
+<p>
+            A <a class="elem" href="#get">get</a> element describe an <strong>input</strong> of a
+            <a class="elem" href="#watch">watch</a>.
+            An input can be <strong>activated</strong> once its
+            <em>activation criteria</em> are met, as described in the
+            following sections.
+            Once an input is actived, the corresponding
+            <strong>outputs</strong> (<em>i.e.</em>, <a class="elem" href="#set">set</a> child elements) of the parent watch are applied.
+            An active input stays active, and cannot be activated anymore, until
+            the end of a dataflow cycle, at which point all active inputs become
+            inactive.
+          </p></section>
+        <section id="idp749600"><h4>6.5.2 Bender events</h4></section>
+        <section id="idp750384"><h4>6.5.3 DOM events</h4></section>
+        <section id="idp751168"><h4>6.5.4 Properties</h4></section>
+      </section></section><section id="link"><h3>6.6 The <code>link</code> element</h3>
+<p class="desc">Associate external resources with the component.</p>
+<section class="spec"><p>Child of:<ul><li><a href="#component">component</a></li></ul></p>
+<p>Content:<ul>
+<li>
+<a href="#rel">rel</a> attribute</li>
+<li>
+<a href="#href-link">href</a> attribute</li>
+</ul></p></section><section class="longdesc">
+        <p>This element is similar to the <a href="http://www.w3.org/html/wg/drafts/html/master/document-metadata.html#the-link-element">HTML link element</a>.
+          It allows to link the component to other resources, namely stylesheets
+          and scripts.</p>
+        <p>The destination of the link is given by the <a class="attr" href="#href-link">href</a> attribute, which must be present and must contain
+          a valid non-empty URL potentially surrounded by spaces.</p>
+        <p>The type of link is indicated by the <a class="attr" href="#rel">rel</a>
+          attribute, which must be present and must contain a valid keyword
+          potentially surrounded by spaces. The valid keywords and their
+          signification are:</p>
+        <ul>
+          <li>
+<span class="keyword">script</span>: import a script. The URL must
+            point to a Javascript file.</li>
+          <li>
+<span class="keyword">stylesheet</span>: import a stylesheet. The URL
+            must point to a CSS file. Handling of stylesheet is dependent on the
+            runtime: in the case of HTML output, a new <code>link</code>
+            element is created in the <code>head</code> of the document; in
+            the case of SVG, a new <code>link</code> element is created in
+            the <code>svg</code> element of the document (using the correct
+            <code>xlink:href</code> attribute.)</li>
+        </ul>
+        <p>The context manages the linked resources for all components and
+          loads resources only once.</p>
+      </section></section><section id="property"><h3>6.7 The <code>property</code> element</h3>
+<p class="desc">Define a property of the component.</p>
+<section class="spec"><p>Child of:<ul><li><a href="#component">component</a></li></ul></p>
+<p>Content:<ul>
+<li>
+<a href="#property-name">name</a> attribute</li>
+<li>optional 
+          <a href="#as">as</a> attribute
+        </li>
+<li>optional 
+          <a href="#value">value</a> attribute
+        </li>
+<li>optional 
+          <em>text</em>
+        </li>
+</ul></p></section><section class="longdesc">
+        <p>
+          A property is a named Javascript value associated with a component.
+          A property allows a component to maintain its state.
+          Properties can be <strong>watched</strong> and
+          <strong>bound</strong>.
+        </p>
+        <p>
+          The <strong>name</strong> of the property is given by the <a class="attr" href="#property-name">name</a> attribute, which must be present and must
+          contain a non-empty string of characters potentially surrounded by
+          spaces.
+          The name of the property is obtained by trimming leading and trailing
+          whitespace from the <a class="attr" href="#property-name">name</a> attribute.
+          No other normalization is performed on the name of a property.
+          One consequence is that property names are case-sensitive, as they are
+          in Javascript.
+          A property name must be unique within a component; <em>i.e.</em>,
+          a <a class="elem" href="#component">component</a> element cannot have two or more child
+          <a class="elem" href="#property">property</a> elements with the same <a class="attr" href="#property-name">name</a> attribute (after whitespace has been
+          trimmed.)
+        </p>
+        <p>
+          The <strong>value</strong> of the property is given by the <a class="attr" href="#value">value</a> attribute.
+          Because an XML attribute can only contain a string, authors may also
+          specify how that string should be interpreted with the <a class="attr" href="#as">as</a> attribute.
+        </p>
+      </section></section><section id="set"><h3>6.8 The <code>set</code> element</h3>
+<p class="desc">Action associated with a watch.</p>
+<section class="spec"><p>Child of:<ul><li><a href="#watch">watch</a></li></ul></p>
+<p>Content:<ul>
+<li>choice of:<ul>
+<li>group of:<ul>
+<li>
+<a href="#attr">attr</a> attribute</li>
+<li>optional 
+        <a href="#view-ref">view</a> attribute
+      </li>
+</ul>
+</li>
+<li>group of:<ul>
+<li>
+<a href="#event">event</a> attribute</li>
+<li>optional 
+        <a href="#component-ref">component</a> attribute
+      </li>
+</ul>
+</li>
+<li>group of:<ul>
+<li>
+<a href="#property-ref">property</a> attribute</li>
+<li>optional 
+        <a href="#component-ref">component</a> attribute
+      </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>optional 
+          choice of:<ul>
+<li>
+<a href="#value">value</a> attribute</li>
+<li><em>text</em></li>
+</ul>
+        </li>
+</ul></p></section></section><section id="text"><h3>6.9 The <code>text</code> element</h3>
+<p class="desc">Output a text node on rendering.</p>
+<section class="spec"><p>Child of:<ul>
+<li><a href="#content">content</a></li>
+<li><a href="#foreign-view-content"><em>foreign view content</em></a></li>
+<li><a href="#view">view</a></li>
+</ul></p>
+<p>Content:<ul>
+<li>optional 
+          <a href="#id">id</a> attribute
+        </li>
+<li>choice of:<ul>
+<li>
+<a href="#value">value</a> attribute</li>
+<li><em>text</em></li>
+</ul>
+</li>
+</ul></p></section><section class="longdesc">
+        <p>
+          The purpose of the <a class="elem" href="#text">text</a> element, similarly to the <a class="elem" href="#attribute">attribute</a> element, is twofold.
+          First, it provides a way to add text child nodes to rendered elements
+          explicitly.
+          Second, by giving an <a class="attr" href="#id">id</a> attribute to the <a class="elem" href="#text">text</a>
+          element, it can become the target of a <a class="elem" href="#set">set</a> element.
+        </p>
+        <p>
+          An <a class="elem" href="#text">text</a> element must have either a <a class="attr" href="#attribute-name">name</a> attribute or (possibly empty) text content.
+          This is the value for the rendered attribute.
+        </p>
+        <p>
+          When the parent element is rendered, a new text node is added in place
+          of this element.
+          The content of the new text node is the same as the value of the
+          element.
+        </p>
+      <section><p><em>Javascript API</em></p>
+<pre class="api">Interface <span class="idl-interface-def" id="interface-"></span> {
+  attribute string <span class="idl-attribute-def" id="idl-attribute-value">value</span>;
+  Node <span class="idl-method-def" id="idl--insertBefore">insertBefore</span>(Node child);
+  void <span class="idl-method-def" id="idl--set_text_content">set_text_content</span>(string text);
+}</pre>
+<p>
+            The <a href="#idl-attribute-value" class="idl-attribute">value</a> property of a <a href="#interface-" class="idl-interface"></a> reflects
+            the value of the <a class="attr" href="#value">value</a> attribute of the element, or
+            its text content, whichever is set.
+            Getting the value of this property returns the value of the <a class="attr" href="#value">value</a> attribute if it is defined, or the text content of
+            the element otherwise.
+            Setting the value always sets the <a class="attr" href="#value">value</a> attribute
+            and clears the text content of the element, if any.
+            When setting a new value, all rendered instances of the parent
+            component and components that derive from it are updated.
+          </p>
+<p>
+            As <a class="elem" href="#text">text</a> can only have text content, <a href="#idl--insertBefore" class="idl-method">insertBefore</a> will only
+            insert a text or CDATA node.
+            When a new child node is inserted, the <a class="attr" href="#value">value</a>
+            attribute is removed the <a class="elem" href="#text">text</a> element.
+            All rendered instances of the parent component and components that
+            derive from it are updated.
+          </p>
+<p>
+            <a href="#idl--set_text_content" class="idl-method">set_text_content</a> updates the text content of the <a class="elem" href="#text">text</a> element.
+            When updating the text content, the <a class="attr" href="#value">value</a> attribute
+            is removed from the <a class="elem" href="#text">text</a> element.
+            All rendered instances of the parent component and components that
+            derive from it are updated.
+          </p></section></section></section><section id="view"><h3>6.10 The <code>view</code> element</h3>
+<p class="desc">Describe the rendering of a component.</p>
+<section class="spec"><p>Child of:<ul><li><a href="#component">component</a></li></ul></p>
+<p>Content:<ul><li>mixed content:<ul>
+<li>zero or more <a href="#component">component</a> elements</li>
+<li>optional 
+            <a href="#content">content</a> element
+          </li>
+<li>zero or more <a href="#foreign-view-content"><em>foreign view content</em></a> elements</li>
+<li>zero or more <a href="#text">text</a> elements</li>
+</ul>
+</li></ul></p></section></section><section id="watch"><h3>6.11 The <code>watch</code> element</h3>
+<p class="desc">Define a watch for the component.</p>
+<section class="spec"><p>Child of:<ul><li><a href="#component">component</a></li></ul></p>
+<p>Content:<ul><li>interleaving of:<ul>
+<li>one or more <a href="#get">get</a> elements</li>
+<li>zero or more <a href="#set">set</a> elements</li>
+</ul>
+</li></ul></p></section><section class="longdesc">
+        <p>
+          The <a class="elem" href="#watch">watch</a> element defines a <strong>watch</strong> for the
+          component.
+          A watch has <em>inputs</em>, described by <a class="elem" href="#get">get</a>
+          elements, and <em>outputs</em>, described by <a class="elem" href="#set">set</a>
+          elements.
+          Once an input of the watch is active, all of its outputs are applied
+          in document order.
+        </p>
+        <p>
+          When a child <a class="elem" href="#get">get</a> or <a class="elem" href="#set">set</a> element is
+          added or removed, the rendering of the component and of the components
+          that derive from it is updated.
+        </p>
+      <section><p><em>Javascript API</em></p>
+<pre class="api">Interface <span class="idl-interface-def" id="interface-BenderWatchElement">BenderWatchElement</span> : <a href="#interface-BenderElement">BenderElement</a> {
+  readonly attribute BenderGetElement[] <span class="idl-attribute-def" id="idl-attribute-gets">gets</span>;
+  readonly attribute BenderSetElement[] <span class="idl-attribute-def" id="idl-attribute-sets">sets</span>;
+}</pre>
+<p>
+            <a href="#idl-attribute-gets" class="idl-attribute">gets</a> is the list of the <a class="elem" href="#get">get</a>
+            child elements in document order.
+          </p>
+<p>
+            <a href="#idl-attribute-sets" class="idl-attribute">sets</a> is the list of the <a class="elem" href="#set">set</a>
+            child elements in document order.
+          </p></section></section></section></section><section id="idp825728"><h2>7 Attributes</h2>
+<section id="as"><h3>7.1 The <code>as</code> attribute</h3>
+<p class="desc">How to parse a property value.</p>
+<section class="spec"><p>Attribute of:<ul><li><a href="#property">property</a></li></ul></p>
+<p>Content:<ul>choice of:<ul>
+<li>value <span class="keyword">boolean</span>
+</li>
+<li>value <span class="keyword">dynamic</span>
+</li>
+<li>value <span class="keyword">number</span>
+</li>
+<li>value <span class="keyword">string</span>
+</li>
+</ul>
+</ul></p></section><section class="longdesc">
+        <p>
+
+        </p>
+      </section></section><section id="attr"><h3>7.2 The <code>attr</code> attribute</h3>
+<p class="desc">Attribute of a view element to be set.</p>
+<section class="spec"><p>Attribute of:<ul><li><a href="#set">set</a></li></ul></p>
+<p>Content:<ul>data of type <span class="data-type">Name</span>
+</ul></p></section></section><section id="component-ref"><h3>7.3 The <code>component</code> attribute</h3>
+<p class="desc">Reference to a component.</p>
+<section class="spec"><p>Attribute of:<ul>
+<li><a href="#get">get</a></li>
+<li><a href="#set">set</a></li>
+</ul></p>
+<p>Content:<ul>data of type <span class="data-type">token</span>
+</ul></p></section></section><section id="dom-event"><h3>7.4 The <code>dom-event</code> attribute</h3>
+<p class="desc">DOM event to watch.</p>
+<section class="spec"><p>Attribute of:<ul><li><a href="#get">get</a></li></ul></p>
+<p>Content:<ul><li>any string</li></ul></p></section></section><section id="event"><h3>7.5 The <code>event</code> attribute</h3>
+<p class="desc">Bender event to watch or to notify.</p>
+<section class="spec"><p>Attribute of:<ul>
+<li><a href="#get">get</a></li>
+<li><a href="#set">set</a></li>
+</ul></p>
+<p>Content:<ul><li>any string</li></ul></p></section></section><section id="href-component"><h3>7.6 The <code>href</code> attribute</h3>
+<p class="desc">URI of the prototype component.</p>
+<section class="spec"><p>Attribute of:<ul><li><a href="#component">component</a></li></ul></p>
+<p>Content:<ul>data of type <span class="data-type">anyURI</span>
+</ul></p></section></section><section id="href-link"><h3>7.7 The <code>href</code> attribute</h3>
+<p class="desc">URI of a linked resource.</p>
+<section class="spec"><p>Attribute of:<ul><li><a href="#link">link</a></li></ul></p>
+<p>Content:<ul>data of type <span class="data-type">anyURI</span>
+</ul></p></section></section><section id="id"><h3>7.8 The <code>id</code> attribute</h3>
+<p class="desc">Unique identifier for an element.</p>
+<section class="spec"><p>Attribute of:<ul>
+<li><a href="#attribute">attribute</a></li>
+<li><a href="#component">component</a></li>
+<li><a href="#text">text</a></li>
+</ul></p>
+<p>Content:<ul>data of type <span class="data-type">ID</span>
+</ul></p></section></section><section id="attribute-name"><h3>7.9 The <code>name</code> attribute</h3>
+<p class="desc">Name of an attribute.</p>
+<section class="spec"><p>Attribute of:<ul><li><a href="#attribute">attribute</a></li></ul></p>
+<p>Content:<ul>data of type <span class="data-type">Name</span>
+</ul></p></section></section><section id="property-name"><h3>7.10 The <code>name</code> attribute</h3>
+<p class="desc">Name of a property.</p>
+<section class="spec"><p>Attribute of:<ul><li><a href="#property">property</a></li></ul></p>
+<p>Content:<ul><li>any string</li></ul></p></section></section><section id="ns"><h3>7.11 The <code>ns</code> attribute</h3>
+<p class="desc">Namespace URI of an attribute.</p>
+<section class="spec"><p>Attribute of:<ul><li><a href="#attribute">attribute</a></li></ul></p>
+<p>Content:<ul><li>any string</li></ul></p></section></section><section id="property-ref"><h3>7.12 The <code>property</code> attribute</h3>
+<p class="desc">Reference a component’s property.</p>
+<section class="spec"><p>Attribute of:<ul>
+<li><a href="#get">get</a></li>
+<li><a href="#set">set</a></li>
+</ul></p>
+<p>Content:<ul>data of type <span class="data-type">Name</span>
+</ul></p></section></section><section id="rel"><h3>7.13 The <code>rel</code> attribute</h3>
+<p class="desc">Relationship of the linked resource with the component.</p>
+<section class="spec"><p>Attribute of:<ul><li><a href="#link">link</a></li></ul></p>
+<p>Content:<ul>choice of:<ul>
+<li>value <span class="keyword">script</span>
+</li>
+<li>value <span class="keyword">stylesheet</span>
+</li>
+</ul>
+</ul></p></section></section><section id="view-ref"><h3>7.14 The <code>view</code> attribute</h3>
+<p class="desc">Reference an element in the view of the component.</p>
+<section class="spec"><p>Attribute of:<ul>
+<li><a href="#get">get</a></li>
+<li><a href="#set">set</a></li>
+</ul></p>
+<p>Content:<ul>data of type <span class="data-type">token</span>
+</ul></p></section></section><section id="value"><h3>7.15 The <code>value</code> attribute</h3>
+<p class="desc">Set a value.</p>
+<section class="spec"><p>Attribute of:<ul>
+<li><a href="#attribute">attribute</a></li>
+<li><a href="#get">get</a></li>
+<li><a href="#property">property</a></li>
+<li><a href="#set">set</a></li>
+<li><a href="#text">text</a></li>
+</ul></p>
+<p>Content:<ul><li>any string</li></ul></p></section></section></section>
+</div></div>
+</div>
+<script src="../../flexo.js"></script><script src="../../bender.js"></script><script>
+
+"use strict";
+
+var context = bender.create_context();
+context.$("component", { href: "../../demo/logo.xml", sides: "7", fgcolor: "#db7093",
+  bgcolor: "white" }).create_instance(document.querySelector("#logo a"));
+
+    </script>
+</body>
+</html>

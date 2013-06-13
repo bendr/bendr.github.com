@@ -1,0 +1,41 @@
+<component xmlns="http://bender.igel.co.jp">
+
+  <link rel="stylesheet" href="draw.css"/>
+
+  <property name="context" as="dynamic"
+    value="this.views.$root.getContext('2d')"/>
+  <property name="down" as="boolean" value="false"/>
+
+  <view xmlns:html="http://www.w3.org/1999/xhtml">
+    <html:canvas width="500" height="500"/>
+  </view>
+
+  <watch>
+    <get view="$root" dom-event="mousedown"/>
+    <set instance="$self" property="down">
+      value.preventDefault();
+      this.properties.context.beginPath();
+      var p = flexo.event_offset_pos(value, this.views.$root);
+      this.properties.context.moveTo(p.x, p.y);
+      return true;
+    </set>
+  </watch>
+
+  <watch>
+    <get view="$document" dom-event="mousemove"/>
+    <set instance="$self" property="down">
+      if (this.properties.down === true) {
+        var p = flexo.event_offset_pos(value, this.views.$root);
+        this.properties.context.lineTo(p.x, p.y);
+        this.properties.context.stroke();
+      }
+    </set>
+  </watch>
+
+  <watch>
+    <get view="$document" dom-event="mouseup"/>
+    <set instance="$self" property="down" value="false"/>
+  </watch>
+
+</component>
+
