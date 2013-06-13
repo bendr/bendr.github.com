@@ -92,6 +92,15 @@ div.tiles > div {
   box-shadow: 0 0 10px #444;
 }
 
+.canvas {
+  background-color: #f8f9f0;
+  border-radius: 5px;
+}
+
+.canvas canvas {
+  border-radius: 5px;
+}
+
 ul {
   list-style-type: none;
   padding-left: 0;

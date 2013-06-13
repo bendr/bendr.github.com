@@ -110,7 +110,8 @@
           <ul>
             <li><a href="dom/runtime.html?href=test/hello.xml">test/hello.xml</a></li>
             <li><a href="dom/runtime.html?href=test/text-inputs.xml">test/text-inputs.xml</a></li>
-            <li><a href="dom/runtime.html?href=lib/button.xml">lib/button.xml</a></li>
+            <li><a href="dom/runtime.html?href=test/button.xml">test/button.xml</a></li>
+            <li><a href="dom/runtime.html?href=test/canvas.xml">test/canvas.xml</a></li>
           </ul>
         </div>
       </div>
@@ -127,17 +128,9 @@
         <a href="dom/runtime.svg?href=test/arrow.xml"></a>
       </div>
 
-      <div class="text black-bg extra-a">
-        <a href="dom/runtime.svg?href=test/arrow.xml"></a>
-      </div>
-
-      <div class="text black-bg extra-b">
-        <a href="dom/runtime.svg?href=test/arrow.xml"></a>
-      </div>
-
-      <div class="text black-bg extra-c">
-        <a href="dom/runtime.svg?href=test/arrow.xml"></a>
-      </div>
+      <div class="canvas extra-a"></div>
+      <div class="canvas extra-b"></div>
+      <div class="canvas extra-c"></div>
 
       <div class="text pink-bg">
         <div>
@@ -167,7 +160,14 @@ var env = bender.load_app(document.querySelector("#logo a"),
   { href: "dom/test/logo.xml", sides: "7", fgcolor: "'white'",
     bgcolor: "'#ff6a4d'", clickable: "false" });
 
-Array.prototype.forEach.call(document.querySelectorAll(".black-bg a"),
+Array.prototype.forEach.call(document.querySelectorAll(".canvas"),
+  function (a) {
+    bender.load_app(a, { href: "dom/lib/canvas.xml", width: "220",
+      height: "220", stroke: "#102040", "stroke-width": "4" },
+    env);
+  });
+
+Array.prototype.forEach.call(document.querySelectorAll(".black-bg"),
   function (a) {
     bender.load_app(a, { href: "dom/test/arrow.xml", r: "120",
       "white-bg": false }, env);
