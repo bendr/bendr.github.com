@@ -47,7 +47,7 @@ flexo.ez_xhr("../../dom/test/sample.xml", { responseType: "text" }, function (re
 	        </view>
 	      </component>
 今回のサンプルではボタンを2つ組み合わせています。
-<a href="">外部コンポーネント</a>と同様に、<tt>button.xml</tt>を利用してボタンを実装しています。
+[外部コンポーネント](external-component.ja.html)と同様に、<tt>button.xml</tt>を利用してボタンを実装しています。
 <tt>button-minus</tt>は、<tt>count</tt>プロパティの値がマイナス値になった場合、ボタンを無効にするために、<tt>button</tt>コンポーネントの<tt>enabled</tt>プロパティに<tt>false</tt>を設定するように<tt>value</tt>に値を設定しています。
 
 
@@ -57,12 +57,9 @@ flexo.ez_xhr("../../dom/test/sample.xml", { responseType: "text" }, function (re
 	    <get component="button-minus" event="!pushed"/>
 	    <set property="count" value="this.properties.count + 1"/>
 	  </watch>
-マウスイベントによる<tt>pushed</tt>イベントの取得は<a href="">外部コンポーネント</a>と同じですが、<tt>get</tt>要素内で<tt>alert()</tt>を実行していたのに対し、ここでは、<tt>set</tt>要素を使用します。
+マウスイベントによる<tt>pushed</tt>イベントの取得は[外部コンポーネント](external-component.ja.html)と同じですが、<tt>get</tt>要素内で<tt>alert()</tt>を実行していたのに対し、ここでは、<tt>set</tt>要素を使用します。
 <tt>set</tt>要素は指定したターゲット（ここでは<tt>count</tt>プロパティ）に<tt>value</tt>を設定するものです。
-<tt>count</tt>プロパティを参照するために、<tt>this.properties.count</tt>としてます。
+<tt>count</tt>プロパティを参照するために、<tt>this.properties.count</tt>としています。
 （watch要素内でのプロパティ バインディングが未実装なため）
-
-
-
 
 
