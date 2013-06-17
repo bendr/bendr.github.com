@@ -47,7 +47,7 @@ flexo.ez_xhr("../../dom/test/sample.xml", { responseType: "text" }, function (re
 	        </view>
 	      </component>
 今回のサンプルではボタンを2つ組み合わせています。
-[外部コンポーネント](external-component.ja.html)と同様に、<tt>button.xml</tt>を利用してボタンを実装しています。
+[外部コンポーネント](external-component.ja.html)と同様に、*button.xml*を利用してボタンを実装しています。
 <tt>button-minus</tt>は、<tt>count</tt>プロパティの値がマイナス値になった場合、ボタンを無効にするために、<tt>button</tt>コンポーネントの<tt>enabled</tt>プロパティに<tt>false</tt>を設定するように<tt>value</tt>に値を設定しています。
 
 
