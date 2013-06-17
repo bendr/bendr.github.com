@@ -42,7 +42,7 @@ flexo.ez_xhr("../../dom/test/sample.xml", { responseType: "text" }, function (re
 	</view>
 	<watch>
 		<get property="roman"/>
-		<set elem="num" value="this.properties.roman"/>
+		<set elem="num"/>
 	</watch>
 
 このように、プロパティ バインディングを使う事により、シンプルにより可読性の高いコードの記述を可能にします。

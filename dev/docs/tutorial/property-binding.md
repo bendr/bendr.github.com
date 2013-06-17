@@ -43,7 +43,7 @@ This is equivalent to the following code that use the <tt>watch</tt> element.
 	</view>
 	<watch>
 		<get property="roman"/>
-		<set elem="num" value="this.properties.roman"/>
+		<set elem="num"/>
 	</watch>
 
 In this way, by using the property binding, it makes possible to write a code more readable and simple.
