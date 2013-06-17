@@ -47,7 +47,7 @@ The value <tt>count</tt> is returned in Roman numeral form by setting <tt>`roman
 	        </view>
 	      </component>
 2 buttons are used in this sample.
-As same as <a href="">External component</a>, implement those buttons with <tt>button.xml</tt>.
+As same as [External component](external-component.html), implement those buttons with <tt>button.xml</tt>.
 For <tt>button-minus</tt>, the value is specified on <tt>value</tt> to set <tt>false</tt> for <tt>enabled</tt> property in case the value of <tt>count</tt> property becomes negative value. That leads the button to be disable.
 
 
@@ -57,7 +57,7 @@ For <tt>button-minus</tt>, the value is specified on <tt>value</tt> to set <tt>f
 	    <get component="button-minus" event="!pushed"/>
 	    <set property="count" value="this.properties.count + 1"/>
 	  </watch>
-It is the same manner as that in <a href="">External Component</a> to get <tt>pushed</tt> event by mouse event. However, <tt>set</tt> element is used in this tutorial where <tt>alert()</tt> is used in <tt>get</tt> element for the last tutorial.
+It is the same manner as that in [External Component](external-component.html) to get <tt>pushed</tt> event by mouse event. However, <tt>set</tt> element is used in this tutorial where <tt>alert()</tt> is used in <tt>get</tt> element for the last tutorial.
 <tt>set</tt> element set <tt>value</tt> to specified target (<tt>count</tt> in this sample).
 <tt>this.properties.count</tt> is used to refer <tt>count</tt> property over here.
 (because property binding in watch element is not supported, yet)
