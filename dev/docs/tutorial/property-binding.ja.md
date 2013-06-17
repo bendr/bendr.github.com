@@ -17,8 +17,37 @@ flexo.ez_xhr("../../dom/test/sample.xml", { responseType: "text" }, function (re
 });
 </script>
 
+##プロパティ バインディングとは
 
-上記のサンプルコードについて説明します。
+プロパティ バインディングは<tt>watch</tt>を作成するために必要となるマークアップの量を減らす事が出来る特別な構文です。
+<tt>view</tt>内のテキストノードや<tt>property</tt>の<tt>value</tt>などでのプロパティへの直接参照を行うことを可能にします。
+例えば、上記のサンプルコードで、
+
+	<property name="roman" value="flexo.to_roman(`count).toUpperCase()"/>
+
+と定義しているプロパティの参照は、<tt>view</tt>内では、以下の通り行っています。
+
+	<view xmlns:html="http://www.w3.org/1999/xhtml">
+		<html:p>
+			Number of clicks: `roman
+		</html:p>
+	</view>
+
+これは、<tt>watch</tt>を利用した以下のコードと同等になります。
+
+	<view xmlns:html="http://www.w3.org/1999/xhtml">
+		<html:p>
+			Number of clicks: <text id="num">
+		</html:p>
+	</view>
+	<watch>
+		<get property="roman"/>
+		<set elem="num" value="this.properties.roman"/>
+	</watch>
+
+このように、プロパティ バインディングを使う事により、シンプルにより可読性の高いコードの記述を可能にします。
+
+以降では、上記のサンプルコードについて説明します。
 
 ##プロパティの利用
 

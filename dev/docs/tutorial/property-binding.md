@@ -17,6 +17,37 @@ flexo.ez_xhr("../../dom/test/sample.xml", { responseType: "text" }, function (re
 });
 </script>
 
+##Property binding
+
+Property bindings are special syntax that reduces the amount of markup necessary to create watches.
+Text content (the value of properties, as well as attributes and text nodes in a view) may contain direct reference to properties, which then get rendered as watches in the following manner.
+
+For example, as follows, property is defined in the above sample code;
+
+	<property name="roman" value="flexo.to_roman(`count).toUpperCase()"/>
+
+As follows, properties are referenced in <tt>view</tt> element.
+
+	<view xmlns:html="http://www.w3.org/1999/xhtml">
+		<html:p>
+			Number of clicks: `roman
+		</html:p>
+	</view>
+
+This is equivalent to the following code that use the <tt>watch</tt> element.
+
+	<view xmlns:html="http://www.w3.org/1999/xhtml">
+		<html:p>
+			Number of clicks: <text id="num">
+		</html:p>
+	</view>
+	<watch>
+		<get property="roman"/>
+		<set elem="num" value="this.properties.roman"/>
+	</watch>
+
+In this way, by using the property binding, it makes possible to write a code more readable and simple.
+
 
 Describe about above sample code.
 
