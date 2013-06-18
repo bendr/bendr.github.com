@@ -26,6 +26,7 @@
               <li><a href="tutorial.ja.html">はじめに</a></li>
               <li><a href="hello-world.ja.html">Hello World.</a></li>
               <li><a href="external-component.ja.html">外部コンポーネント</a></li>
+              <li><a href="property-binding.ja.html">プロパティ バインディング</a></li>
 <!--
               <li><a href="canvas.ja.html">dom-eventとproperty</a></li>
               <li><a href="drawing.ja.html">お絵描きアプリ</a></li>
@@ -62,8 +63,8 @@
 "use strict";
 
 bender.load_app(document.querySelector("#logo a"), {
-  href: "../../dom/test/logo.xml", sides: "7", fgcolor: "white",
-  bgcolor: "#2495b5"
+  href: "../../dom/test/logo.xml", sides: "7", fgcolor: "'white'",
+  bgcolor: "'#2495b5'"
 });
 
     </script>
