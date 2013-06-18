@@ -314,3 +314,12 @@ blockquote > p {
   right: 0;
   top: 0;
 }
+
+.calculator {
+  background-color: #06491d;
+}
+
+.calculator svg {
+  width: 220px;
+  height: 220px;
+}

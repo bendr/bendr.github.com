@@ -74,8 +74,7 @@
         </div>
       </div>
 
-      <div class="text black-bg">
-        <a href="dom/runtime.svg?href=test/arrow.xml"></a>
+      <div class="calculator red-bg">
       </div>
 
       <div class="text purple-bg">
@@ -166,6 +165,12 @@ var env = bender.load_app(document.querySelector("#logo a"),
 Array.prototype.forEach.call(document.querySelectorAll(".canvas"),
   function (a) {
     bender.load_app(a, { href: "dom/test/pens.xml" }, env);
+  });
+
+Array.prototype.forEach.call(document.querySelectorAll(".calculator"),
+  function (a) {
+    bender.load_app(a, { href: "apps/calculator/calculator.xml",
+      frame: "false" }, env);
   });
 
 Array.prototype.forEach.call(document.querySelectorAll(".black-bg"),
