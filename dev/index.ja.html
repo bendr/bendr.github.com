@@ -27,8 +27,8 @@
       <div class="text blue-bg">
         <div>
           <p><a href="https://github.com/bendr/bender/archive/v0.8.1.zip">
-          <span class="big">Download</span> Bender 0.8.1</a>(2013/6/17リリース)</p>
-          <p>Benderは
+          <span class="big">Download</span> Bender 0.8.1</a>(2013/6/17リリース)
+          Benderは
           <a href="https://github.com/bendr/bender/blob/master/LICENSE">Apache
             License v2.0</a>で配布されているフリーソフトウェアです。</p>
           <p>
@@ -38,9 +38,17 @@
         </div>
       </div>
 
+      <div class="canvas">
+      </div>
+
+      <div class="text red-bg">
+        <div>
+          <h2>Documentation</h2>
+        </div>
+      </div>
+
       <div class="text sky-bg">
         <div>
-          <h2>開発者向け</h2>
           <ul>
             <li><a href="docs/setup/setup.ja.html">環境構築</a></li>
             <li><a href="docs/tutorial/tutorial.ja.html">チュートリアル</a></li>
@@ -50,7 +58,6 @@
 
       <div class="text yellow-bg">
         <div>
-          <h2>仕様</h2>
           <ul>
             <li><a href="https://github.com/bendr/bender/blob/master/spec/data-model.md">Data Model（英語）</a></li>
             <li><a href="https://github.com/bendr/bender/blob/master/spec/processing-model.md">Processing Model（英語）</a></li>
@@ -61,7 +68,6 @@
 
       <div class="text yellow-bg">
         <div>
-          <h2>ドキュメント</h2>
           <ul>
             <li><a href="https://github.com/bendr/bender/blob/master/dom/api.md">Javascript API（英語）</a></li>
             <li><a href="https://github.com/bendr/bender/blob/master/todo.md">TODO list（英語）</a></li>
@@ -70,9 +76,12 @@
         </div>
       </div>
 
+      <div class="calculator red-bg">
+      </div>
+
       <div class="text purple-bg">
         <div>
-          <h2>デモ</h2>
+          <h2>デモとテスト</h2>
         </div>
       </div>
 
@@ -86,26 +95,6 @@
         </div>
       </div>
 
-      <div class="text red-bg">
-        <div>
-          <h2>テスト</h2>
-        </div>
-      </div>
-
-
-      <div class="text green-bg">
-        <div>
-          <h3>Conformance Test</h3>
-          <ul>
-            <li><a href="http://romulusetrem.us/flexo/test/flexo.html">Flexo</a>
-            (<a href="https://github.com/julienq/flexo/blob/master/flexo.js">flexo.js</a>)</li>
-            <li><strike><a href="dom/test/bender.html">Bender</a>
-            (<a href="https://github.com/bendr/bender/blob/master/dom/bender.js">bender.js</a>)</strike></li>
-            <li><strike>すべてのテストをパスするはずです。</strike></li>
-          </ul>
-        </div>
-      </div>
-
       <div class="text green-bg">
         <div>
           <ul>
@@ -113,6 +102,19 @@
             <li><a href="dom/runtime.html?href=test/text-inputs.xml">test/text-inputs.xml</a></li>
             <li><a href="dom/runtime.html?href=test/button.xml">test/button.xml</a></li>
             <li><a href="dom/runtime.html?href=test/canvas.xml">test/canvas.xml</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text green-bg">
+        <div>
+          <h3>Automated tests</h3>
+          <ul>
+            <li><a href="http://romulusetrem.us/flexo/test/flexo.html">Flexo</a>
+            (<a href="https://github.com/julienq/flexo/blob/master/flexo.js">flexo.js</a>)</li>
+            <li><strike><a href="dom/test/bender.html">Bender</a>
+            (<a href="https://github.com/bendr/bender/blob/master/dom/bender.js">bender.js</a>)</strike></li>
+            <li><strike>すべてのテストをパスするはずです。</strike></li>
           </ul>
         </div>
       </div>
@@ -163,9 +165,13 @@ var env = bender.load_app(document.querySelector("#logo a"),
 
 Array.prototype.forEach.call(document.querySelectorAll(".canvas"),
   function (a) {
-    bender.load_app(a, { href: "dom/lib/canvas.xml", width: "220",
-      height: "220", stroke: "#102040", "stroke-width": "4" },
-    env);
+    bender.load_app(a, { href: "dom/test/pens.xml" }, env);
+  });
+
+Array.prototype.forEach.call(document.querySelectorAll(".calculator"),
+  function (a) {
+    bender.load_app(a, { href: "apps/calculator/calculator.xml",
+      frame: "false" }, env);
   });
 
 Array.prototype.forEach.call(document.querySelectorAll(".black-bg a"),
