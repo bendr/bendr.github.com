@@ -26,6 +26,7 @@
               <li><a href="tutorial.html">Tutorial</a></li>
               <li><a href="hello-world.html">“Hello World!”</a></li>
               <li><a href="external-component.html">External Component</a></li>
+              <li><a href="property-binding.html">Properties and bindings</a></li>
             </ul>
           </div>
         </div>
@@ -48,8 +49,8 @@
 "use strict";
 
 bender.load_app(document.querySelector("#logo a"), {
-  href: "../../dom/test/logo.xml", sides: "7", fgcolor: "white",
-  bgcolor: "#2495b5"
+  href: "../../dom/test/logo.xml", sides: "7", fgcolor: "'white'",
+  bgcolor: "'#2495b5'"
 });
 
     </script>

@@ -5,9 +5,10 @@ title: Bender Tutorial
 # Property Binding
 
 -----
-Application to be created by this tutorial : [Count up by clicking button](../../dom/runtime.html?href=../dom/test/sample.xml)
+In this tutorial, a [simple application that counts up and down by clicking
+buttons](../../dom/runtime.html?href=../dom/test/sample.xml) is created.
 
-Source code is as follows:
+The complete source code is as follows:
 
 <blockquote class="code">
 </blockquote>
@@ -17,83 +18,120 @@ flexo.ez_xhr("../../dom/test/sample.xml", { responseType: "text" }, function (re
 });
 </script>
 
-##Property binding
+##Properties of components
 
-Property bindings are special syntax that reduces the amount of markup necessary to create watches.
-Text content (the value of properties, as well as attributes and text nodes in a view) may contain direct reference to properties, which then get rendered as watches in the following manner.
+Bender components can have properties to manage their state.
+A Bender property is similar to a Javascript object property, but has the
+additional benefit of being observable with a watch element so that changes can
+be triggered whenever the value of a property changes.
 
-For example, as follows, property is defined in the above sample code;
+In this example, the main component has a <tt>count</tt> that maintains a count
+that can go up and down by using two buttons.
+The count is also displayed using roman numerals, using another property called
+<tt>roman</tt>.
 
-	<property name="roman" value="flexo.to_roman(`count).toUpperCase()"/>
-
-As follows, properties are referenced in <tt>view</tt> element.
-
-	<view xmlns:html="http://www.w3.org/1999/xhtml">
-		<html:p>
-			Number of clicks: `roman
-		</html:p>
-	</view>
-
-This is equivalent to the following code that use the <tt>watch</tt> element.
-
-	<view xmlns:html="http://www.w3.org/1999/xhtml">
-		<html:p>
-			Number of clicks: <text id="num">
-		</html:p>
-	</view>
-	<watch>
-		<get property="roman"/>
-		<set elem="num"/>
-	</watch>
-
-In this way, by using the property binding, it makes possible to write a code more readable and simple.
-
-
-Describe about above sample code.
-
-##Use of property
+A property is defined by adding a <tt>property</tt> child element to the
+<tt>component</tt> element, such as:
 
 	<property name="count" as="number" value="0"/>
+
+The <tt>name</tt> attribute is mandatory and defines the name of the property.
+The <tt>value</tt> attribute defines a value for the property; here, the count
+will start at zero.
+Because attributes in XML are always text strings, the <tt>as</tt> attribute can
+give more information about how to interpret the value. Here, the count should
+be interpreted as a Javascript number and not a text string. Other values for
+<tt>as</tt> are <tt>string</tt>, <tt>boolean</tt> (a Javascript boolean value,
+which can be <tt>true</tt> or <tt>false</tt>), <tt>json</tt> (a Javascript
+boolean using JSON notation) and <tt>dynamic</tt> (a Javascript expression; this
+is the default.)
+
+##Making the count go up and down
+
+The two buttons <tt>button-plus</tt> and <tt>button-minus</tt> will increase or
+decrease the count.
+In the same manner as in [External Component](external-component.html), a watch
+is used to get <tt>pushed</tt> events from the buttons and modify the value of
+the <tt>count</tt> property accordingly:
+
+	<watch>
+	  <get component="button-plus" event="!pushed"/>
+	  <set property="count" value="this.properties.count + 1"/>
+	</watch>
+
+The <tt>set</tt> element sets the <tt>value</tt> (which is similar to a property
+value) to the specified target (the <tt>count</tt> property in this sample.)
+The value is a Javascript expression in which <tt>this</tt> refers to the
+current component. <tt>this.properties</tt> is a dictionary of the properties of
+the component, so <tt>this.properties.count</tt> refers to the <tt>count</tt>
+property of the component.
+
+##Converting the count to a roman number
+
+A second property, called <tt>roman</tt>, is defined as follows:
+
 	<property name="roman" value="flexo.to_roman(`count).toUpperCase()"/>
-In this way, property can be stored in component by using <tt>property</tt> elements.
-Specify name of the property on <tt>name</tt> attribute, and specify type of the property on <tt>as</tt> attribute.
-For the <tt>value</tt> attribute, specify a value of the property.
-<tt>count</tt> is set as type of number because it store the value for count up(or down).
-Since expression was set for the <tt>value</tt> of <tt>roman</tt>, the type was set as default(dynamic).
-<tt>`count</tt> means count property. By prepending &#096;(backquote) to the name of property, bind the properties in each element like <tt>property</tt>, <tt>view</tt>.
-(However, property binding in watch element is not supported, yet)
 
-	    <html:p>
-	      Number of clicks: `roman
-	    </html:p>
-In this way, it is possible to use <tt>roman</tt> property in <tt>view</tt> element.
-The value <tt>count</tt> is returned in Roman numeral form by setting <tt>`roman</tt>.
+Notice that the value of this property is a Javascript expression, with one
+difference: the character <tt>&#x60;</tt> is used to refer to other properties
+of the component. This has two effects:
 
-##Property of external component
+<ol>
+	<li>it is a shortcut to writing <tt>this.properties.count</tt>;</li>
+	<li>it creates a watch to make sure that the value of <tt>roman</tt> is updated
+  every time the value of <tt>count</tt> changes (for instance, when one of
+  the buttons is pushed.)</li>
+</ol>
 
-	      <component href="../lib/button.xml" id="button-minus" class="red">
-	        <property name="enabled" value="#sample`count &gt; 0"/>
-	        <view>
-	          -1
-	        </view>
-	      </component>
-2 buttons are used in this sample.
-As same as [External component](external-component.html), implement those buttons with <tt>button.xml</tt>.
-For <tt>button-minus</tt>, the value is specified on <tt>value</tt> to set <tt>false</tt> for <tt>enabled</tt> property in case the value of <tt>count</tt> property becomes negative value. That leads the button to be disable.
+This is called a property binding, as the the <tt>roman</tt> property is now
+bound to the <tt>count</tt> property.
 
+The end result of this property definition is that every time <tt>count</tt> is
+set to a new number value, <tt>roman</tt> is set to its representation in roman
+numerals using the library function <tt>to_roman()</tt> of Flexo, and then
+converted to upper case.
 
-##Get push event
+##Displaying the count value
 
-	  <watch>
-	    <get component="button-minus" event="!pushed"/>
-	    <set property="count" value="this.properties.count + 1"/>
-	  </watch>
-It is the same manner as that in [External Component](external-component.html) to get <tt>pushed</tt> event by mouse event. However, <tt>set</tt> element is used in this tutorial where <tt>alert()</tt> is used in <tt>get</tt> element for the last tutorial.
-<tt>set</tt> element set <tt>value</tt> to specified target (<tt>count</tt> in this sample).
-<tt>this.properties.count</tt> is used to refer <tt>count</tt> property over here.
-(because property binding in watch element is not supported, yet)
+The last step is now to display the value of the <tt>roman</tt> property in the
+view of the component.
+In Bender this can be done by creating a text element in the view, then setting
+up a watch so that when the <tt>roman</tt> property changes, the text element is
+updated with the new value.
+With a text binding, this can be done easily, as shown below:
 
+	<view xmlns:html="http://www.w3.org/1999/xhtml">
+	  <html:p>
+	    Number of clicks: `roman
+	   </html:p>
+	 </view>
 
+Once again, notice the <tt>&#x60;</tt> character that introduces the
+<tt>roman</tt> property.
 
+##Binding from other components
 
+In this applications, only positive numbers are shown.
+This means that when the count is zero, it cannot go down any further, and the
+minus button needs to be disabled.
+Standard buttons in Bender have an <tt>enabled</tt> property, which is a
+boolean.
+To disable a button, this property is set to false; to enable a button, this
+property is set to true.
 
+To prevent the count from going below zero, the <tt>enabled</tt> property of the
+minus button is bound to the <tt>count</tt> property of the main component:
+
+	 <component href="../lib/button.xml" id="button-minus" class="red">
+	   <property name="enabled" value="#sample`count &gt; 0"/>
+	   <view>
+	     -1
+	   </view>
+	 </component>
+
+The <tt>enabled</tt> property of the minus button shows a more complex binding,
+as it is not bound to a property of its own, but of another component (here, the
+main component, which has the id <tt>sample</tt>.)
+When the property of a different component is referred to, the property name
+(including the backtick character) is preceded by the component id, itself
+introduced by the <tt>#</tt> mark.
