@@ -19,5 +19,5 @@ title: Bender チュートリアル
 このチュートリアルが終了すれば、Benderアプリケーションの開発が可能になります。
 より詳細な情報が必要な場合は、[Javascript API Reference](https://github.com/bendr/bender/blob/master/dom/api.md)を参照してください。
 
-まずは、[Hello, world](hello-world.ja.html)から初めてみたいと思います。
+まずは、[Hello, world](hello-world.ja.html)から始めてみたいと思います。
 
