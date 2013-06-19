@@ -30,7 +30,7 @@ BenderのプロパティはJavascriptオブジェクトのプロパティと同�
 
 	<property name="count" as="number" value="0"/>
 
-<tt>name</tt>属性は必須でプロパティの名称を定義します。
+この<tt>propety</tt>要素の<tt>name</tt>属性は必須でプロパティの名称を定義します。
 また、<tt>value</tt>属性はプロパティの値を定義します。
 この例ではカウントは0から始まります。
 XMLの属性は常に文字列なので、<tt>as</tt>属性で値をどのように扱うかの情報を付与します。
@@ -42,7 +42,7 @@ XMLの属性は常に文字列なので、<tt>as</tt>属性で値をどのよう
 
 ##カウントアップとダウン
 
-<tt>button-plus</tt>と<tt>button-minus</tt>の2つのボタンでカウントのアップとダウンを行います。
+それぞれ<tt>button-plus</tt>と<tt>button-minus</tt>の2つのボタンでカウントのアップとダウンを行います。
 [外部コンポーネント](external-component.ja.html)と同様にwatchを使用してボタンから<tt>pushed</tt>イベントを取得し、その結果に応じて<tt>count</tt>プロパティの値を修正します。
 
 	<watch>
@@ -50,7 +50,7 @@ XMLの属性は常に文字列なので、<tt>as</tt>属性で値をどのよう
 	  <set property="count" value="this.properties.count +1"/>
 	</watch>
 
-<tt>set</tt>要素は、<tt>value</tt>（プロパティ値と同様）を指定されたターゲットに設定します。
+この<tt>set</tt>要素は、<tt>value</tt>（プロパティ値と同様）を指定されたターゲットに設定します。
 今回のサンプルでは、<tt>count</tt>プロパティに<tt>value</tt>の値が設定されます。
 <tt>value</tt>の<tt>this</tt>は現状のコンポーネントを参照するJavascriptの式です。
 <tt>this.properties</tt>はコンポーネントのプロパティのディクショナリなので、<tt>this.properties.count</tt>はコンポーネントのプロパティの<tt>count</tt>プロパティを参照します。
