@@ -6,7 +6,7 @@
   var slice = Array.prototype.slice;
   var splice = Array.prototype.splice;
 
-  var browser = typeof window === "object";
+  var browserp = typeof window === "object";
 
   if (typeof Function.prototype.bind !== "function") {
     Function.prototype.bind = function (x) {
@@ -40,9 +40,9 @@
   // Define a property named `name` on object `obj` with the custom setter `set`
   // The setter gets three parameters (<new value>, <current value>, <cancel>)
   // and returns the new value to be set. If cancel is called with no value or a
-  // true value, there is no update.
-  flexo.make_property = function (obj, name, set) {
-    var value;
+  // true value, there is no update. An initial value may be provided, that does
+  // not trigger the setter.
+  flexo.make_property = function (obj, name, set, value) {
     Object.defineProperty(obj, name, { enumerable: true,
       get: function () { return value; },
       set: function (v) {
@@ -57,12 +57,28 @@
     });
   };
 
+  flexo.safe = function (x, f) {
+    if (x != null && f in x) {
+      return x[f].apply(x, slice.call(arguments, 2));
+    }
+  };
+
+  // Safe call to toString(); when obj is null or undefined, return an empty
+  // string.
+  flexo.safe_string = function (obj) {
+    if (obj == null) {
+      return "";
+    }
+    return obj.toString.apply(obj, slice.call(arguments, 1));
+  };
+
 
   // Strings
 
   // Simple format function for messages and templates. Use %0, %1... as slots
   // for parameters. %% is also replaced by %. Null and undefined are replaced
   // by an empty string.
+  // TODO "%(0)0".fmt(1) should be "10"
   String.prototype.fmt = function () {
     var args = arguments;
     return this.replace(/%(\d+|%)/g, function (_, p) {
@@ -71,7 +87,7 @@
   };
 
   // Chop the last character of a string iff it's a newline
-  flexo.chomp = function(string) {
+  flexo.chomp = function (string) {
     return string.replace(/\n$/, "");
   };
 
@@ -83,7 +99,7 @@
 
   // Pad a string to the given length with the given padding (defaults to 0)
   // if it is shorter. The padding is added at the beginning of the string.
-  flexo.pad = function(string, length, padding) {
+  flexo.pad = function (string, length, padding) {
     if (typeof padding !== "string") {
       padding = "0";
     }
@@ -94,9 +110,17 @@
     return l > 0 ? (Array(l).join(padding)) + string : string;
   };
 
+  // Quote a string, escaping quotes properly. Uses " by default, but can be
+  // changed to '
+  flexo.quote = function (string, q) {
+    q = q || '"';
+    return "%0%1%0".fmt(q, string.replace(new RegExp(q, "g"), "\\" + q)
+        .replace(/\n/g, "\\n"));
+  };
+
   // Convert a number to roman numerals (integer part only; n must be positive
   // or zero.) Now that's an important function to have in any framework.
-  flexo.to_roman = function(n) {
+  flexo.to_roman = function (n) {
     var unit = function (n, i, v, x) {
       var r = "";
       if (n % 5 === 4) {
@@ -148,7 +172,7 @@
   };
 
   // Linear interpolation
-  flexo.lerp = function(from, to, ratio) {
+  flexo.lerp = function (from, to, ratio) {
     return from + (to - from) * ratio;
   };
 
@@ -203,6 +227,13 @@
     for (var i = 0, n = a.length; i < n && !p.call(that, a[i], i, a); ++i);
     return a[i];
   };
+  
+  // Foreach in reverse
+  flexo.hcaErof = function (a, f, that) {
+    for (var i = a.length - 1; i >= 0; --i) {
+      f.call(that, a[i], i, a);
+    }
+  };
 
   // Partition `a` according to predicate `p` and return and array of two arrays
   // (first one is the array of elements for which p is true.)
@@ -253,6 +284,43 @@
       shuffled[j] = x;
     }
     return shuffled;
+  };
+
+  // Pick random elements from an array and remove them from the array. When the
+  // array is empty, recreate the initial array. The urn can also be emptied at
+  // any moment, which resets is state completely.
+  flexo.Urn = {
+    pick: function () {
+      if (!this.remaining || this.remaining.length === 0) {
+        this.remaining = slice.call(this.array);
+      }
+      var i = flexo.random_int(this.remaining.length - 1);
+      if (this.non_repeatable && this.array.length > 1) {
+        while (this.remaining[i] === this.last_pick) {
+          i = flexo.random_int(this.remaining.length - 1);
+        }
+      }
+      this.last_pick = this.remaining.splice(i, 1)[0];
+      return this.last_pick;
+    },
+    empty: function () {
+      delete this.remaining;
+      delete this.last_pick;
+      return this;
+    }
+  };
+
+  // Create a new urn to pick from. The first argument is the array for the urn,
+  // then a flag to prevent successive repeating values when the urn is refilled
+  // (defaults to false.)
+  flexo.urn = function (a, non_repeatable) {
+    var urn = Object.create(flexo.Urn);
+    flexo.make_property(urn, "array", function (a_) {
+      this.empty();
+      return a_;
+    }, a);
+    urn.non_repeatable = !!non_repeatable;
+    return urn;
   };
 
   // Return all the values of an object (presumably used as a dictionary)
@@ -477,8 +545,23 @@
     return false;
   };
 
+  // Return a function that discards its arguments. An optional parameter allows
+  // to keep at most n arguments (defaults to 0 of course.)
+  flexo.discard = function (f, n) {
+    return function () {
+      return f.apply(this, slice.call(arguments, 0, n || 0));
+    };
+  };
+
   // No-op function, returns nothing
   flexo.nop = function () {
+  };
+
+  // Make a function returning the given value
+  flexo.funcify = function (x) {
+    return function () {
+      return x;
+    };
   };
 
   // Identity function
@@ -495,12 +578,16 @@
       this.queue.push(f);
       if (!this.flushing) {
         this.flushing = true;
-        setTimeout(this.flush.bind(this), 0);
+        this.timeout = setTimeout(this.flush.bind(this), 0);
       }
     }
   };
 
   flexo.Seq.flush = function () {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      delete this.timeout;
+    }
     var f = this.queue.shift();
     if (f) {
       f(this.flush.bind(this));
@@ -516,7 +603,7 @@
   };
 
 
-  if (browser) {
+  if (browserp) {
     flexo.request_animation_frame = (window.requestAnimationFrame ||
       window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
       window.msRequestAnimationFrame || function (f) {
@@ -707,7 +794,7 @@
       "union", "uplimit", "variance", "vector", "vectorproduct", "xor"]
   };
 
-  if (browser) {
+  if (browserp) {
 
     // Shorthand to create elements, e.g. flexo.$("svg#main.content")
     flexo.$ = function () {
@@ -795,7 +882,7 @@
   // Convert a color from hsv space (hue in radians, saturation and brightness
   // in the [0, 1] interval) to RGB, returned as an array of RGB values in the
   // [0, 256[ interval.
-  flexo.hsv_to_rgb = function(h, s, v) {
+  flexo.hsv_to_rgb = function (h, s, v) {
     s = flexo.clamp(s, 0, 1);
     v = flexo.clamp(v, 0, 1);
     if (s === 0) {
@@ -816,12 +903,12 @@
 
   // Convert a color from hsv space (hue in degrees, saturation and brightness
   // in the [0, 1] interval) to an RGB hex value
-  flexo.hsv_to_hex = function(h, s, v) {
+  flexo.hsv_to_hex = function (h, s, v) {
     return flexo.rgb_to_hex.apply(this, flexo.hsv_to_rgb(h, s, v));
   };
 
   // Convert an RGB color (3 values in the [0, 256[ interval) to a hex value
-  flexo.rgb_to_hex = function() {
+  flexo.rgb_to_hex = function () {
     return "#" + map.call(arguments,
       function (x) {
         return flexo.pad(flexo.clamp(Math.floor(x), 0, 255).toString(16), 2);
@@ -854,7 +941,7 @@
   };
 
   // Find the closest <svg> ancestor for a given element
-  flexo.find_svg = function(elem) {
+  flexo.find_svg = function (elem) {
     if (!elem) {
       return;
     }

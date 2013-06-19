@@ -26,28 +26,55 @@ body {
 }
 
 div.tiles {
-  width: 240px;
   margin: 10px auto;
   padding: 0;
   height: 100%;
   font-size: 0;
 }
 
-@media (min-width: 480px) {
+@media (max-width: 479px) {
   div.tiles {
-    width: 480px;
+    width: 240px;
+  }
+  .extra-a, .extra-b, .extra-c {
+    display: none !important;
   }
 }
 
-@media (min-width: 720px) {
+@media (min-width: 480px) and (max-width: 719px) {
+  div.tiles {
+    width: 480px;
+  }
+  .extra-a:nth-child(2n+1),
+  .extra-b,
+  .extra-c {
+    display: none !important;
+  }
+}
+
+@media (min-width: 720px) and (max-width: 959px) {
   div.tiles {
     width: 720px;
+  }
+  .extra-a:nth-child(3n+2),
+  .extra-b:nth-child(3n),
+  .extra-b:nth-child(3n+2),
+  .extra-c {
+    display: none !important;
   }
 }
 
 @media (min-width: 960px) {
   div.tiles {
     width: 960px;
+  }
+  .extra-a:nth-child(4n+3),
+  .extra-b:nth-child(4n),
+  .extra-b:nth-child(4n+3),
+  .extra-c:nth-child(4n),
+  .extra-c:nth-child(4n+1),
+  .extra-c:nth-child(4n+3) {
+    display: none !important;
   }
 }
 
@@ -63,6 +90,15 @@ div.tiles > div {
   display: inline-block;
   vertical-align: bottom;
   box-shadow: 0 0 10px #444;
+}
+
+.canvas {
+  background-color: #f8f9f0;
+  border-radius: 5px;
+}
+
+.canvas canvas {
+  border-radius: 5px;
 }
 
 ul {
@@ -277,4 +313,13 @@ blockquote > p {
   position: absolute;
   right: 0;
   top: 0;
+}
+
+.calculator {
+  background-color: #06491d;
+}
+
+.calculator svg {
+  width: 220px;
+  height: 220px;
 }

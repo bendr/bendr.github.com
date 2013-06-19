@@ -33,6 +33,14 @@
   background-color: #ff4040;
 }
 
+.canvas {
+  position: relative;
+}
+
+.canvas canvas {
+  position: absolute;
+}
+
 .text-input {
   font-family: Futura, Optima, sans-serif;
   font-size: 100%;
@@ -43,4 +51,12 @@
 
 .text-input.disabled {
   color: #888 !important;
+}
+
+.check-box.disabled {
+  color: #888 !important;
+}
+
+.hidden {
+  display: none;
 }

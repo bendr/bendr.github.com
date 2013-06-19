@@ -1,24 +1,17 @@
 <component xmlns="http://bender.igel.co.jp" href="ui-elem.xml" id="button">
 
-  <property name="base-class" value="button"/>
+  <property name="base-class" as="string" value="button"/>
+  <property name="enabled-class" value="`enabled ? '' : 'disabled'"/>
   <property name="down" as="boolean" value="false"/>
+  <property name="down-class" value="`down ? 'down' : ''"/>
 
   <view xmlns:html="http://www.w3.org/1999/xhtml">
-    <html:div id="div">
-      <attribute name="class">
-        <text id="base-class-class"/> <text id="class-class"/>
-        <text id="enabled-class"/> <text id="down-class"/>
-      </attribute>
+    <html:div id="div" class="`base\-class `class `enabled\-class `down\-class">
       <content>
         OK
       </content>
     </html:div>
   </view>
-
-  <watch>
-    <get property="down"/>
-    <set elem="down-class" value="input ? 'down' : ''"/>
-  </watch>
 
   <watch>
     <get elem="div" dom-event="mousedown" prevent-default="true"
@@ -28,7 +21,8 @@
 
   <watch>
     <get elem="$document" dom-event="mouseup"
-      value="cancel(!this.properties.down)"/>
+      value="cancel(!this.properties.down &amp;&amp;
+      (event.target !== scope.div || !this.properties.enabled))"/>
     <set property="down" value="false"/>
     <set event="!pushed"/>
   </watch>

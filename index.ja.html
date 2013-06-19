@@ -13,7 +13,7 @@
     <div class="tiles">
 
       <div class="orange-bg" id="logo">
-        <a href="dom/runtime.svg?href=test/logo.xml&sides=7&bgcolor=white&fgcolor=%23ff6a4d"></a>
+        <a href="dom/runtime.svg?href=test/logo.xml&sides=7&bgcolor='white'&fgcolor='%23ff6a4d'"></a>
       </div>
 
       <div class="text blue-bg">
@@ -26,8 +26,9 @@
 
       <div class="text blue-bg">
         <div>
-          <p><a href="https://github.com/bendr/bender/archive/v0.8.zip"><span class="big">Download</span> Bender v0.8</a>, released 9 April 2013.</a>
-          <p>Benderは
+          <p><a href="https://github.com/bendr/bender/archive/v0.8.1.zip">
+          <span class="big">Download</span> Bender 0.8.1</a>(2013/6/17リリース)
+          Benderは
           <a href="https://github.com/bendr/bender/blob/master/LICENSE">Apache
             License v2.0</a>で配布されているフリーソフトウェアです。</p>
           <p>
@@ -37,9 +38,17 @@
         </div>
       </div>
 
+      <div class="canvas">
+      </div>
+
+      <div class="text red-bg">
+        <div>
+          <h2>Documentation</h2>
+        </div>
+      </div>
+
       <div class="text sky-bg">
         <div>
-          <h2>開発者向け</h2>
           <ul>
             <li><a href="docs/setup/setup.ja.html">環境構築</a></li>
             <li><a href="docs/tutorial/tutorial.ja.html">チュートリアル</a></li>
@@ -49,7 +58,6 @@
 
       <div class="text yellow-bg">
         <div>
-          <h2>仕様</h2>
           <ul>
             <li><a href="https://github.com/bendr/bender/blob/master/spec/data-model.md">Data Model（英語）</a></li>
             <li><a href="https://github.com/bendr/bender/blob/master/spec/processing-model.md">Processing Model（英語）</a></li>
@@ -60,7 +68,6 @@
 
       <div class="text yellow-bg">
         <div>
-          <h2>ドキュメント</h2>
           <ul>
             <li><a href="https://github.com/bendr/bender/blob/master/dom/api.md">Javascript API（英語）</a></li>
             <li><a href="https://github.com/bendr/bender/blob/master/todo.md">TODO list（英語）</a></li>
@@ -69,9 +76,12 @@
         </div>
       </div>
 
+      <div class="calculator red-bg">
+      </div>
+
       <div class="text purple-bg">
         <div>
-          <h2>デモ</h2>
+          <h2>Demos</h2><h2>Tests</h2>
         </div>
       </div>
 
@@ -80,26 +90,7 @@
           <ul>
             <li><a href="dom/runtime.html?href=test/sample.xml">サンプル</a></li>
             <li><a href="dom/runtime.svg?href=test/logos.xml">16個のロゴ</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="text red-bg">
-        <div>
-          <h2>テスト</h2>
-        </div>
-      </div>
-
-
-      <div class="text green-bg">
-        <div>
-          <h3>Conformance Test</h3>
-          <ul>
-            <li><a href="http://romulusetrem.us/flexo/test/flexo.html">Flexo</a>
-            (<a href="https://github.com/julienq/flexo/blob/master/flexo.js">flexo.js</a>)</li>
-            <li><a href="dom/test/bender.html">Bender</a>
-            (<a href="https://github.com/bendr/bender/blob/master/dom/bender.js">bender.js</a>)</li>
-            <li>すべてのテストをパスするはずです。</li>
+            <li><a href="dom/runtime.svg?href=../apps/calculator/calculator.xml">電卓</a></li>
           </ul>
         </div>
       </div>
@@ -109,7 +100,18 @@
           <ul>
             <li><a href="dom/runtime.html?href=test/hello.xml">test/hello.xml</a></li>
             <li><a href="dom/runtime.html?href=test/text-inputs.xml">test/text-inputs.xml</a></li>
-            <li><a href="dom/runtime.html?href=lib/button.xml">lib/button.xml</a></li>
+            <li><a href="dom/runtime.html?href=test/button.xml">test/button.xml</a></li>
+            <li><a href="dom/runtime.html?href=test/canvas.xml">test/canvas.xml</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text green-bg">
+        <div>
+          <h3>Automated tests</h3>
+          <ul>
+            <li><a href="http://romulusetrem.us/flexo/test/flexo.html">Flexo</a>
+            (<a href="https://github.com/julienq/flexo/blob/master/flexo.js">flexo.js</a>)</li>
           </ul>
         </div>
       </div>
@@ -125,6 +127,10 @@
       <div class="text black-bg">
         <a href="dom/runtime.svg?href=test/arrow.xml"></a>
       </div>
+
+      <div class="canvas extra-a"></div>
+      <div class="canvas extra-b"></div>
+      <div class="canvas extra-c"></div>
 
       <div class="text pink-bg">
         <div>
@@ -151,8 +157,19 @@
 "use strict";
 
 var env = bender.load_app(document.querySelector("#logo a"),
-  { href: "dom/test/logo.xml", sides: "7", fgcolor: "white",
-    bgcolor: "#ff6a4d" });
+  { href: "dom/test/logo.xml", sides: "7", fgcolor: "'white'",
+    bgcolor: "'#ff6a4d'", clickable: "false" });
+
+Array.prototype.forEach.call(document.querySelectorAll(".canvas"),
+  function (a) {
+    bender.load_app(a, { href: "dom/test/pens.xml" }, env);
+  });
+
+Array.prototype.forEach.call(document.querySelectorAll(".calculator"),
+  function (a) {
+    bender.load_app(a, { href: "apps/calculator/calculator.xml",
+      frame: "false" }, env);
+  });
 
 Array.prototype.forEach.call(document.querySelectorAll(".black-bg a"),
   function (a) {

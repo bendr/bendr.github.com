@@ -60,8 +60,5 @@ In this section, we describe about "get" element. About the use of "set" element
 The "get" element, which is used in our sample code, can define event handling process of instance specified by the "instance" when event specified by the "event" had occured.
 In the above sample, it is defined to display an alert dialog if !pushed event had occured in thanks-button(Button).
 
-<!---
-For further information about each element and event type, please refer <a href="../reference/reference.html">API Reference</a>. 
---->
 
 

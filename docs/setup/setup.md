@@ -10,7 +10,8 @@ Follow these steps to create a Bender application development environment.
 
 ##1. Download Bender
 
-[Download Bender version 0.8](https://github.com/bendr/bender/archive/v0.8.zip) and unzip it into any directory.
+[Download Bender version 0.8.1](https://github.com/bendr/bender/archive/v0.8.1.zip) 
+and unzip it into any directory.
 
 <br>
 ##2. Prepare a Web server (optional)
